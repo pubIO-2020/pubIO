@@ -21,5 +21,10 @@ An app that:
   - Google QR Codes API
   - Barzz API - Pull bar info and drink specials
   
-## Project Board
+## Project Board:
   - <a href="https://github.com/pubIO-2020/pubIO/projects/1">MVP Project Board</a>
+
+## Wireframe Examples:
+<img src="assets/images/cardView.png" height="500px" alt="Card View"/>
+<img src="assets/images/mapView.png" height="500px" alt="Map View"/>
+<img src="assets/images/crawlView.png" height="500px" alt="Crawl View"/>
