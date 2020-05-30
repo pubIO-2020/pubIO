@@ -1,9 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 10325,
-  "expoServerNgrokUrl": "https://5z-4gz.anonymous.pubio.exp.direct",
-  "packagerNgrokUrl": "https://packager.5z-4gz.anonymous.pubio.exp.direct",
-  "ngrokPid": 10394
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+  "webpackServerPort": null
 }
