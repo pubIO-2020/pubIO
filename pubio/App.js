@@ -1,24 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import Header from "./components/Header";
+import Main from "./components/Main";
 
 export default function App() {
-  return (
-    <View>
-      <Header />
-      <View style={styles.container}>
-        <Text>Hello pubIO</Text>
-      </View>
-    </View>
-  );
+  return <Main />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
