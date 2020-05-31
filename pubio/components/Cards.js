@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  Platform,
 } from "react-native";
 
 const image = {
@@ -14,34 +15,36 @@ const image = {
 };
 export default function Card() {
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        imageStyle={{ borderRadius: 10 }}
-        source={image}
-        style={styles.image}
-      >
-        <View style={styles.description}>
-          <Text style={styles.date}>05/31/20</Text>
-          <Text style={styles.title}>Bar Crawl 1</Text>
-          <View style={styles.info}>
-            <Text style={styles.infotext} numberOfLines={4}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged.{" "}
-            </Text>
+    <TouchableOpacity activeOpacity={0.6}>
+      <View style={styles.container}>
+        <ImageBackground
+          imageStyle={{ borderRadius: 10 }}
+          source={image}
+          style={styles.image}
+        >
+          <View style={styles.description}>
+            <Text style={styles.date}>05/31/20</Text>
+            <Text style={styles.title}>Bar Crawl 1</Text>
+            <View style={styles.info}>
+              <Text style={styles.infotext} numberOfLines={3}>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry's standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book. It has
+                survived not only five centuries, but also the leap into
+                electronic typesetting, remaining essentially unchanged.{" "}
+              </Text>
+            </View>
           </View>
-        </View>
-      </ImageBackground>
-    </View>
+        </ImageBackground>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
+    height: 250,
     margin: 20,
     borderRadius: 10,
     shadowOffset: {
@@ -73,12 +76,16 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     color: "white",
+    fontWeight: "bold",
+    fontFamily: Platform.OS === "ios" ? "Arial" : "sans-serif",
   },
   title: {
     position: "absolute",
-    top: 10,
+    top: 7,
     left: 10,
     color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
   },
   info: {
     position: "absolute",
