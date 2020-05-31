@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button} from 'react-native';
 
 import Header from '../Header';
-import Card from '../Cards';
+import CardScrollView from '../CardScrollView'
 
 export default function Cardview({ navigation }) {
 	const [crawlCard, setCrawlCard] = useState([
@@ -53,21 +53,7 @@ export default function Cardview({ navigation }) {
 					}}
 					title='Map View'
 				/>
-				<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-					{crawlCard.map((crawl, index) => {
-						return (
-							<Card
-								title={crawl.title}
-								date={crawl.date}
-								info={crawl.info}
-                imageURL={crawl.imageURL}
-                key={index}
-							/>
-						);
-					})}
-
-					<View style={{ height: 370 }}></View>
-				</ScrollView>
+				<CardScrollView />
 			</View>
 		</View>
 	);
