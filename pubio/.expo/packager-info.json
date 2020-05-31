@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 11784,
-  "expoServerNgrokUrl": "https://5b-3ri.anonymous.pubio.exp.direct",
-  "packagerNgrokUrl": "https://packager.5b-3ri.anonymous.pubio.exp.direct",
-  "ngrokPid": 11484,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
