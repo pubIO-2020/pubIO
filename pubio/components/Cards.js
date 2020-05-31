@@ -9,30 +9,21 @@ import {
   Platform,
 } from "react-native";
 
-const image = {
-  uri:
-    "https://cdn.styleblueprint.com/wp-content/uploads/2018/10/mag_bar-e1539184961498.jpg",
-};
-export default function Card() {
+export default function Card(props) {
   return (
     <TouchableOpacity activeOpacity={0.6}>
       <View style={styles.container}>
         <ImageBackground
           imageStyle={{ borderRadius: 10 }}
-          source={image}
+          source={{uri: props.imageURL}}
           style={styles.image}
         >
           <View style={styles.description}>
-            <Text style={styles.date}>05/31/20</Text>
-            <Text style={styles.title}>Bar Crawl 1</Text>
+            <Text style={styles.date}>{props.date}</Text>
+            <Text style={styles.title}>{props.title}</Text>
             <View style={styles.info}>
               <Text style={styles.infotext} numberOfLines={3}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged.{" "}
+                {props.info}
               </Text>
             </View>
           </View>
@@ -46,6 +37,7 @@ const styles = StyleSheet.create({
   container: {
     height: 250,
     margin: 20,
+    marginBottom: 0,
     borderRadius: 10,
     shadowOffset: {
       width: 0,
@@ -86,6 +78,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 18,
+    fontFamily: Platform.OS === "ios" ? "Arial" : "sans-serif",
   },
   info: {
     position: "absolute",
@@ -93,6 +86,7 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     overflow: "hidden",
+    fontFamily: Platform.OS === "ios" ? "Arial" : "sans-serif",
   },
   infotext: {
     color: "white",
