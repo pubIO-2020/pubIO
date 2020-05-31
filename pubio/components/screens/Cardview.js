@@ -40,7 +40,8 @@ export default function Cardview({ navigation }) {
 	return (
 		<View>
 			<Header />
-			<View>
+			<View >
+				<View style = {styles.viewstyles} >
 				<Button
 					onPress={function () {
 						navigation.navigate('Cardview');
@@ -53,10 +54,26 @@ export default function Cardview({ navigation }) {
 					}}
 					title='Map View'
 				/>
+				</View>
 				<CardScrollView />
 			</View>
 		</View>
 	);
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	viewstyles: {
+		flexDirection: "row",
+		backgroundColor: "rgba(43, 158, 179, 0.7)",
+		justifyContent: "center",
+		shadowOffset: {
+			width: 0,
+			height: 4,
+		  },
+		  shadowColor: "black",
+		  shadowOpacity: 0.25,
+		  shadowRadius: 3.84,
+		  elevation: 8,
+	}
+
+});
