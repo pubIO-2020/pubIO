@@ -20,11 +20,16 @@ An app that:
 - UI for customers to view the progress of the bar crawl, their barcode, current drink specials, and locations
 - UI for organization admins/bar managers to add & customize drink specials
 
+## Tech Stack:
+- React Native
+- Firebase
+- react-native-paper for CSS framework
+
 ## API List:
 
 - Google Places & Routes
-- Google QR Codes API
-- Barzz API - Pull bar info and drink specials
+- GoQR QR Code Generator
+- Uber (nice to have)
 
 ## Flow Chart
 
@@ -39,5 +44,5 @@ An app that:
 <img src="assets/images/cardView.png" height="500px" alt="Card View"/>
 <img src="assets/images/mapView.png" height="500px" alt="Map View"/>
 <img src="assets/images/crawlView.png" height="500px" alt="Crawl View"/>
-<img src ="assets/images/barSpecials.png" height="500px" alt= "Bar Specials">
-<img src ="assets/images/settings.png" height="500px" alt= "Settings">
+<img src="assets/images/barSpecials.png" height="500px" alt= "Bar Specials">
+<img src="assets/images/settings.png" height="500px" alt= "Settings">
