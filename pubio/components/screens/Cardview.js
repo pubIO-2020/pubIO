@@ -5,64 +5,61 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Header from "../Header";
 import CardScrollView from "../CardScrollView";
 
-export default function Cardview({ navigation }) {
-  const [crawlCard, setCrawlCard] = useState([
-    {
-      title: "Dirty Sixth",
-      date: "5/31/20",
-      info: "blahbalhbalhbalhbal",
-      imageURL:
-        "https://cdn.totalfratmove.com/wp-content/uploads/2013/12/edb80833973f58ba28a343975c42326e760734339.png",
-    },
-    {
-      title: "East Austin",
-      date: "5/31/20",
-      info: "blahbalhbalhbalhbal",
-      imageURL:
-        "https://static01.nyt.com/images/2014/02/02/travel/02HEADS4/02HEADS4-articleLarge.jpg?quality=75&auto=webp&disable=upscale",
-    },
-    {
-      title: "South Congress",
-      date: "5/31/20",
-      info: "blahbalhbalhbalhbal",
-      imageURL:
-        "https://i.pinimg.com/originals/e9/23/67/e923672711849b9df8f49f16be405fff.jpg",
-    },
-    {
-      title: "Rock Rose",
-      date: "5/31/20",
-      info: "blahbalhbalhbalhbal",
-      imageURL:
-        "https://assets.simpleviewinc.com/simpleview/image/fetch/c_fill,h_362,q_75,w_545/https://assets.simpleviewinc.com/simpleview/image/upload/crm/austin/Dogwood.-Credit-Carmack-Concepts-858cabb8f774c1e_858cac7e-ec0b-30f6-8b81c18a6e1bc62a.jpg",
-    },
-    {
-      title: "West Sixth",
-      date: "5/31/20",
-      info: "blahbalhbalhbalhbal",
-      imageURL:
-        "https://6street.com/listify/wp-content/uploads/2018/10/west-6th-02-star-bar.jpg",
-    },
-  ]);
+export default function Cardview({ navigation, route }) {
   return (
     <View>
       <Header />
       <View>
         <View style={styles.viewstyles}>
-          <Button
+          {/* Card View nav button */}
+          <TouchableOpacity
             onPress={function () {
               navigation.navigate("Cardview");
             }}
-            title="Card View"
-          />
-          {/* <TouchableOpacity>
-            <View></View>
-          </TouchableOpacity> */}
-          <Button
+            style={styles.icontouchables}
+          >
+            <View style={styles.iconsviews}>
+              <Ionicons
+                name="ios-albums"
+                size={30}
+                color={route.name === "Cardview" ? "white" : "darkgray"}
+              />
+              <Text
+                style={{
+                  color: route.name === "Cardview" ? "white" : "darkgray",
+                  marginLeft: 2,
+                  fontSize: 13,
+                }}
+              >
+                Card View
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          {/* Map View nav button */}
+          <TouchableOpacity
             onPress={function () {
               navigation.navigate("Mapview");
             }}
-            title="Map View"
-          />
+            style={styles.icontouchables}
+          >
+            <View style={styles.iconsviews}>
+              <Ionicons
+                name="ios-pin"
+                size={30}
+                color={route.name === "Mapview" ? "white" : "darkgray"}
+              />
+              <Text
+                style={{
+                  color: route.name === "Mapview" ? "white" : "darkgray",
+                  marginLeft: 2,
+                  fontSize: 13,
+                }}
+              >
+                Map View
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <CardScrollView />
       </View>
@@ -82,6 +79,15 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 8,
+    // elevation: 8,
+    paddingTop: 3,
+  },
+  iconsviews: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icontouchables: {
+    marginRight: 5,
+    marginLeft: 5,
   },
 });
