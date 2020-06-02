@@ -9,13 +9,21 @@ import {
   Platform,
 } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+
 export default function Card(props) {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity activeOpacity={0.6}>
+    <TouchableOpacity
+      activeOpacity={0.6}
+      onPress={() => {
+        navigation.navigate("Details");
+      }}
+    >
       <View style={styles.container}>
         <ImageBackground
           imageStyle={{ borderRadius: 10 }}
-          source={{uri: props.imageURL}}
+          source={{ uri: props.imageURL }}
           style={styles.image}
         >
           <View style={styles.description}>

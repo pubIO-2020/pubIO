@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+// import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Cardview from "./screens/Cardview";
 import Mapview from "./screens/Mapview";
+import Details from "./screens/Details";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function Home() {
       >
         <Stack.Screen name="Cardview" component={Cardview} />
         <Stack.Screen name="Mapview" component={Mapview} />
+        <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
   );
