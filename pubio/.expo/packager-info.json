@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 10512,
+  "expoServerNgrokUrl": "https://w4-jka.anonymous.pubio.exp.direct",
+  "packagerNgrokUrl": "https://packager.w4-jka.anonymous.pubio.exp.direct",
+  "ngrokPid": 12408,
   "webpackServerPort": null
 }

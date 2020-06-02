@@ -1,5 +1,6 @@
 import React from "react";
 import MapView from 'react-native-maps';
+import CarouselCards from '../CarouselCards';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Dimensions } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -60,16 +61,24 @@ export default function Mapview({ navigation, route }) {
             </View>
             
           </TouchableOpacity>
+          
         </View>
-        <Text>Map View</Text>
-        
-        <MapView style={styles.mapStyle} />
+        <MapView style={styles.mapStyle}/>
+        <View style={styles.carousel}>
+            <CarouselCards/>
+        </View>
       </View>
+      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  carousel: {
+    position: 'absolute',
+    bottom: 250,
+    alignSelf: 'center'
+  },
   viewstyles: {
     flexDirection: "row",
     backgroundColor: "rgba(43, 158, 179, 0.7)",
