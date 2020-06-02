@@ -17,7 +17,7 @@ export default function Header(props) {
       <Text style={styles.text}>pubIO</Text>
 
       {/* Display settings icon if on User page*/}
-      {props.routeuser === "User" && (
+      {props.routeuser === "Userview" && (
         <TouchableOpacity style={styles.settingsicon}>
           <View>
             <Ionicons name="md-settings" size={28} color="white" />
@@ -25,16 +25,12 @@ export default function Header(props) {
         </TouchableOpacity>
       )}
 
-      {/* Display back button to go back to previous route, if on detail route */}
+      {/* Display back button to go back to previous route, if prop is passed from detail route */}
       {props.detailroute && (
         <TouchableOpacity
           style={styles.backicon}
           onPress={() => {
-            props.routename === "User"
-              ? // If routename prop = user navigate back to user | not working
-                navigation.navigate("User")
-              : // else go back to previous nav stack
-                navigation.goBack();
+            navigation.goBack();
           }}
         >
           <View>

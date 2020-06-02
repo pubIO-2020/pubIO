@@ -51,8 +51,6 @@ export default function CardScrollView(props) {
             info={crawl.info}
             imageURL={crawl.imageURL}
             key={index}
-            // pass route name as prop for ability to denote if card is on user page to route to nested detail view
-            routename={props.routename}
           />
         );
       })}

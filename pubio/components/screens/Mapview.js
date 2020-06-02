@@ -70,7 +70,7 @@ export default function Mapview({ navigation, route }) {
         </View>
         <MapView style={styles.mapStyle} />
         <View style={styles.carousel}>
-          <CarouselCards routename={route.name} />
+          <CarouselCards />
         </View>
       </View>
     </View>

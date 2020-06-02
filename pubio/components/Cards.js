@@ -17,14 +17,7 @@ export default function Card(props) {
     <TouchableOpacity
       activeOpacity={0.6}
       onPress={() => {
-        props.routename === "User"
-          ? // if route name is user navigate to nested detail route
-            navigation.navigate("Home", {
-              screen: "Details",
-              params: { page: "User" },
-            })
-          : // else navigate to adjacent detail route
-            navigation.navigate("Details");
+        navigation.navigate("Details");
       }}
     >
       <View style={styles.container}>

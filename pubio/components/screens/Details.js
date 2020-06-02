@@ -13,12 +13,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Header from "../Header";
 
-export default function Mapview({ navigation, route }) {
-  // If params are available from User page then set User page name param
-  let { page } = route.params ? route.params : "";
+export default function Details({ navigation, route }) {
   return (
     <View>
-      <Header detailroute={route.name} routename={page} />
+      {/* when on details page pass route name at detailroute prop */}
+      <Header detailroute={route.name} />
       <MapView style={styles.mapStyle} />
     </View>
   );
