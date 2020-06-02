@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Dimensions,
-  TouchableOpacity,
-  ImageBackground,
-  StyleSheet,
-} from "react-native";
+import { View, SafeAreaView, StyleSheet } from "react-native";
 import Card from "./Cards";
 import Carousel from "react-native-snap-carousel";
 
