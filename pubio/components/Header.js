@@ -8,16 +8,36 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { useNavigation } from "@react-navigation/native";
 export default function Header(props) {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.headerStyle}>
       <Text style={styles.text}>pubIO</Text>
 
-      {props.routename === "User" && (
+      {/* Display settings icon if on User page*/}
+      {props.routeuser === "User" && (
         <TouchableOpacity style={styles.settingsicon}>
           <View>
-            <Ionicons name="md-settings" size={28} color="lightgray" />
+            <Ionicons name="md-settings" size={28} color="white" />
+          </View>
+        </TouchableOpacity>
+      )}
+
+      {/* Display back button to go back to previous route, if on detail route */}
+      {props.detailroute && (
+        <TouchableOpacity
+          style={styles.backicon}
+          onPress={() => {
+            props.routename === "User"
+              ? // If routename prop = user navigate back to user | not working
+                navigation.navigate("User")
+              : // else go back to previous nav stack
+                navigation.goBack();
+          }}
+        >
+          <View>
+            <Ionicons name="md-arrow-back" size={28} color="white" />
           </View>
         </TouchableOpacity>
       )}
@@ -50,5 +70,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 48,
     right: 10,
+  },
+  backicon: {
+    position: "absolute",
+    top: 52,
+    left: 10,
   },
 });

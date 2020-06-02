@@ -7,9 +7,9 @@ import CardScrollView from "./CardScrollView";
 export default function User({ route }) {
   return (
     <View>
-      <Header routename={route.name} />
+      <Header routeuser={route.name} />
       <View>
-        <CardScrollView />
+        <CardScrollView routename={route.name} />
       </View>
     </View>
   );
