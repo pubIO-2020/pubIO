@@ -7,7 +7,7 @@ export default class CarouselCards extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 3,
+      activeIndex: 0,
       carouselItems: [
         {
           title: "Dirty Sixth",
