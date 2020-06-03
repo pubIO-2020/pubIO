@@ -73,7 +73,11 @@ export default class CarouselCards extends React.Component {
             sliderWidth={375}
             itemWidth={375}
             renderItem={this._renderItem}
-            onSnapToItem={(index) => this.setState({ activeIndex: index })}
+            // on snapping of item get current coordinates from object
+            onSnapToItem={(index) => {
+              this.setState({ activeIndex: index });
+              console.log(this.state.carouselItems[index]);
+            }}
           />
         </View>
       </SafeAreaView>
