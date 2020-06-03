@@ -21,9 +21,15 @@ export default function DrawerContent(props) {
         source={require("../assets/alcohol.png")}
         resizeMode="cover"
       />
-
       <Text style={styles.profileName}>testprofileName</Text>
-
+      <View
+        style={{
+          borderBottomWidth: 1,
+          width: "90%",
+          marginTop: 3,
+          borderColor: "lightgray",
+        }}
+      ></View>
       <View style={styles.settingsContainer}>
         <View style={styles.darkToggle}>
           <Text style={{ marginRight: 5 }}>Dark Mode</Text>
@@ -35,7 +41,6 @@ export default function DrawerContent(props) {
           />
         </View>
       </View>
-
       <View style={styles.adminLogoutContainer}>
         <TouchableOpacity style={{ alignSelf: "center" }}>
           <Text style={{ fontWeight: "bold", color: "#2b9eb3", margin: 10 }}>
