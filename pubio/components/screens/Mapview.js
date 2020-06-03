@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Beer from "../../assets/beer.png";
 
 import Header from "../Header";
 
@@ -113,9 +114,11 @@ export default function Mapview({ navigation, route }) {
         </View>
         {/* Display Map */}
         <MapView
+          mapPadding={{ top: 0, right: 0, bottom: 550, left: 0 }}
+          paddingAdjustmentBehavior="always"
           initialRegion={{
-            latitude: 30.261,
-            longitude: -97.7429,
+            latitude: 30.2303 - 0.0123,
+            longitude: -97.7538,
             latitudeDelta: 0.2,
             longitudeDelta: 0.1,
           }}
