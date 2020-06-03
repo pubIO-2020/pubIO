@@ -7,6 +7,7 @@ import {
   Switch,
   TouchableOpacity,
 } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function DrawerContent(props) {
   // dark mode toggle state
@@ -48,8 +49,9 @@ export default function DrawerContent(props) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.logout}>
-          <View>
-            <Text style={{ color: "white" }}>Logout</Text>
+          <View style={styles.logoutContainer}>
+            <Ionicons name="md-log-out" size={20} color="white" />
+            <Text style={styles.logoutText}>Logout</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontWeight: "bold",
-    marginTop: 5,
+    marginTop: 3,
   },
 
   darkToggle: {
@@ -90,10 +92,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: "center",
   },
+  logoutContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  logoutText: { color: "white", fontWeight: "bold", marginLeft: 3 },
   adminLogoutContainer: {
     position: "absolute",
     bottom: 10,
-    // alignItems: "center",
     width: "100%",
   },
   settingsView: { paddingTop: 35, alignItems: "center", height: "100%" },
