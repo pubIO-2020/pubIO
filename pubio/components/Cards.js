@@ -17,7 +17,9 @@ export default function Card(props) {
     <TouchableOpacity
       activeOpacity={0.6}
       onPress={() => {
-        navigation.navigate("Details");
+        navigation.navigate("Details", {
+          index: props.testIndex,
+        });
       }}
     >
       <View style={styles.container}>
