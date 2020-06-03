@@ -114,6 +114,7 @@ export default function Mapview({ navigation, route }) {
         </View>
         {/* Display Map */}
         <MapView
+          ref={(map) => (this.map = map)}
           mapPadding={{ top: 0, right: 0, bottom: 550, left: 0 }}
           paddingAdjustmentBehavior="always"
           initialRegion={{
@@ -133,6 +134,11 @@ export default function Mapview({ navigation, route }) {
                 }}
                 title={crawl.title}
                 key={index}
+                onSelect={() => {
+                  this.map.animateToRegion({
+                      latitude: crawl.coords.lat,
+                      longitude: crawl.coords.lon
+                  }, 200)}}
               />
             );
           })}
