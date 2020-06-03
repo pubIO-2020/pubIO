@@ -18,7 +18,11 @@ export default function Header(props) {
 
       {/* Display settings icon if on User page*/}
       {props.routeuser === "Userview" && (
-        <TouchableOpacity style={styles.settingsicon}>
+        <TouchableOpacity
+          style={styles.settingsicon}
+          // open settings navigation drawer
+          onPress={navigation.openDrawer}
+        >
           <View>
             <Ionicons name="md-settings" size={28} color="white" />
           </View>
