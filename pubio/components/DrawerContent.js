@@ -48,7 +48,15 @@ export default function DrawerContent(props) {
             Switch to admin
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.logout}>
+        <TouchableOpacity
+          style={styles.logout}
+          onPress={() => {
+            // console.log("logout");
+
+            // this doc was a life safer for navigating to parent login view https://reactnavigation.org/docs/navigation-prop/
+            props.navigation.popToTop();
+          }}
+        >
           <View style={styles.logoutContainer}>
             <Ionicons name="md-log-out" size={20} color="white" />
             <Text style={styles.logoutText}>Logout</Text>
