@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Main() {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Tab.Navigator
         backBehavior="none"
         screenOptions={({ route }) => ({
@@ -22,8 +22,6 @@ export default function Main() {
             } else if (route.name === "User") {
               iconName = focused ? "md-person" : "md-person";
             }
-
-            // You can return any component that you like here!
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}

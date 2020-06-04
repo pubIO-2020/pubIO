@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import MapView from "react-native-maps";
-import CarouselCards from "../CarouselCards";
-
 import {
   StyleSheet,
   Text,
@@ -12,6 +9,8 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import CarouselCards from "../CarouselCards";
+import MapView from "react-native-maps";
 import Header from "../Header";
 
 export default function Details({ navigation, route }) {
