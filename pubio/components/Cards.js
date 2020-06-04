@@ -18,7 +18,7 @@ export default function Card(props) {
       activeOpacity={0.6}
       onPress={() => {
         navigation.navigate("Details", {
-          index: props.testIndex,
+          index: props.crawlIndex,
         });
       }}
     >

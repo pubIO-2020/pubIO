@@ -27,11 +27,12 @@ export default function User() {
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator
+        edgeWidth={60}
         drawerContent={(props) => <DrawerContent {...props} />}
         drawerStyle={{ backgroundColor: "whitesmoke", width: 240 }}
         drawerPosition="right"
       >
-        <Drawer.Screen name="User" component={UserScreen} />
+        <Drawer.Screen name="UserScreen" component={UserScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

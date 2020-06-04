@@ -86,7 +86,7 @@ export default function CardScrollView(props) {
             info={crawl.info}
             imageURL={crawl.imageURL}
             key={index}
-            testIndex={index}
+            crawlIndex={index}
           />
         );
       })}
