@@ -15,12 +15,16 @@ import Colors from './Colors'
 export default function Header(props) {
   const navigation = useNavigation();
   return (
+    <LinearGradient colors={['transparent', 'rgba(0,0,0,0.3)']} style={styles.headerStyle}>
     <SafeAreaView>
-      <LinearGradient colors={['transparent', 'rgba(0,0,0,0.3)']} style={styles.headerStyle}>
+      
       <Text style={styles.text}>pubIO</Text>
 
-      {/* Display settings icon if on User page*/}
-      {props.routeuser === "Userview" && (
+      
+      
+    </SafeAreaView>
+    {/* Display settings icon if on User page*/}
+    {props.routeuser === "Userview" && (
         <TouchableOpacity
           style={styles.settingsicon}
           // open settings navigation drawer
@@ -45,12 +49,14 @@ export default function Header(props) {
           </View>
         </TouchableOpacity>
       )}
-      </LinearGradient>
-    </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  safeheaderStyle: {
+    paddingTop: Platform.OS === "android" ? 50 : 0,
+  },
   headerStyle: {
     paddingTop: Platform.OS === "android" ? 50 : 0,
     alignItems: "center",

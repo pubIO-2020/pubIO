@@ -1,9 +1,10 @@
 export default {
     colors: {
-        primary: '#FA0F36',
+        primary: '#d90429',
         offWhite: '#EDF2F4',
         gray: '#DBD6D2',
-        dark: '#fff',
+        dark: '#000',
+        yellow: '#F6c101'
 }}
 
 // OG #2b9eb3

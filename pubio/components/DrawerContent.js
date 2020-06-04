@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { LinearGradient } from "expo-linear-gradient";
+import Colors from './Colors';
 
 export default function DrawerContent(props) {
   // dark mode toggle state
@@ -16,6 +18,7 @@ export default function DrawerContent(props) {
     setIsEnabled((previousState) => !previousState);
 
   return (
+    <LinearGradient colors={['transparent', 'rgba(0,0,0,0.1)']}>
     <View style={styles.settingsView}>
       <Image
         style={styles.profileImage}
@@ -44,12 +47,12 @@ export default function DrawerContent(props) {
       </View>
       <View style={styles.adminLogoutContainer}>
         <TouchableOpacity style={{ alignSelf: "center" }}>
-          <Text style={{ fontWeight: "bold", color: "#2b9eb3", margin: 10 }}>
+          <Text style={{ fontWeight: "bold", color: Colors.colors.primary, margin: 10 }}>
             Switch to admin
           </Text>
         </TouchableOpacity>
+        
         <TouchableOpacity
-          style={styles.logout}
           onPress={() => {
             // console.log("logout");
 
@@ -57,13 +60,17 @@ export default function DrawerContent(props) {
             props.navigation.popToTop();
           }}
         >
+          <LinearGradient colors={['transparent', 'rgba(0,0,0,0.4)']} style={styles.logout}>
           <View style={styles.logoutContainer}>
             <Ionicons name="md-log-out" size={20} color="white" />
             <Text style={styles.logoutText}>Logout</Text>
           </View>
+          
+        </LinearGradient>
         </TouchableOpacity>
       </View>
     </View>
+    </LinearGradient>
   );
 }
 
@@ -93,7 +100,7 @@ const styles = StyleSheet.create({
   },
 
   logout: {
-    backgroundColor: "red",
+    backgroundColor: Colors.colors.primary,
     width: "80%",
     padding: 10,
     alignItems: "center",
