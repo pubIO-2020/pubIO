@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,7 +10,9 @@ import Loginview from "./components/screens/Loginview";
 
 const Drawer = createDrawerNavigator();
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function Mainview() {
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator
@@ -19,9 +21,21 @@ export default function App() {
         drawerStyle={{ backgroundColor: "whitesmoke", width: 240 }}
         drawerPosition="right"
       >
-        <Drawer.Screen name="Loginview" component={Loginview} />
         <Drawer.Screen name="Main" component={Main} />
       </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, animationEnabled: false }}
+      >
+        <Stack.Screen name="Loginview" component={Loginview} />
+        <Stack.Screen name="Mainview" component={Mainview} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

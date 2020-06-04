@@ -47,7 +47,7 @@ export default function Loginview({ navigation, route }) {
           color="#2b9eb3"
           onPress={() => {
             Keyboard.dismiss();
-            navigation.navigate("Main");
+            navigation.navigate("Mainview");
           }}
           style={{ marginTop: 12, height: 50, justifyContent: "center" }}
         >

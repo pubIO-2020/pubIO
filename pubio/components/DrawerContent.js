@@ -52,7 +52,9 @@ export default function DrawerContent(props) {
           style={styles.logout}
           onPress={() => {
             // console.log("logout");
-            props.navigation.navigate("Loginview");
+
+            // this doc was a life safer for navigating to parent login view https://reactnavigation.org/docs/navigation-prop/
+            props.navigation.popToTop();
           }}
         >
           <View style={styles.logoutContainer}>
