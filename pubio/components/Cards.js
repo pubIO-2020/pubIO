@@ -7,13 +7,17 @@ import {
   TouchableOpacity,
   ImageBackground,
   Platform,
+  TouchableHighlight
 } from "react-native";
 
+
 import { useNavigation } from "@react-navigation/native";
+
 
 export default function Card(props) {
   const navigation = useNavigation();
   return (
+    <View>
     <TouchableOpacity
       activeOpacity={0.6}
       onPress={() => {
@@ -36,10 +40,14 @@ export default function Card(props) {
                 {props.info}
               </Text>
             </View>
-          </View>
-        </ImageBackground>
+          </View>         
+        </ImageBackground>       
       </View>
     </TouchableOpacity>
+    {props.routename && <TouchableHighlight onPress={()=> {props.setqrcode({...props.qrcode, visible:true})}} style={styles.badge}>
+    <Image style={{height:30, width:30, tintColor:"white"}} source={require("../assets/qr-code-black.png")}/>
+    </TouchableHighlight>}
+    </View>
   );
 }
 
@@ -100,5 +108,25 @@ const styles = StyleSheet.create({
   },
   infotext: {
     color: "white",
+  },
+  badge: {
+    position: "absolute",
+    backgroundColor: "#2b9eb3",
+    width: 100,
+    height: 50,
+    right: 10,
+    top: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowColor: "black",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 8,
+    borderRadius:10,
+    opacity: 0.9, 
   },
 });
