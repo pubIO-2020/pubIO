@@ -9,7 +9,6 @@ import Main from "./components/Main";
 import Loginview from "./components/screens/Loginview";
 
 const Drawer = createDrawerNavigator();
-
 const Stack = createStackNavigator();
 
 function Mainview() {
