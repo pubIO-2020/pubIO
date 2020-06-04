@@ -165,10 +165,14 @@ export default function Mapview({ navigation, route }) {
                 title={crawl.title}
                 key={index}
                 onSelect={() => {
-                  this.map.animateToRegion({
+                  this.map.animateToRegion(
+                    {
                       latitude: crawl.coords.lat,
-                      longitude: crawl.coords.lon
-                  }, 200)}}
+                      longitude: crawl.coords.lon,
+                    },
+                    200
+                  );
+                }}
               />
             );
           })}

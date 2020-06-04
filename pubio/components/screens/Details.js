@@ -98,7 +98,7 @@ export default function Details({ navigation, route }) {
         <Text style={styles.title}>{crawlCard[index].title}</Text>
         {crawlCard[index].bars.map((name, key) => {
           return (
-            <View style={styles.bar}>
+            <View key={key} style={styles.bar}>
               <Ionicons
                 name={
                   key === 0
