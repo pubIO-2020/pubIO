@@ -12,6 +12,7 @@ export default function Main() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        backBehavior="none"
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;

@@ -56,6 +56,7 @@ export default class CarouselCards extends React.Component {
         date={item.date}
         info={item.info}
         imageURL={item.imageURL}
+        crawlIndex={index}
       />
     );
   }
