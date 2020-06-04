@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Main() {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <Tab.Navigator
         backBehavior="none"
         screenOptions={({ route }) => ({

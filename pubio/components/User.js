@@ -5,6 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Userview from "./screens/Userview";
 import Details from "./screens/Details";
+import Loginview from "./screens/Loginview";
+
 import DrawerContent from "./DrawerContent";
 
 const Drawer = createDrawerNavigator();
@@ -33,6 +35,7 @@ export default function User() {
         drawerPosition="right"
       >
         <Drawer.Screen name="UserScreen" component={UserScreen} />
+        <Drawer.Screen name="Loginview" component={Loginview} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
