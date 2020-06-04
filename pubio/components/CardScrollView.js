@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 
 import Card from "./Cards";
+import Userview from "./screens/Userview";
 
 export default function CardScrollView(props) {
   const [crawlCard, setCrawlCard] = useState([
@@ -88,11 +89,13 @@ export default function CardScrollView(props) {
             key={index}
             crawlIndex={index}
             routename = {props.routename}
+            setqrcode = {props.setqrcode}
+            qrcode = {props.qrcode}
           />
         );
       })}
 
-      <View style={{ height: 370 }}></View>
+      <View style={{ height: props.routename === "Userview" ? 220: 290 }}></View>
     </ScrollView>
   );
 }

@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   ImageBackground,
   Platform,
+  TouchableHighlight
 } from "react-native";
+
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -42,9 +44,9 @@ export default function Card(props) {
         </ImageBackground>       
       </View>
     </TouchableOpacity>
-    {props.routename && <View style={styles.badge}>
+    {props.routename && <TouchableHighlight onPress={()=> {props.setqrcode({...props.qrcode, visible:true})}} style={styles.badge}>
     <Image style={{height:30, width:30, tintColor:"white"}} source={require("../assets/qr-code-black.png")}/>
-    </View>}
+    </TouchableHighlight>}
     </View>
   );
 }
