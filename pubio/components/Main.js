@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "./Home";
 import User from "./User";
+import Colors from './Colors'
 
 const Tab = createBottomTabNavigator();
 
@@ -28,8 +29,8 @@ export default function Main() {
           },
         })}
         tabBarOptions={{
-          activeTintColor: "#2b9eb3",
-          inactiveTintColor: "gray",
+          activeTintColor: Colors.colors.primary,
+          inactiveTintColor: Colors.colors.gray,
         }}
       >
         <Tab.Screen name="Home" component={Home} />

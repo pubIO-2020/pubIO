@@ -9,11 +9,14 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from 'expo-linear-gradient';
+import Colors from './Colors'
 
 export default function Header(props) {
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.headerStyle}>
+    <SafeAreaView>
+      <LinearGradient colors={['transparent', 'rgba(0,0,0,0.3)']} style={styles.headerStyle}>
       <Text style={styles.text}>pubIO</Text>
 
       {/* Display settings icon if on User page*/}
@@ -42,6 +45,7 @@ export default function Header(props) {
           </View>
         </TouchableOpacity>
       )}
+      </LinearGradient>
     </SafeAreaView>
   );
 }
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? 50 : 0,
     alignItems: "center",
     height: 100,
-    backgroundColor: "#2b9eb3",
+    backgroundColor: Colors.colors.primary,
     shadowOffset: {
       width: 0,
       height: 4,
