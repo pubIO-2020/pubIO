@@ -8,10 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
 
 export default function DrawerContent(props) {
-  const navigation = useNavigation();
   // dark mode toggle state
   const [isEnabled, setIsEnabled] = useState(false);
   const darkModeToggleSwitch = () =>
@@ -54,7 +52,7 @@ export default function DrawerContent(props) {
           style={styles.logout}
           onPress={() => {
             // console.log("logout");
-            navigation.navigate("Loginview");
+            props.navigation.navigate("Loginview");
           }}
         >
           <View style={styles.logoutContainer}>

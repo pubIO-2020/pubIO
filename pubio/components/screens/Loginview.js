@@ -46,7 +46,6 @@ export default function Loginview({ navigation, route }) {
           mode="contained"
           color="#2b9eb3"
           onPress={() => {
-            console.log("login");
             Keyboard.dismiss();
             navigation.navigate("Main");
           }}
@@ -58,7 +57,6 @@ export default function Loginview({ navigation, route }) {
           color="#2b9eb3"
           onPress={() => {
             console.log("signup");
-            // navigation.navigate("Main");
           }}
           style={{ marginTop: 5, height: 50, justifyContent: "center" }}
         >
