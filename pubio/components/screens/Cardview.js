@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Header from "../Header";
 import CardScrollView from "../CardScrollView";
+import Colors from '../Colors'
 
 export default function Cardview({ navigation, route }) {
   return (
     <View>
       <Header />
       <View>
-        <View style={styles.viewstyles}>
+        <LinearGradient colors={['rgba(0,0,0,0.2)', 'transparent']} style={styles.viewstyles}>
           {/* Card View nav button */}
           <TouchableOpacity
             onPress={function () {
@@ -22,12 +24,12 @@ export default function Cardview({ navigation, route }) {
               <Ionicons
                 name="ios-albums"
                 size={30}
-                color={route.name === "Cardview" ? "white" : "darkgray"}
+                color={route.name === "Cardview" ? "white" : Colors.colors.gray}
               />
               <Text
                 style={{
-                  color: route.name === "Cardview" ? "white" : "darkgray",
-                  marginLeft: 2,
+                  color: route.name === "Cardview" ? "white" : Colors.colors.gray,
+                  marginLeft: 4,
                   fontSize: 13,
                 }}
               >
@@ -47,12 +49,12 @@ export default function Cardview({ navigation, route }) {
               <Ionicons
                 name="ios-pin"
                 size={30}
-                color={route.name === "Mapview" ? "white" : "darkgray"}
+                color={route.name === "Mapview" ? "white" : Colors.colors.gray}
               />
               <Text
                 style={{
-                  color: route.name === "Mapview" ? "white" : "darkgray",
-                  marginLeft: 2,
+                  color: route.name === "Mapview" ? "white" : Colors.colors.gray,
+                  marginLeft: 4,
                   fontSize: 13,
                 }}
               >
@@ -60,8 +62,10 @@ export default function Cardview({ navigation, route }) {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+          
+        </LinearGradient>
         <CardScrollView />
+        
       </View>
     </View>
   );
@@ -70,7 +74,7 @@ export default function Cardview({ navigation, route }) {
 const styles = StyleSheet.create({
   viewstyles: {
     flexDirection: "row",
-    backgroundColor: "rgba(43, 158, 179, 0.7)",
+    backgroundColor: Colors.colors.primary,
     justifyContent: "center",
     shadowOffset: {
       width: 0,
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icontouchables: {
-    marginRight: 5,
-    marginLeft: 5,
+    marginRight: 8,
+    marginLeft: 8,
   },
 });

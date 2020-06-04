@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 
 import Card from "./Cards";
-import Userview from "./screens/Userview";
+import Colors from './Colors'
 
 export default function CardScrollView(props) {
   const [crawlCard, setCrawlCard] = useState([
@@ -78,7 +78,7 @@ export default function CardScrollView(props) {
     },
   ]);
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: Colors.colors.offWhite  }}>
       {crawlCard.map((crawl, index) => {
         return (
           <Card

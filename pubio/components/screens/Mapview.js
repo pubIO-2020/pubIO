@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import MapView, { Marker } from "react-native-maps";
+import { LinearGradient } from 'expo-linear-gradient';
 import CarouselCards from "../CarouselCards";
 import {
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Colors from '../Colors'
 import Beer from "../../assets/beer.png";
 
 import Header from "../Header";
@@ -92,7 +94,7 @@ export default function Mapview({ navigation, route }) {
     <View>
       <Header />
       <View>
-        <View style={styles.viewstyles}>
+        <LinearGradient colors={['rgba(0,0,0,0.2)', 'transparent']} style={styles.viewstyles}>
           <TouchableOpacity
             onPress={function () {
               navigation.navigate("Cardview");
@@ -103,12 +105,12 @@ export default function Mapview({ navigation, route }) {
               <Ionicons
                 name="ios-albums"
                 size={30}
-                color={route.name === "Cardview" ? "white" : "darkgray"}
+                color={route.name === "Cardview" ? "white" : Colors.colors.gray}
               />
               <Text
                 style={{
-                  color: route.name === "Cardview" ? "white" : "darkgray",
-                  marginLeft: 2,
+                  color: route.name === "Cardview" ? "white" : Colors.colors.gray,
+                  marginLeft: 4,
                   fontSize: 13,
                 }}
               >
@@ -128,12 +130,12 @@ export default function Mapview({ navigation, route }) {
               <Ionicons
                 name="ios-pin"
                 size={30}
-                color={route.name === "Mapview" ? "white" : "darkgray"}
+                color={route.name === "Mapview" ? "white" : Colors.colors.gray}
               />
               <Text
                 style={{
-                  color: route.name === "Mapview" ? "white" : "darkgray",
-                  marginLeft: 2,
+                  color: route.name === "Mapview" ? "white" : Colors.colors.gray,
+                  marginLeft: 4,
                   fontSize: 13,
                 }}
               >
@@ -141,12 +143,11 @@ export default function Mapview({ navigation, route }) {
               </Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </LinearGradient>
         {/* Display Map */}
         <MapView
           ref={(map) => (this.map = map)}
-          mapPadding={{ top: 0, right: 0, bottom: 550, left: 0 }}
-          paddingAdjustmentBehavior="always"
+          mapPadding={{ top: 0, right: 0, bottom: 430, left: 0 }}
           initialRegion={{
             latitude: 30.2303 - 0.0123,
             longitude: -97.7538,
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
   },
   viewstyles: {
     flexDirection: "row",
-    backgroundColor: "rgba(43, 158, 179, 0.7)",
+    backgroundColor: Colors.colors.primary,
     justifyContent: "center",
     shadowOffset: {
       width: 0,
@@ -210,8 +211,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icontouchables: {
-    marginRight: 5,
-    marginLeft: 5,
+    marginRight: 8,
+    marginLeft: 8,
   },
   mapStyle: {
     width: Dimensions.get("window").width,
