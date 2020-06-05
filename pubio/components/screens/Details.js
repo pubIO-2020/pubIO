@@ -9,6 +9,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Header';
 import Colors from '../Colors';
 
+import { REACT_APP_GOOGLE_API_KEY } from 'react-native-dotenv'
+
 export default function Details({ navigation, route }) {
 	const [crawlCard, setCrawlCard] = useState([
 		{
@@ -119,7 +121,7 @@ export default function Details({ navigation, route }) {
           origin={crawlCard[index].coords}
           waypoints={[crawlCard[index].bars[1].coords, crawlCard[index].bars[2].coords]}
 					destination={crawlCard[index].bars[3].coords}
-					apikey='AIzaSyBBHqV1viT0qfODdFvAneSP2vVXuZNhY1c'
+					apikey={REACT_APP_GOOGLE_API_KEY}
 					strokeWidth={8}
 					lineCap='round'
 					lineDashPattern={[10, 10]}

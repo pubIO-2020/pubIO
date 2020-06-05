@@ -11,5 +11,8 @@
 # web-report/
 yarn-error.log
 
+# api keys
+.env
+
 # # macOS
 # .DS_Store
