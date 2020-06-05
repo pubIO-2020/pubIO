@@ -5,13 +5,16 @@ import {
   View,
   Button,
   TouchableOpacity,
+  TouchableHighlight,
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import CarouselCards from "../CarouselCards";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
+import { LinearGradient } from "expo-linear-gradient";
 import Header from "../Header";
+import Colors from '../Colors'
 
 export default function Details({ navigation, route }) {
   const [crawlCard, setCrawlCard] = useState([
@@ -92,13 +95,37 @@ export default function Details({ navigation, route }) {
     <View>
       {/* when on details page pass route name at detailroute prop */}
       <Header detailroute={route.name} />
-      <MapView style={styles.mapStyle} />
+      <MapView style={styles.mapStyle}
+       mapPadding={{ top: 0, right: 0, bottom: 430, left: 0 }}
+       initialRegion={{
+         latitude: crawlCard[index].coords.lat - .004,
+         longitude: crawlCard[index].coords.lon,
+         latitudeDelta: 0.02,
+         longitudeDelta: 0.01,
+       }}>
+         <Marker
+                coordinate={{
+                  latitude: crawlCard[index].coords.lat,
+                  longitude: crawlCard[index].coords.lon,
+                }}
+                title={crawlCard[index].title}
+              />
+        
+      </MapView>
       <View style={styles.container}>
         <Text style={styles.title}>{crawlCard[index].title}</Text>
         {crawlCard[index].bars.map((name, key) => {
           return (
             <View key={key} style={styles.bar}>
+              <View style={{width: 30, alignItems: 'center'}}>
               <Ionicons
+                color= {
+                  key === 0
+                    ? Colors.colors.primary
+                    : key === crawlCard[index].bars.length - 1
+                    ? Colors.colors.primary
+                    : '	rgb(128,128,128)'
+                }
                 name={
                   key === 0
                     ? "md-pin"
@@ -108,10 +135,19 @@ export default function Details({ navigation, route }) {
                 }
                 size={25}
               />
+              </View>
               <Text style={styles.text}>{name.name}</Text>
             </View>
           );
         })}
+        
+        <LinearGradient colors={['transparent', 'rgba(0,0,0,0.3)']} style={styles.subscribe}>
+        <TouchableHighlight style={styles.press} onPress={() =>{console.log('subscribed')}} activeOpacity={0.4} underlayColor={'rgba(255,255,255,0.2)'}>
+          
+          
+          <Text style={styles.subscribeText}>Subscribe</Text>
+          </TouchableHighlight>
+        </LinearGradient>
       </View>
     </View>
   );
@@ -124,13 +160,13 @@ const styles = StyleSheet.create({
   },
   container: {
     position: "absolute",
-    bottom: 200,
+    bottom: 235,
     alignSelf: "center",
     height: 250,
-    width: "85%",
-    backgroundColor: "white",
+    width: "100%",
+    backgroundColor: Colors.colors.cardbackground,
+    opacity: 0.95,
     padding: 20,
-    borderRadius: 15,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -148,8 +184,40 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     margin: 5,
+    textShadowColor: Colors.colors.gray,
+    textShadowRadius: 4,
+    textShadowOffset: { width:0, height:0.5 },
   },
   bar: {
     flexDirection: "row",
+    alignItems: "center",
+  },
+  subscribe: {
+    position: "absolute",
+    bottom: -40,
+    alignSelf: "center",
+    backgroundColor: Colors.colors.primary,
+    width: 100,
+		height: 60,
+    borderRadius: 15,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowColor: "black",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 8
+  },
+  subscribeText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  press: {
+		width: '100%',
+		height: '100%',
+    justifyContent: 'center',
+    alignItems: "center",
+			borderRadius: 10,
   },
 });

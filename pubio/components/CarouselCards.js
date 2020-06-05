@@ -77,7 +77,6 @@ export default class CarouselCards extends React.Component {
             // on snapping of item get current coordinates from object
             onSnapToItem={(index) => {
               this.setState({ activeIndex: index });
-              console.log(this.state.carouselItems[index]);
             }}
           />
         </View>
