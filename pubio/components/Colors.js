@@ -4,7 +4,7 @@ export default {
         offWhite: '#EDF2F4',
         gray: '#DBD6D2',
         dark: '#000',
-        yellow: '#FFF7D6',
+        yellow: '#F6c101',
         cardbackground: '#FFFBEB'
 }}
 
