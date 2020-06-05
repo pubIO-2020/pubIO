@@ -6,10 +6,11 @@ import {
   Image,
   Switch,
   TouchableOpacity,
+  AsyncStorage,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
-import Colors from './Colors';
+import Colors from "./Colors";
 
 export default function DrawerContent(props) {
   // dark mode toggle state
@@ -17,59 +18,80 @@ export default function DrawerContent(props) {
   const darkModeToggleSwitch = () =>
     setIsEnabled((previousState) => !previousState);
 
+  const STORAGE_TOKEN = "@token";
+
+  // Set Token Logged out Token in async storage
+  const saveToken = async () => {
+    try {
+      await AsyncStorage.setItem(STORAGE_TOKEN, "loggedout");
+      console.log("Loggedout saved");
+    } catch (e) {
+      console.log("Failed to save the data to the storage");
+    }
+  };
+
   return (
-    <LinearGradient colors={['transparent', 'rgba(0,0,0,0.1)']}>
-    <View style={styles.settingsView}>
-      <Image
-        style={styles.profileImage}
-        source={require("../assets/alcohol.png")}
-        resizeMode="cover"
-      />
-      <Text style={styles.profileName}>testprofileName</Text>
-      <View
-        style={{
-          borderBottomWidth: 1,
-          width: "90%",
-          marginTop: 3,
-          borderColor: "lightgray",
-        }}
-      ></View>
-      <View style={styles.settingsContainer}>
-        <View style={styles.darkToggle}>
-          <Text style={{ marginRight: 5 }}>Dark Mode</Text>
-          <Switch
-            trackColor={{ false: "#767577", true: "black" }}
-            thumbColor={isEnabled ? "gray" : "#f4f3f4"}
-            onValueChange={darkModeToggleSwitch}
-            value={isEnabled}
-          />
+    <LinearGradient colors={["transparent", "rgba(0,0,0,0.1)"]}>
+      <View style={styles.settingsView}>
+        <Image
+          style={styles.profileImage}
+          source={require("../assets/alcohol.png")}
+          resizeMode="cover"
+        />
+        <Text style={styles.profileName}>testprofileName</Text>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            width: "90%",
+            marginTop: 3,
+            borderColor: "lightgray",
+          }}
+        ></View>
+        <View style={styles.settingsContainer}>
+          <View style={styles.darkToggle}>
+            <Text style={{ marginRight: 5 }}>Dark Mode</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "black" }}
+              thumbColor={isEnabled ? "gray" : "#f4f3f4"}
+              onValueChange={darkModeToggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+        </View>
+        <View style={styles.adminLogoutContainer}>
+          <TouchableOpacity style={{ alignSelf: "center" }}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                color: Colors.colors.primary,
+                margin: 10,
+              }}
+            >
+              Switch to admin
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              // set token to null
+              saveToken();
+
+              // this doc was a life safer for navigating to parent login view https://reactnavigation.org/docs/navigation-prop/
+              props.navigation.popToTop();
+            }}
+          >
+            <LinearGradient
+              colors={["transparent", "rgba(0,0,0,0.4)"]}
+              style={styles.logout}
+            >
+              <View style={styles.logoutContainer}>
+                <Ionicons name="md-log-out" size={20} color="white" />
+                <Text style={styles.logoutText}>Logout</Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.adminLogoutContainer}>
-        <TouchableOpacity style={{ alignSelf: "center" }}>
-          <Text style={{ fontWeight: "bold", color: Colors.colors.primary, margin: 10 }}>
-            Switch to admin
-          </Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          onPress={() => {
-            // console.log("logout");
-
-            // this doc was a life safer for navigating to parent login view https://reactnavigation.org/docs/navigation-prop/
-            props.navigation.popToTop();
-          }}
-        >
-          <LinearGradient colors={['transparent', 'rgba(0,0,0,0.4)']} style={styles.logout}>
-          <View style={styles.logoutContainer}>
-            <Ionicons name="md-log-out" size={20} color="white" />
-            <Text style={styles.logoutText}>Logout</Text>
-          </View>
-          
-        </LinearGradient>
-        </TouchableOpacity>
-      </View>
-    </View>
     </LinearGradient>
   );
 }
