@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "./Colors";
 
+import { UserContext, CrawlContext } from "./Context";
+
 export default function DrawerContent(props) {
+  const usercontext = useContext(UserContext);
+  const crawlcontext = useContext(CrawlContext);
+
   // dark mode toggle state
   const [isEnabled, setIsEnabled] = useState(false);
   const darkModeToggleSwitch = () =>
@@ -74,7 +79,7 @@ export default function DrawerContent(props) {
             onPress={() => {
               // set token to null
               saveToken();
-
+              console.log(crawlcontext);
               // this doc was a life safer for navigating to parent login view https://reactnavigation.org/docs/navigation-prop/
               props.navigation.popToTop();
             }}
