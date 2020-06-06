@@ -85,6 +85,6 @@ const styles = StyleSheet.create({
   backicon: {
     position: "absolute",
     top: 52,
-    left: 10,
+    left: 20,
   },
 });

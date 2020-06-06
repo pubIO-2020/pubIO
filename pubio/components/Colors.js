@@ -4,8 +4,9 @@ export default {
         offWhite: '#EDF2F4',
         gray: '#DBD6D2',
         dark: '#000',
-        yellow: '#FFF7D6',
-        cardbackground: '#FFFBEB'
+        yellow: '#F6c101',
+        cardbackground: '#FFFBEB',
+        distance: 'rgb(120,120,120)'
 }}
 
 // OG #2b9eb3
