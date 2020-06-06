@@ -12,13 +12,40 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../Colors";
+import firebase from "../../Firebase"
 
 export default function Loginview({ navigation, route }) {
   // storage token
   const STORAGE_TOKEN = "@token";
 
+  const [users, setUsers] = useState();
+
+  const db = firebase.firestore();
+  const usersRef = db.collection("users").doc("users");
+
   // on page load read token data
   useEffect(() => {
+    usersRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          let userArray = [];
+          // loop through objects in firebase data
+          for (let x in doc.data()) {
+            // push data objects to user array
+            userArray.push(doc.data()[x]);
+          }
+
+          // setUsers state to new userArray array
+          setUsers(userArray);
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+        .catch(function (error) {
+          console.log("Error getting document:", error);
+        });
     readToken();
   }, []);
 
@@ -30,11 +57,7 @@ export default function Loginview({ navigation, route }) {
   // if username or password is invalid
   const [dontmatch, setDontmatch] = useState(false);
 
-  const [users, setUsers] = useState([
-    { username: "pubio", password: "pass123" },
-    { username: "admin", password: "admin" },
-    { username: "test", password: "test123" },
-  ]);
+  
 
   // Set Loggedin Token in async storage
   const saveToken = async () => {
