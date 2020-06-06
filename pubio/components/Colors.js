@@ -5,7 +5,8 @@ export default {
         gray: '#DBD6D2',
         dark: '#000',
         yellow: '#F6c101',
-        cardbackground: '#FFFBEB'
+        cardbackground: '#FFFBEB',
+        distance: 'rgb(120,120,120)'
 }}
 
 // OG #2b9eb3

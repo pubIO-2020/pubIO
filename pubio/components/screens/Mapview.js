@@ -174,7 +174,9 @@ export default function Mapview({ navigation, route }) {
                     200
                   );
                 }}
-              />
+              >
+                <Ionicons color={Colors.colors.primary} name="ios-beer" size={38} />
+              </Marker>
             );
           })}
         </MapView>

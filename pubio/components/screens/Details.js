@@ -20,6 +20,7 @@ import Colors from "../Colors";
 import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
 
 export default function Details({ navigation, route }) {
+	const [distance, setDistance] = useState('')
 	const [crawlCard, setCrawlCard] = useState([
 		{
 			title: "Dirty Sixth",
@@ -145,10 +146,14 @@ export default function Details({ navigation, route }) {
 					lineCap='round'
 					lineDashPattern={[10, 10]}
 					strokeColor={Colors.colors.yellow}
+					mode='WALKING'
+					onReady={result => {
+						setDistance(`Distance: ${(result.distance / 1.609344).toFixed(1)}mi`)}}
 				/>
 			</MapView>
 			<View style={styles.container}>
 				<Text style={styles.title}>{crawlCard[index].title}</Text>
+				<Text style={styles.distance}>{distance}</Text>
 				{crawlCard[index].bars.map((name, key) => {
 					return (
 						<View key={key} style={styles.bar}>
@@ -198,6 +203,10 @@ const styles = StyleSheet.create({
 		width: Dimensions.get("window").width,
 		height: Dimensions.get("window").height,
 	},
+	distance: {
+		color:Colors.colors.distance,
+		marginBottom: 3,
+	},
 	container: {
 		position: "absolute",
 		bottom: 235,
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
 		elevation: 8,
 	},
 	title: {
-		marginBottom: 16,
+		marginBottom: 2,
 		fontWeight: "700",
 		fontSize: 25,
 	},
