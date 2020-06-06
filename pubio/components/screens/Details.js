@@ -9,6 +9,7 @@ import {
   Dimensions,
   ImageBackground,
   Image,
+  Modal,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -16,7 +17,6 @@ import CarouselCards from "../CarouselCards";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { LinearGradient } from "expo-linear-gradient";
-import { Modal, Portal, Provider } from "react-native-paper";
 import Header from "../Header";
 import Colors from "../Colors";
 
@@ -24,7 +24,7 @@ import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
 
 export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
-  const [specials, setSpecials] = useState({ visible: false });
+  const [specials, setSpecials] = useState({ visible: false, index: 0 });
 
   const [crawlCard, setCrawlCard] = useState([
     {
@@ -165,7 +165,10 @@ export default function Details({ navigation, route }) {
   return (
     <View>
       {/* when on details page pass route name at detailroute prop */}
-      <Header detailroute={route.name} />
+      <View style={{ zIndex: 300 }}>
+        <Header detailroute={route.name} />
+      </View>
+
       <MapView
         toolbarEnabled={true}
         style={styles.mapStyle}
@@ -234,7 +237,7 @@ export default function Details({ navigation, route }) {
             <TouchableOpacity
               key={key}
               onPress={() => {
-                setSpecials({ ...specials, visible: true });
+                setSpecials({ ...specials, visible: true, index: key });
               }}
             >
               <View style={styles.bar}>
@@ -293,30 +296,50 @@ export default function Details({ navigation, route }) {
           </TouchableHighlight>
         </LinearGradient>
       </View>
-      <Provider>
-        <Portal>
+
+      {specials.visible && (
+        <View
+          style={{
+            height: "100%",
+            width: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            position: "absolute",
+            zIndex: 100,
+          }}
+        >
           <Modal
-            onDismiss={() => {
-              setSpecials({ ...specials, visible: false });
-            }}
+            animationType="slide"
             visible={specials.visible}
+            transparent={true}
+            onRequestClose={() => {
+              console.log("Modal has been closed.");
+            }}
           >
-            <View style={styles.modalview}>
-              <ImageBackground
-                source={{
-                  uri:
-                    "https://6street.com/listify/wp-content/uploads/2018/10/west-6th-02-star-bar.jpg",
-                }}
-                style={{ width: "100%" }}
-              >
-                <View style={styles.specView}>
-                  <Text style={styles.specTitle}>Bar Title</Text>
-                </View>
-              </ImageBackground>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  {crawlCard[index].bars[specials.index].name}
+                </Text>
+
+                <TouchableHighlight
+                  style={{
+                    ...styles.openButton,
+                    backgroundColor: Colors.colors.primary,
+                    position: "absolute",
+                    right: 10,
+                    top: -15,
+                  }}
+                  onPress={() => {
+                    setSpecials({ ...specials, visible: false });
+                  }}
+                >
+                  <Ionicons name="md-close" size={26} color="white" />
+                </TouchableHighlight>
+              </View>
             </View>
           </Modal>
-        </Portal>
-      </Provider>
+        </View>
+      )}
     </View>
   );
 }
@@ -419,5 +442,49 @@ const styles = StyleSheet.create({
   specTitle: {
     fontSize: 30,
     color: "white",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    width: "100%",
+    height: "70%",
+    position: "absolute",
+    bottom: -30,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 50,
+    padding: 8,
+    width: 45,
+    alignItems: "center",
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 23,
+    fontWeight: "bold",
   },
 });
