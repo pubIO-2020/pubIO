@@ -43,18 +43,38 @@ export default function Details({ navigation, route }) {
         {
           name: "Easy Tiger",
           coords: { latitude: 30.26588, longitude: -97.735678 },
+          specials: [
+          { type: "beer", price: "$5", info:"Draft"}, 
+          { type: "wine", price: "$5", info:"Reds"}, 
+          { type: "cocktail", price: "$3", info:"Wells"}
+        ]
         },
         {
           name: "MooseKnuckle Pub",
           coords: { latitude: 30.267106, longitude: -97.738921 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "shot", price: "$3", info:"Fireball"}
+          ]
         },
         {
           name: "The Dizzy Rooster",
           coords: { latitude: 30.2674, longitude: -97.740014 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "BD Riley's Irish Pub",
           coords: { latitude: 30.267722, longitude: -97.741123 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
       ],
     },
@@ -70,18 +90,38 @@ export default function Details({ navigation, route }) {
         {
           name: "Lazarus Brewing",
           coords: { latitude: 30.261739, longitude: -97.722008 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Whisler's",
           coords: { latitude: 30.261933, longitude: -97.722738 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Zilker Brewing",
           coords: { latitude: 30.262135, longitude: -97.724546 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "The Liberty",
           coords: { latitude: 30.2627, longitude: -97.725086 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
       ],
     },
@@ -97,18 +137,38 @@ export default function Details({ navigation, route }) {
         {
           name: "The Highball",
           coords: { latitude: 30.256201, longitude: -97.763167 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Saxon Pub",
           coords: { latitude: 30.25354, longitude: -97.763579 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Corner Bar",
           coords: { latitude: 30.249437, longitude: -97.766893 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "ABGB",
           coords: { latitude: 30.245387, longitude: -97.768852 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
       ],
     },
@@ -123,18 +183,38 @@ export default function Details({ navigation, route }) {
         {
           name: "Wonder Bar",
           coords: { latitude: 30.401483, longitude: -97.722765 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Kung Fu Saloon",
           coords: { latitude: 30.400869, longitude: -97.7226641 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Lavaca Street Bar",
           coords: { latitude: 30.400585, longitude: -97.723156 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Punch Bowl Social",
           coords: { latitude: 30.400014, longitude: -97.725509 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
       ],
     },
@@ -149,18 +229,38 @@ export default function Details({ navigation, route }) {
         {
           name: "Little Woodrow's",
           coords: { latitude: 30.269758, longitude: -97.748101 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Star Bar",
           coords: { latitude: 30.269952, longitude: -97.748538 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Whiskey Tango Foxtrot Icehouse",
           coords: { latitude: 30.269771, longitude: -97.749865 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
         {
           name: "Green Light Social",
           coords: { latitude: 30.270369, longitude: -97.750391 },
+          specials: [
+            { type: "beer", price: "$5", info:"Draft"}, 
+            { type: "wine", price: "$5", info:"Reds"}, 
+            { type: "cocktail", price: "$3", info:"Wells"}
+          ]
         },
       ],
     },
@@ -326,6 +426,33 @@ export default function Details({ navigation, route }) {
                 <Text style={styles.modalText}>
                   {crawlCard[index].bars[specials.index].name}
                 </Text>
+                <View style={styles.modalSpecials}>
+                  {crawlCard[index].bars[specials.index].specials.map((special, index) =>{
+                    return (
+                      <View key={index} style={{alignItems: 'center'}}>
+                      <View style={{flexDirection: 'row', alignItems: "center"}}>
+                        <View style={{width:30, alignItems: "center"}}>
+                        <Ionicons
+                        name={
+                          special.type === "wine"
+                            ? "ios-wine"
+                            : special.type === "beer"
+                            ? "ios-beer"
+                            : special.type === "cocktail"
+                            ? "md-wine"
+                            : "md-pint"
+                        }
+                        size={30}>
+                        </Ionicons>
+                        </View>
+                        <Text style={{fontSize:30}}>{special.price} {special.info}</Text>
+                      </View>
+                      { index < crawlCard[index].bars[specials.index].specials.length - 1 && <Ionicons name="md-git-commit"></Ionicons>}
+                      </View>
+                      
+                    )
+                  })}
+                </View>
 
                 <TouchableHighlight
                   style={{
@@ -495,4 +622,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontWeight: "bold",
   },
+  modalSpecials: { 
+    fontSize: 22,
+  }
 });
