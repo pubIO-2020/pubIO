@@ -176,7 +176,7 @@ export default function Details({ navigation, route }) {
       <GestureRecognizer
         // style={styles.centeredView}
         onSwipeDown={downAction}
-        config={{ directionalOffsetThreshold: 400, velocityThreshold: 0.05 }}
+        config={{ gestureIsClickThreshold: 1, velocityThreshold: 0.1, directionalOffsetThreshold: 100 }}
       >
         <MapView
           toolbarEnabled={true}
@@ -321,7 +321,7 @@ export default function Details({ navigation, route }) {
               visible={specials.visible}
               transparent={true}
             >
-              {/* <View style={styles.centeredView}> */}
+              <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>
                   {crawlCard[index].bars[specials.index].name}
@@ -340,10 +340,10 @@ export default function Details({ navigation, route }) {
                     setSpecials({ ...specials, visible: false });
                   }}
                 >
-                  <Ionicons name="md-close" size={26} color="white" />
+                  <Ionicons name="ios-arrow-down" size={26} color="white" />
                 </TouchableHighlight>
               </View>
-              {/* </View> */}
+              </View>
             </Modal>
           </View>
         )}
