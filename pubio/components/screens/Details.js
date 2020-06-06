@@ -19,13 +19,18 @@ import MapViewDirections from "react-native-maps-directions";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "../Header";
 import Colors from "../Colors";
+import GestureRecognizer, {
+  swipeDirections,
+} from "react-native-swipe-gestures";
 
 import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
 
 export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
-
+  const downAction = () => {
+    setSpecials({ ...specials, visible: false });
+  };
   const [crawlCard, setCrawlCard] = useState([
     {
       title: "Dirty Sixth",
@@ -168,154 +173,155 @@ export default function Details({ navigation, route }) {
       <View style={{ zIndex: 300 }}>
         <Header detailroute={route.name} />
       </View>
-
-      <MapView
-        toolbarEnabled={true}
-        style={styles.mapStyle}
-        mapPadding={{ top: 0, right: 0, bottom: 430, left: 0 }}
-        initialRegion={{
-          latitude: crawlCard[index].coords.latitude - 0.004,
-          longitude: crawlCard[index].coords.longitude,
-          latitudeDelta: 0.018,
-          longitudeDelta: 0.008,
-        }}
+      <GestureRecognizer
+        // style={styles.centeredView}
+        onSwipeDown={downAction}
+        config={{ directionalOffsetThreshold: 400, velocityThreshold: 0.05 }}
       >
-        {crawlCard[index].bars.map((bar, key) => {
-          return (
-            <Marker coordinate={bar.coords} title={bar.name} key={key}>
-              <Ionicons
-                color={
-                  key === 0
-                    ? Colors.colors.primary
-                    : key === crawlCard[index].bars.length - 1
-                    ? Colors.colors.primary
-                    : "rgb(128,128,128)"
-                }
-                name={
-                  key === 0
-                    ? "md-pin"
-                    : key === crawlCard[index].bars.length - 1
-                    ? "ios-beer"
-                    : "ios-arrow-dropdown-circle"
-                }
-                size={
-                  key === 0
-                    ? 38
-                    : key === crawlCard[index].bars.length - 1
-                    ? 38
-                    : 30
-                }
-              />
-            </Marker>
-          );
-        })}
-        <MapViewDirections
-          origin={crawlCard[index].coords}
-          waypoints={[
-            crawlCard[index].bars[1].coords,
-            crawlCard[index].bars[2].coords,
-          ]}
-          destination={crawlCard[index].bars[3].coords}
-          apikey={REACT_APP_GOOGLE_API_KEY}
-          strokeWidth={8}
-          lineCap="round"
-          lineDashPattern={[10, 10]}
-          strokeColor={Colors.colors.yellow}
-          mode="WALKING"
-          onReady={(result) => {
-            setDistance(
-              `Distance: ${(result.distance / 1.609344).toFixed(1)}mi`
+        <MapView
+          toolbarEnabled={true}
+          style={styles.mapStyle}
+          mapPadding={{ top: 0, right: 0, bottom: 430, left: 0 }}
+          initialRegion={{
+            latitude: crawlCard[index].coords.latitude - 0.004,
+            longitude: crawlCard[index].coords.longitude,
+            latitudeDelta: 0.018,
+            longitudeDelta: 0.008,
+          }}
+        >
+          {crawlCard[index].bars.map((bar, key) => {
+            return (
+              <Marker coordinate={bar.coords} title={bar.name} key={key}>
+                <Ionicons
+                  color={
+                    key === 0
+                      ? Colors.colors.primary
+                      : key === crawlCard[index].bars.length - 1
+                      ? Colors.colors.primary
+                      : "rgb(128,128,128)"
+                  }
+                  name={
+                    key === 0
+                      ? "md-pin"
+                      : key === crawlCard[index].bars.length - 1
+                      ? "ios-beer"
+                      : "ios-arrow-dropdown-circle"
+                  }
+                  size={
+                    key === 0
+                      ? 38
+                      : key === crawlCard[index].bars.length - 1
+                      ? 38
+                      : 30
+                  }
+                />
+              </Marker>
             );
-          }}
-        />
-      </MapView>
-      <View style={styles.container}>
-        <Text style={styles.title}>{crawlCard[index].title}</Text>
-        <Text style={styles.distance}>{distance}</Text>
-        {crawlCard[index].bars.map((name, key) => {
-          return (
-            <TouchableOpacity
-              key={key}
+          })}
+          <MapViewDirections
+            origin={crawlCard[index].coords}
+            waypoints={[
+              crawlCard[index].bars[1].coords,
+              crawlCard[index].bars[2].coords,
+            ]}
+            destination={crawlCard[index].bars[3].coords}
+            apikey={REACT_APP_GOOGLE_API_KEY}
+            strokeWidth={8}
+            lineCap="round"
+            lineDashPattern={[10, 10]}
+            strokeColor={Colors.colors.yellow}
+            mode="WALKING"
+            onReady={(result) => {
+              setDistance(
+                `Distance: ${(result.distance / 1.609344).toFixed(1)}mi`
+              );
+            }}
+          />
+        </MapView>
+        <View style={styles.container}>
+          <Text style={styles.title}>{crawlCard[index].title}</Text>
+          <Text style={styles.distance}>{distance}</Text>
+          {crawlCard[index].bars.map((name, key) => {
+            return (
+              <TouchableOpacity
+                key={key}
+                onPress={() => {
+                  setSpecials({ ...specials, visible: true, index: key });
+                }}
+              >
+                <View style={styles.bar}>
+                  <View style={{ width: 30, alignItems: "center" }}>
+                    <Ionicons
+                      color={
+                        key === 0
+                          ? Colors.colors.primary
+                          : key === crawlCard[index].bars.length - 1
+                          ? Colors.colors.primary
+                          : "	rgb(128,128,128)"
+                      }
+                      name={
+                        key === 0
+                          ? "md-pin"
+                          : key === crawlCard[index].bars.length - 1
+                          ? "ios-beer"
+                          : "ios-arrow-dropdown-circle"
+                      }
+                      size={
+                        key === 0
+                          ? 35
+                          : key === crawlCard[index].bars.length - 1
+                          ? 35
+                          : 18
+                      }
+                    />
+                  </View>
+
+                  <Text style={styles.text}>{name.name}</Text>
+                  <View>
+                    <Ionicons
+                      style={styles.arrow}
+                      name={"ios-arrow-forward"}
+                      size={20}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+
+          <LinearGradient
+            colors={["transparent", "rgba(0,0,0,0.3)"]}
+            style={styles.subscribe}
+          >
+            <TouchableHighlight
+              style={styles.press}
               onPress={() => {
-                setSpecials({ ...specials, visible: true, index: key });
+                console.log("subscribed");
               }}
+              activeOpacity={0.4}
+              underlayColor={"rgba(255,255,255,0.2)"}
             >
-              <View style={styles.bar}>
-                <View style={{ width: 30, alignItems: "center" }}>
-                  <Ionicons
-                    color={
-                      key === 0
-                        ? Colors.colors.primary
-                        : key === crawlCard[index].bars.length - 1
-                        ? Colors.colors.primary
-                        : "	rgb(128,128,128)"
-                    }
-                    name={
-                      key === 0
-                        ? "md-pin"
-                        : key === crawlCard[index].bars.length - 1
-                        ? "ios-beer"
-                        : "ios-arrow-dropdown-circle"
-                    }
-                    size={
-                      key === 0
-                        ? 35
-                        : key === crawlCard[index].bars.length - 1
-                        ? 35
-                        : 18
-                    }
-                  />
-                </View>
+              <Text style={styles.subscribeText}>Subscribe</Text>
+            </TouchableHighlight>
+          </LinearGradient>
+        </View>
 
-                <Text style={styles.text}>{name.name}</Text>
-                <View>
-                  <Ionicons
-                    style={styles.arrow}
-                    name={"ios-arrow-forward"}
-                    size={20}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-
-        <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.3)"]}
-          style={styles.subscribe}
-        >
-          <TouchableHighlight
-            style={styles.press}
-            onPress={() => {
-              console.log("subscribed");
-            }}
-            activeOpacity={0.4}
-            underlayColor={"rgba(255,255,255,0.2)"}
-          >
-            <Text style={styles.subscribeText}>Subscribe</Text>
-          </TouchableHighlight>
-        </LinearGradient>
-      </View>
-
-      {specials.visible && (
-        <View
-          style={{
-            height: "100%",
-            width: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            position: "absolute",
-            zIndex: 100,
-          }}
-        >
-          <Modal
-            animationType="slide"
-            visible={specials.visible}
-            transparent={true}
-            onRequestClose={() => {
-              console.log("Modal has been closed.");
+        {specials.visible && (
+          <View
+            style={{
+              height: "100%",
+              width: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              position: "absolute",
+              zIndex: 100,
             }}
           >
-            <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              visible={specials.visible}
+              transparent={true}
+            >
+              {/* <View style={styles.centeredView}> */}
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>
                   {crawlCard[index].bars[specials.index].name}
@@ -330,16 +336,18 @@ export default function Details({ navigation, route }) {
                     top: -15,
                   }}
                   onPress={() => {
+                    console.log("Closed modal");
                     setSpecials({ ...specials, visible: false });
                   }}
                 >
                   <Ionicons name="md-close" size={26} color="white" />
                 </TouchableHighlight>
               </View>
-            </View>
-          </Modal>
-        </View>
-      )}
+              {/* </View> */}
+            </Modal>
+          </View>
+        )}
+      </GestureRecognizer>
     </View>
   );
 }
