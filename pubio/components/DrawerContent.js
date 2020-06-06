@@ -24,7 +24,6 @@ export default function DrawerContent(props) {
   const saveToken = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_TOKEN, "loggedout");
-      console.log("Loggedout saved");
     } catch (e) {
       console.log("Failed to save the data to the storage");
     }

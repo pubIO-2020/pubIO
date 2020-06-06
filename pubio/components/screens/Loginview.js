@@ -19,7 +19,7 @@ export default function Loginview({ navigation, route }) {
 
   // on page load read token data
   useEffect(() => {
-    readData();
+    readToken();
   }, []);
 
   const [credentials, setCredentials] = useState({
@@ -27,10 +27,11 @@ export default function Loginview({ navigation, route }) {
     password: "",
   });
 
+  // if username or password is invalid
   const [dontmatch, setDontmatch] = useState(false);
 
   const [users, setUsers] = useState([
-    { username: "codemonk9", password: "Hooper33!@" },
+    { username: "pubio", password: "pass123" },
     { username: "admin", password: "admin" },
     { username: "test", password: "test123" },
   ]);
@@ -39,18 +40,16 @@ export default function Loginview({ navigation, route }) {
   const saveToken = async () => {
     try {
       await AsyncStorage.setItem(STORAGE_TOKEN, "loggedin");
-      console.log("Loggedin saved");
     } catch (e) {
       console.log("Failed to save the data to the storage");
     }
   };
 
   // Read data in async storage
-  const readData = async () => {
+  const readToken = async () => {
     try {
       const userToken = await AsyncStorage.getItem(STORAGE_TOKEN);
       if (userToken !== "loggedout") {
-        console.log("You are logged in");
         navigation.navigate("Mainview");
       }
     } catch (e) {
@@ -66,7 +65,6 @@ export default function Loginview({ navigation, route }) {
         creds.username === credentials.username &&
         creds.password === credentials.password
       ) {
-        console.log("credentials match");
         setCredentials({ ...credentials, password: "", username: "" });
         setDontmatch(false);
         saveToken();
@@ -81,6 +79,7 @@ export default function Loginview({ navigation, route }) {
       }
     });
   }
+
   return (
     <LinearGradient
       colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
@@ -107,7 +106,7 @@ export default function Loginview({ navigation, route }) {
             Username or Password does not match
           </Text>
         )}
-
+        {/* username input */}
         <TextInput
           label="Username"
           mode="outlined"
@@ -119,6 +118,7 @@ export default function Loginview({ navigation, route }) {
             setCredentials({ ...credentials, username: un });
           }}
         />
+        {/* username password */}
         <TextInput
           label="Password"
           mode="outlined"
