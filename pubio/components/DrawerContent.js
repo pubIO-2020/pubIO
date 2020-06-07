@@ -12,10 +12,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "./Colors";
 
-import { UserContext, CrawlContext } from "./Context";
+import { CrawlContext } from "./Context";
 
 export default function DrawerContent(props) {
-  const usercontext = useContext(UserContext);
   const crawlcontext = useContext(CrawlContext);
 
   // dark mode toggle state

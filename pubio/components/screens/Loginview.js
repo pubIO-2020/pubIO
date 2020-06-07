@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,7 +12,9 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../Colors";
-import firebase from "../../Firebase"
+import firebase from "../../Firebase";
+
+import { CrawlContext } from "../Context";
 
 export default function Loginview({ navigation, route }) {
   // storage token
@@ -22,9 +24,12 @@ export default function Loginview({ navigation, route }) {
 
   const db = firebase.firestore();
   const usersRef = db.collection("users").doc("users");
+  const crawlRef = db.collection("crawls").doc("crawls");
+  var crawlcontext = useContext(CrawlContext);
 
   // on page load read token data
   useEffect(() => {
+    // get user data
     usersRef
       .get()
       .then(function (doc) {
@@ -43,9 +48,29 @@ export default function Loginview({ navigation, route }) {
           console.log("No such document!");
         }
       })
-        .catch(function (error) {
-          console.log("Error getting document:", error);
-        });
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+
+    // get crawl card data
+    crawlRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          // console.log("Document data:", doc.data());
+          let crawlArray = [];
+
+          for (let crawl in doc.data()) {
+            crawlArray.push(doc.data()[crawl]);
+          }
+          crawlcontext[1](crawlArray);
+        } else {
+          console.log("No such document!");
+        }
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
     readToken();
   }, []);
 
@@ -56,8 +81,6 @@ export default function Loginview({ navigation, route }) {
 
   // if username or password is invalid
   const [dontmatch, setDontmatch] = useState(false);
-
-  
 
   // Set Loggedin Token in async storage
   const saveToken = async () => {
