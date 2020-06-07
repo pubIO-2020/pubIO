@@ -3,8 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-  Dimensions,
+  ActivityIndicator,
   Keyboard,
   AsyncStorage,
 } from "react-native";
@@ -24,6 +23,7 @@ export default function Loginview({ navigation, route }) {
 
   // user data from firestore
   const [users, setUsers] = useState();
+
   // username and password from inputs
   const [credentials, setCredentials] = useState({
     username: "",
@@ -32,6 +32,9 @@ export default function Loginview({ navigation, route }) {
 
   // state for if username or password is invalid
   const [dontmatch, setDontmatch] = useState(false);
+
+  // activity state for login page
+  const [activity, setActivity] = useState(true);
 
   // firestore db instance
   const db = firebase.firestore();
@@ -121,6 +124,7 @@ export default function Loginview({ navigation, route }) {
       // check if username & password matches in the token
       users.some((creds) => {
         if (creds.username === unt && creds.password === pwt) {
+          setActivity(false);
           // set current user state in managed state to logged in user
           crawlcontext[3](credentials);
           navigation.navigate("Mainview");
@@ -129,6 +133,8 @@ export default function Loginview({ navigation, route }) {
         }
       });
       navigation.navigate("Mainview");
+    } else {
+      setActivity(false);
     }
   };
 
@@ -157,7 +163,7 @@ export default function Loginview({ navigation, route }) {
       }
     });
   }
-  if (users !== undefined) {
+  if (!activity) {
     return (
       <LinearGradient
         colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
@@ -232,7 +238,12 @@ export default function Loginview({ navigation, route }) {
       </LinearGradient>
     );
   } else {
-    return <Text>Hello</Text>;
+    return (
+      // react native activity indicator we can replace later in it's own component and maybe an animated image of our choice
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator />
+      </View>
+    );
   }
 }
 
