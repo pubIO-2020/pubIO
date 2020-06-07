@@ -126,7 +126,7 @@ export default function Loginview({ navigation, route }) {
         if (creds.username === unt && creds.password === pwt) {
           setActivity(false);
           // set current user state in managed state to logged in user
-          crawlcontext[3](credentials);
+          crawlcontext[3]({ username: unt, password: pwt });
           navigation.navigate("Mainview");
           // break using return
           return true;
