@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "./Colors";
 
+import { CrawlContext } from "./Context";
+
 export default function DrawerContent(props) {
+  const crawlcontext = useContext(CrawlContext);
+
   // dark mode toggle state
   const [isEnabled, setIsEnabled] = useState(false);
   const darkModeToggleSwitch = () =>
@@ -23,7 +27,7 @@ export default function DrawerContent(props) {
   // Set Token Logged out Token in async storage
   const saveToken = async () => {
     try {
-      await AsyncStorage.setItem(STORAGE_TOKEN, "loggedout");
+      await AsyncStorage.setItem(STORAGE_TOKEN, "false");
     } catch (e) {
       console.log("Failed to save the data to the storage");
     }
@@ -37,7 +41,7 @@ export default function DrawerContent(props) {
           source={require("../assets/alcohol.png")}
           resizeMode="cover"
         />
-        <Text style={styles.profileName}>testprofileName</Text>
+        <Text style={styles.profileName}>{crawlcontext[2]["username"]}</Text>
         <View
           style={{
             borderBottomWidth: 1,
@@ -74,7 +78,6 @@ export default function DrawerContent(props) {
             onPress={() => {
               // set token to null
               saveToken();
-
               // this doc was a life safer for navigating to parent login view https://reactnavigation.org/docs/navigation-prop/
               props.navigation.popToTop();
             }}

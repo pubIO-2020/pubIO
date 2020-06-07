@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -7,6 +7,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Main from "./components/Main";
 import Loginview from "./components/screens/Loginview";
+
+import { CrawlContext } from "./components/Context";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -27,14 +29,21 @@ function Mainview() {
 }
 
 export default function App() {
+  const [crawlcard, setCrawlCard] = useState();
+  const [currentuser, setCurrentuser] = useState();
+
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false, animationEnabled: false }}
-      >
-        <Stack.Screen name="Loginview" component={Loginview} />
-        <Stack.Screen name="Mainview" component={Mainview} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CrawlContext.Provider
+      value={[crawlcard, setCrawlCard, currentuser, setCurrentuser]}
+    >
+      <NavigationContainer independent={true}>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false, animationEnabled: false }}
+        >
+          <Stack.Screen name="Loginview" component={Loginview} />
+          <Stack.Screen name="Mainview" component={Mainview} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CrawlContext.Provider>
   );
 }
