@@ -17,19 +17,33 @@ import firebase from "../../Firebase";
 import { CrawlContext } from "../Context";
 
 export default function Loginview({ navigation, route }) {
-  // storage token
+  // async storage tokens
   const STORAGE_TOKEN = "@token";
+  const USERNAME_TOKEN = "@username";
+  const PASSWORD_TOKEN = "@password";
 
+  // user data from firestore
   const [users, setUsers] = useState();
+  // username and password from inputs
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
 
+  // state for if username or password is invalid
+  const [dontmatch, setDontmatch] = useState(false);
+
+  // firestore db instance
   const db = firebase.firestore();
+
+  // firestore db refs
   const usersRef = db.collection("users").doc("users");
   const crawlRef = db.collection("crawls").doc("crawls");
-  var crawlcontext = useContext(CrawlContext);
 
-  // on page load read token data
+  const crawlcontext = useContext(CrawlContext);
+
+  // get user data and set in current state on component mount
   useEffect(() => {
-    // get user data
     usersRef
       .get()
       .then(function (doc) {
@@ -40,7 +54,6 @@ export default function Loginview({ navigation, route }) {
             // push data objects to user array
             userArray.push(doc.data()[x]);
           }
-
           // setUsers state to new userArray array
           setUsers(userArray);
         } else {
@@ -51,19 +64,21 @@ export default function Loginview({ navigation, route }) {
       .catch(function (error) {
         console.log("Error getting document:", error);
       });
+  }, []);
 
-    // get crawl card data
+  // set crawl data in managed context state & read token
+  useEffect(() => {
     crawlRef
       .get()
       .then(function (doc) {
         if (doc.exists) {
-          // console.log("Document data:", doc.data());
           let crawlArray = [];
 
           for (let crawl in doc.data()) {
             crawlArray.push(doc.data()[crawl]);
           }
           crawlcontext[1](crawlArray);
+          readToken();
         } else {
           console.log("No such document!");
         }
@@ -71,21 +86,14 @@ export default function Loginview({ navigation, route }) {
       .catch(function (error) {
         console.log("Error getting document:", error);
       });
-    readToken();
-  }, []);
+  }, [users]);
 
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
-
-  // if username or password is invalid
-  const [dontmatch, setDontmatch] = useState(false);
-
-  // Set Loggedin Token in async storage
+  // Set token in async storage
   const saveToken = async () => {
     try {
-      await AsyncStorage.setItem(STORAGE_TOKEN, "loggedin");
+      await AsyncStorage.setItem(STORAGE_TOKEN, "true");
+      await AsyncStorage.setItem(USERNAME_TOKEN, credentials.username);
+      await AsyncStorage.setItem(PASSWORD_TOKEN, credentials.password);
     } catch (e) {
       console.log("Failed to save the data to the storage");
     }
@@ -93,13 +101,34 @@ export default function Loginview({ navigation, route }) {
 
   // Read data in async storage
   const readToken = async () => {
+    let ut;
+    let unt;
+    let pwt;
+    // added security
     try {
       const userToken = await AsyncStorage.getItem(STORAGE_TOKEN);
-      if (userToken !== "loggedout") {
-        navigation.navigate("Mainview");
-      }
+      const unToken = await AsyncStorage.getItem(USERNAME_TOKEN);
+      const pwToken = await AsyncStorage.getItem(PASSWORD_TOKEN);
+      ut = userToken;
+      unt = unToken;
+      pwt = pwToken;
     } catch (e) {
       console.log("Failed to fetch the data from storage");
+    }
+
+    // if user token is true and users state is filled from database confirm if async storage credentials match and navigate to home view
+    if (ut !== "false" && users !== undefined) {
+      // check if username & password matches in the token
+      users.some((creds) => {
+        if (creds.username === unt && creds.password === pwt) {
+          // set current user state in managed state to logged in user
+          crawlcontext[3](credentials);
+          navigation.navigate("Mainview");
+          // break using return
+          return true;
+        }
+      });
+      navigation.navigate("Mainview");
     }
   };
 
@@ -112,6 +141,9 @@ export default function Loginview({ navigation, route }) {
         creds.password === credentials.password
       ) {
         setCredentials({ ...credentials, password: "", username: "" });
+
+        // set current user state in managed state to logged in user
+        crawlcontext[3](credentials);
         setDontmatch(false);
         saveToken();
         navigation.navigate("Mainview");
@@ -125,80 +157,83 @@ export default function Loginview({ navigation, route }) {
       }
     });
   }
-
-  return (
-    <LinearGradient
-      colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
-      style={styles.container}
-    >
-      <View style={{ marginTop: 50, width: "85%" }}>
-        <Text
-          style={{
-            alignSelf: "center",
-            fontWeight: "bold",
-            fontSize: 28,
-            textShadowColor: "rgba(169, 169, 169, 0.75)",
-            textShadowOffset: { width: -1, height: 1 },
-            textShadowRadius: 3,
-            color: Colors.colors.primary,
-          }}
-        >
-          pubIO
-          <Ionicons name="md-beer" size={28} color={Colors.colors.yellow} />
-        </Text>
-
-        {dontmatch && (
-          <Text style={{ color: "red", alignSelf: "center", marginTop: 10 }}>
-            Username or Password does not match
+  if (users !== undefined) {
+    return (
+      <LinearGradient
+        colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
+        style={styles.container}
+      >
+        <View style={{ marginTop: 50, width: "85%" }}>
+          <Text
+            style={{
+              alignSelf: "center",
+              fontWeight: "bold",
+              fontSize: 28,
+              textShadowColor: "rgba(169, 169, 169, 0.75)",
+              textShadowOffset: { width: -1, height: 1 },
+              textShadowRadius: 3,
+              color: Colors.colors.primary,
+            }}
+          >
+            pubIO
+            <Ionicons name="md-beer" size={28} color={Colors.colors.yellow} />
           </Text>
-        )}
-        {/* username input */}
-        <TextInput
-          label="Username"
-          mode="outlined"
-          style={{ marginTop: 10 }}
-          theme={{ colors: { primary: Colors.colors.dark } }}
-          value={credentials.username}
-          onChangeText={(un) => {
-            setDontmatch(false);
-            setCredentials({ ...credentials, username: un });
-          }}
-        />
-        {/* username password */}
-        <TextInput
-          label="Password"
-          mode="outlined"
-          secureTextEntry={true}
-          style={{ marginTop: 3 }}
-          theme={{ colors: { primary: Colors.colors.dark } }}
-          value={credentials.password}
-          onChangeText={(pass) => {
-            setDontmatch(false);
-            setCredentials({ ...credentials, password: pass });
-          }}
-        />
-        {/* Signin */}
-        <Button
-          mode="contained"
-          color={Colors.colors.primary}
-          onPress={checkLogin}
-          style={{ marginTop: 12, justifyContent: "center" }}
-        >
-          Signin
-        </Button>
-        {/* Signup */}
-        <Button
-          color={Colors.colors.primary}
-          onPress={() => {
-            console.log("signup");
-          }}
-          style={{ marginTop: 5, justifyContent: "center" }}
-        >
-          Signup
-        </Button>
-      </View>
-    </LinearGradient>
-  );
+
+          {dontmatch && (
+            <Text style={{ color: "red", alignSelf: "center", marginTop: 10 }}>
+              Username or Password does not match
+            </Text>
+          )}
+          {/* username input */}
+          <TextInput
+            label="Username"
+            mode="outlined"
+            style={{ marginTop: 10 }}
+            theme={{ colors: { primary: Colors.colors.dark } }}
+            value={credentials.username}
+            onChangeText={(un) => {
+              setDontmatch(false);
+              setCredentials({ ...credentials, username: un });
+            }}
+          />
+          {/* username password */}
+          <TextInput
+            label="Password"
+            mode="outlined"
+            secureTextEntry={true}
+            style={{ marginTop: 3 }}
+            theme={{ colors: { primary: Colors.colors.dark } }}
+            value={credentials.password}
+            onChangeText={(pass) => {
+              setDontmatch(false);
+              setCredentials({ ...credentials, password: pass });
+            }}
+          />
+          {/* Signin */}
+          <Button
+            mode="contained"
+            color={Colors.colors.primary}
+            onPress={checkLogin}
+            style={{ marginTop: 12, justifyContent: "center" }}
+          >
+            Signin
+          </Button>
+          {/* Signup */}
+          <Button
+            color={Colors.colors.primary}
+            onPress={() => {
+              console.log("signup");
+            }}
+            style={{ marginTop: 5, justifyContent: "center" }}
+          >
+            Signup
+          </Button>
+        </View>
+      </LinearGradient>
+    );
+  } else {
+    return <Text>Hello</Text>;
+  }
 }
 
 const styles = StyleSheet.create({

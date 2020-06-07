@@ -10,10 +10,6 @@ import Loginview from "./components/screens/Loginview";
 
 import { CrawlContext } from "./components/Context";
 
-import firebase from "./Firebase";
-
-console.ignoredYellowBox = ["Setting a timer"];
-
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -37,7 +33,9 @@ export default function App() {
   const [currentuser, setCurrentuser] = useState();
 
   return (
-    <CrawlContext.Provider value={[crawlcard, setCrawlCard]}>
+    <CrawlContext.Provider
+      value={[crawlcard, setCrawlCard, currentuser, setCurrentuser]}
+    >
       <NavigationContainer independent={true}>
         <Stack.Navigator
           screenOptions={{ headerShown: false, animationEnabled: false }}

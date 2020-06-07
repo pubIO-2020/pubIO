@@ -481,7 +481,6 @@ export default function Details({ navigation, route }) {
                       top: -15,
                     }}
                     onPress={() => {
-                      console.log("Closed modal");
                       setSpecials({ ...specials, visible: false });
                     }}
                   >
