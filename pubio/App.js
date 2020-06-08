@@ -7,6 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Main from "./components/Main";
 import Loginview from "./components/screens/Loginview";
+import Registerview from "./components/screens/Registerview";
 
 import { CrawlContext } from "./components/Context";
 
@@ -41,6 +42,7 @@ export default function App() {
           screenOptions={{ headerShown: false, animationEnabled: false }}
         >
           <Stack.Screen name="Loginview" component={Loginview} />
+          <Stack.Screen name="Registerview" component={Registerview} />
           <Stack.Screen name="Mainview" component={Mainview} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -227,7 +227,10 @@ export default function Loginview({ navigation, route }) {
           <Button
             color={Colors.colors.primary}
             onPress={() => {
-              console.log("signup");
+              // clear validation text and any inputted text
+              setDontmatch(false);
+              setCredentials({ ...credentials, password: "", username: "" });
+              navigation.navigate("Registerview");
             }}
             style={{ marginTop: 5, justifyContent: "center" }}
           >
