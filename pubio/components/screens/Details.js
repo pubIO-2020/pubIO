@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,18 +21,27 @@ import Colors from "../Colors";
 import GestureRecognizer, {
   swipeDirections,
 } from "react-native-swipe-gestures";
-import {CrawlContext } from "../Context";
+import { CrawlContext } from "../Context";
 import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
 
 export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
+  const [subscribed, setSubscribed] = useState(false);
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
 
-  const { index } = route.params;
   const crawlcontext = useContext(CrawlContext);
+  const { index } = route.params;
+
+  useEffect(() => {
+    crawlcontext[2].subscription.filter((element) => {
+      if (element.QRDATA === crawlcontext[0][index].title) {
+        setSubscribed(true);
+      }
+    });
+  }, []);
 
   return (
     <View>
@@ -160,26 +168,26 @@ export default function Details({ navigation, route }) {
               </TouchableOpacity>
             );
           })}
-          {/* {
-            crawlcontext[2].subscription.filter((element) => {
-              if (element.QRDATA === crawlcontext[0][index].title) {
-                return 
-              }
-            })
-          } */}
+
           <LinearGradient
             colors={["transparent", "rgba(0,0,0,0.3)"]}
-            style={styles.subscribe}
+            style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
           >
             <TouchableHighlight
               style={styles.press}
               onPress={() => {
-                console.log("subscribed");
+                if (subscribed) {
+                  setSubscribed(false);
+                } else {
+                  setSubscribed(true);
+                }
               }}
               activeOpacity={0.4}
               underlayColor={"rgba(255,255,255,0.2)"}
             >
-              <Text style={styles.subscribeText}>Subscribe</Text>
+              <Text style={styles.subscribeText}>
+                {subscribed ? "Subscribed" : "Subscribe"}
+              </Text>
             </TouchableHighlight>
           </LinearGradient>
         </View>
@@ -234,8 +242,8 @@ export default function Details({ navigation, route }) {
                               </Text>
                             </View>
                             {index <
-                              crawlcontext[0][index].bars[specials.index].specials
-                                .length -
+                              crawlcontext[0][index].bars[specials.index]
+                                .specials.length -
                                 1 && <Ionicons name="md-git-commit"></Ionicons>}
                           </View>
                         );
