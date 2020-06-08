@@ -13,7 +13,7 @@ export default function Userview({ route }) {
   return (
     <View>
       <Header routeuser={route.name} />
-      <View>
+      <View style = {{height:"100%"}}>
         <CardScrollView
           setqrcode={setQrcode}
           qrcode={qrcode}

@@ -126,13 +126,12 @@ export default function Loginview({ navigation, route }) {
         if (creds.username === unt && creds.password === pwt) {
           setActivity(false);
           // set current user state in managed state to logged in user
-          crawlcontext[3]({ username: unt, password: pwt });
+          crawlcontext[3](creds);
           navigation.navigate("Mainview");
           // break using return
           return true;
         }
       });
-      navigation.navigate("Mainview");
     } else {
       setActivity(false);
     }
@@ -149,7 +148,7 @@ export default function Loginview({ navigation, route }) {
         setCredentials({ ...credentials, password: "", username: "" });
 
         // set current user state in managed state to logged in user
-        crawlcontext[3](credentials);
+        crawlcontext[3](creds);
         setDontmatch(false);
         saveToken();
         navigation.navigate("Mainview");
