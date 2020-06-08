@@ -5,9 +5,12 @@ import {
   View,
   ActivityIndicator,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
 import Colors from "../Colors";
 import firebase from "../../Firebase";
 
@@ -39,6 +42,20 @@ export default function Registerview({ navigation }) {
       colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
       style={styles.container}
     >
+      <TouchableOpacity
+        style={{ position: "absolute", top: 0, left: 20 }}
+        onPress={() => {
+          navigation.goBack();
+        }}
+      >
+        <View>
+          <Ionicons
+            name="md-arrow-back"
+            size={28}
+            color={Colors.colors.primary}
+          />
+        </View>
+      </TouchableOpacity>
       <View style={{ marginTop: 10, width: "85%" }}>
         <Text
           style={{
@@ -177,7 +194,7 @@ export default function Registerview({ navigation }) {
                     navigation.navigate("Loginview");
                   }
                 } else {
-                  // doc.data() will be undefined in this case
+                  // doc.data() will be undefined in this cases
                   console.log("No such document!");
                 }
               })
@@ -197,6 +214,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 80,
+    marginTop: 50,
   },
 });
