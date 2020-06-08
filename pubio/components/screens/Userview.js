@@ -4,16 +4,16 @@ import Header from "../Header";
 import CardScrollView from "../CardScrollView";
 import { Modal, Portal, Button, Provider } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import QRCode from 'react-native-qrcode-svg';
-import Colors from "../Colors"
+import QRCode from "react-native-qrcode-svg";
+import Colors from "../Colors";
 
 export default function Userview({ route }) {
-  const [qrcode, setQrcode] = useState({ visible: false });
+  const [qrcode, setQrcode] = useState({ visible: false, qrdata: "" });
   const navigation = useNavigation();
   return (
     <View>
       <Header routeuser={route.name} />
-      <View style = {{height:"100%"}}>
+      <View style={{ height: "100%" }}>
         <CardScrollView
           setqrcode={setQrcode}
           qrcode={qrcode}
@@ -28,7 +28,13 @@ export default function Userview({ route }) {
               visible={qrcode.visible}
             >
               <View style={styles.modalview}>
-                <QRCode value="taj;JKLajkl" color={Colors.colors.primary} size={250} enableLinearGradient={true} linearGradient={[Colors.colors.primary, Colors.colors.dark]}/>
+                <QRCode
+                  value={qrcode.qrdata}
+                  color={Colors.colors.primary}
+                  size={250}
+                  enableLinearGradient={true}
+                  linearGradient={[Colors.colors.primary, Colors.colors.dark]}
+                />
               </View>
             </Modal>
           </Portal>
