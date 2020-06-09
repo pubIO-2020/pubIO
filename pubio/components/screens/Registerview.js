@@ -28,7 +28,7 @@ export default function Registerview({ navigation }) {
     email: "",
     fullname: "",
     reenterpass: "",
-    profile: "",
+    profile: "beer.png",
     settings: { DARKMODE: false },
     subscription: [],
   });

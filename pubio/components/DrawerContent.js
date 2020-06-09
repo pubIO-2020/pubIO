@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -25,6 +25,95 @@ export default function DrawerContent(props) {
 
   const STORAGE_TOKEN = "@token";
 
+  var image = crawlcontext[2].profile;
+
+  const [profileImage, setProfilemage] = useState({
+    url: "",
+  });
+
+  // set current profile image on mount
+  useEffect(() => {
+    switch (image) {
+      case "monk.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/monk.png"),
+        });
+        break;
+      case "bart.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/bart.png"),
+        });
+        break;
+      case "batman.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/batman.jpg"),
+        });
+        break;
+      case "darthvader.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/darthvader.jpg"),
+        });
+        break;
+      case "futurama.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/futurama.jpg"),
+        });
+        break;
+      case "goku.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/goku.jpg"),
+        });
+        break;
+      case "greenlantern.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/greenlantern.jpg"),
+        });
+        break;
+      case "leela.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/leela.png"),
+        });
+        break;
+      case "monk.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/monk.png"),
+        });
+        break;
+      case "soldier76.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/soldier76.jpg"),
+        });
+        break;
+      case "wonderwoman.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/wonderwoman.jpg"),
+        });
+        break;
+      case "yoda.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/yoda.jpg"),
+        });
+        break;
+      default:
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/beer.png"),
+        });
+    }
+  }, []);
+
   // Set Token Logged out Token in async storage
   const saveToken = async () => {
     try {
@@ -42,7 +131,9 @@ export default function DrawerContent(props) {
             props.navigation.navigate("Profileimages");
           }}
         >
-          <Avatar.Image source={require("../assets/alcohol.png")} />
+          {profileImage.url !== "" && (
+            <Avatar.Image source={profileImage.url} />
+          )}
         </TouchableOpacity>
         <Text style={styles.profileName}>{crawlcontext[2]["username"]}</Text>
         <View
