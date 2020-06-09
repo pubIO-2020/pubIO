@@ -23,6 +23,7 @@ import GestureRecognizer, {
 } from "react-native-swipe-gestures";
 import { CrawlContext } from "../Context";
 import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
+import firebase from "../../Firebase";
 
 export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
@@ -31,9 +32,49 @@ export default function Details({ navigation, route }) {
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
+  const db = firebase.firestore();
+  const userRef = db.collection("users").doc("users");
 
   const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
+  function userSubscriptions(subscribed) {
+    // created an array with all user data
+    let newUserData = [];
+    // push each user object into the new array
+    crawlcontext[4].forEach((user) => {
+      newUserData.push(user);
+    });
+    //  if param is true push bar crawl title to subscriptions array
+    if (subscribed) {
+      // filter through new user array to find current username
+      newUserData.filter((user, id) => {
+        if (user.username === crawlcontext[2].username) {
+          newUserData[id].subscription.push({
+            QRDATA: crawlcontext[0][index].title,
+          });
+        }
+      });
+      // update context with new user array
+      userRef.set(Object.assign({}, newUserData));
+      crawlcontext[5](newUserData);
+      // if param is false filter through new user array and find the current user
+    } else {
+      newUserData.filter((user, id) => {
+        if (user.username === crawlcontext[2].username) {
+          newUserData[id].subscription.filter((crawl, key) => {
+            // filer through the current user's subscriptions then find the current bar crawl and remove it
+            if (crawl.QRDATA === crawlcontext[0][index].title) {
+              newUserData[id].subscription.splice(key, 1);
+            }
+          });
+        }
+      });
+      // update context with new user array
+      userRef.set(Object.assign({}, newUserData));
+
+      crawlcontext[5](newUserData);
+    }
+  }
 
   useEffect(() => {
     crawlcontext[2].subscription.filter((element) => {
@@ -178,8 +219,10 @@ export default function Details({ navigation, route }) {
               onPress={() => {
                 if (subscribed) {
                   setSubscribed(false);
+                  userSubscriptions(false);
                 } else {
                   setSubscribed(true);
+                  userSubscriptions(true);
                 }
               }}
               activeOpacity={0.4}
