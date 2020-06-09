@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import CarouselCards from "../CarouselCards";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,253 +21,27 @@ import Colors from "../Colors";
 import GestureRecognizer, {
   swipeDirections,
 } from "react-native-swipe-gestures";
-
+import { CrawlContext } from "../Context";
 import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
 
 export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
+  const [subscribed, setSubscribed] = useState(false);
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
-  const [crawlCard, setCrawlCard] = useState([
-    {
-      title: "Dirty Sixth",
-      date: "5/31/20",
-      info:
-        "Enjoy back to back bars and live music in the epicenter of Austin nightlife.",
-      imageURL:
-        "https://cdn.totalfratmove.com/wp-content/uploads/2013/12/edb80833973f58ba28a343975c42326e760734339.png",
-      coords: { latitude: 30.26588, longitude: -97.735678 },
-      bars: [
-        {
-          name: "Easy Tiger",
-          coords: { latitude: 30.26588, longitude: -97.735678 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "MooseKnuckle Pub",
-          coords: { latitude: 30.267106, longitude: -97.738921 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "shot", price: "$3", info: "Fireball" },
-          ],
-        },
-        {
-          name: "The Dizzy Rooster",
-          coords: { latitude: 30.2674, longitude: -97.740014 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "BD Riley's Irish Pub",
-          coords: { latitude: 30.267722, longitude: -97.741123 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "East Austin",
-      date: "5/31/20",
-      info:
-        "See the ever changing and growing East 6th street with local favorite dive bars, venues, and breweries.",
-      imageURL:
-        "https://static01.nyt.com/images/2014/02/02/travel/02HEADS4/02HEADS4-articleLarge.jpg?quality=75&auto=webp&disable=upscale",
-      coords: { latitude: 30.261739, longitude: -97.722008 },
-      bars: [
-        {
-          name: "Lazarus Brewing",
-          coords: { latitude: 30.261739, longitude: -97.722008 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Whisler's",
-          coords: { latitude: 30.261933, longitude: -97.722738 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Zilker Brewing",
-          coords: { latitude: 30.262135, longitude: -97.724546 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "The Liberty",
-          coords: { latitude: 30.2627, longitude: -97.725086 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "South Lamar",
-      date: "5/31/20",
-      info:
-        "Keep South Austin Weirder. Take a stroll on South Lamar for a variety of venues with music, food, and style.",
-      imageURL:
-        "https://static1.squarespace.com/static/54d14cdee4b00762783815a8/56a1bded69492e98c1ca4b0f/5994d725f5e23118b93e8de5/1502927038228/ABGB-Events-8-1200x800.0.0.jpg?format=800w",
-      coords: { latitude: 30.256201, longitude: -97.763167 },
-      bars: [
-        {
-          name: "The Highball",
-          coords: { latitude: 30.256201, longitude: -97.763167 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Saxon Pub",
-          coords: { latitude: 30.25354, longitude: -97.763579 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Corner Bar",
-          coords: { latitude: 30.249437, longitude: -97.766893 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "ABGB",
-          coords: { latitude: 30.245387, longitude: -97.768852 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Rock Rose",
-      date: "5/31/20",
-      info:
-        "Austin's newest hot spot and entertainment district that houses a deluge of restaurants and bars within an upscale outdoor mall.",
-      imageURL:
-        "https://assets.simpleviewinc.com/simpleview/image/fetch/c_fill,h_362,q_75,w_545/https://assets.simpleviewinc.com/simpleview/image/upload/crm/austin/Dogwood.-Credit-Carmack-Concepts-858cabb8f774c1e_858cac7e-ec0b-30f6-8b81c18a6e1bc62a.jpg",
-      coords: { latitude: 30.401483, longitude: -97.722765 },
-      bars: [
-        {
-          name: "Wonder Bar",
-          coords: { latitude: 30.401483, longitude: -97.722765 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Kung Fu Saloon",
-          coords: { latitude: 30.400869, longitude: -97.7226641 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Lavaca Street Bar",
-          coords: { latitude: 30.400585, longitude: -97.723156 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Punch Bowl Social",
-          coords: { latitude: 30.400014, longitude: -97.725509 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "West Sixth",
-      date: "5/31/20",
-      info:
-        "The upscale side of the historic sixth street and entertainment district stacked with bars, decadent eateries, and music venues. ",
-      imageURL:
-        "https://6street.com/listify/wp-content/uploads/2018/10/west-6th-02-star-bar.jpg",
-      coords: { latitude: 30.269758, longitude: -97.748101 },
-      bars: [
-        {
-          name: "Little Woodrow's",
-          coords: { latitude: 30.269758, longitude: -97.748101 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Star Bar",
-          coords: { latitude: 30.269952, longitude: -97.748538 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Whiskey Tango Foxtrot Icehouse",
-          coords: { latitude: 30.269771, longitude: -97.749865 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-        {
-          name: "Green Light Social",
-          coords: { latitude: 30.270369, longitude: -97.750391 },
-          specials: [
-            { type: "beer", price: "$5", info: "Draft" },
-            { type: "wine", price: "$5", info: "Reds" },
-            { type: "cocktail", price: "$3", info: "Wells" },
-          ],
-        },
-      ],
-    },
-  ]);
+
+  const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
+
+  useEffect(() => {
+    crawlcontext[2].subscription.filter((element) => {
+      if (element.QRDATA === crawlcontext[0][index].title) {
+        setSubscribed(true);
+      }
+    });
+  }, []);
 
   return (
     <View>
@@ -290,34 +63,34 @@ export default function Details({ navigation, route }) {
           style={styles.mapStyle}
           mapPadding={{ top: 0, right: 0, bottom: 430, left: 0 }}
           initialRegion={{
-            latitude: crawlCard[index].coords.latitude - 0.004,
-            longitude: crawlCard[index].coords.longitude,
+            latitude: crawlcontext[0][index].coords.latitude - 0.004,
+            longitude: crawlcontext[0][index].coords.longitude,
             latitudeDelta: 0.018,
             longitudeDelta: 0.008,
           }}
         >
-          {crawlCard[index].bars.map((bar, key) => {
+          {crawlcontext[0][index].bars.map((bar, key) => {
             return (
               <Marker coordinate={bar.coords} title={bar.name} key={key}>
                 <Ionicons
                   color={
                     key === 0
                       ? Colors.colors.primary
-                      : key === crawlCard[index].bars.length - 1
+                      : key === crawlcontext[0][index].bars.length - 1
                       ? Colors.colors.primary
                       : "rgb(128,128,128)"
                   }
                   name={
                     key === 0
                       ? "md-pin"
-                      : key === crawlCard[index].bars.length - 1
+                      : key === crawlcontext[0][index].bars.length - 1
                       ? "ios-beer"
                       : "ios-arrow-dropdown-circle"
                   }
                   size={
                     key === 0
                       ? 38
-                      : key === crawlCard[index].bars.length - 1
+                      : key === crawlcontext[0][index].bars.length - 1
                       ? 38
                       : 30
                   }
@@ -326,12 +99,12 @@ export default function Details({ navigation, route }) {
             );
           })}
           <MapViewDirections
-            origin={crawlCard[index].coords}
+            origin={crawlcontext[0][index].coords}
             waypoints={[
-              crawlCard[index].bars[1].coords,
-              crawlCard[index].bars[2].coords,
+              crawlcontext[0][index].bars[1].coords,
+              crawlcontext[0][index].bars[2].coords,
             ]}
-            destination={crawlCard[index].bars[3].coords}
+            destination={crawlcontext[0][index].bars[3].coords}
             apikey={REACT_APP_GOOGLE_API_KEY}
             strokeWidth={8}
             lineCap="round"
@@ -346,9 +119,9 @@ export default function Details({ navigation, route }) {
           />
         </MapView>
         <View style={styles.container}>
-          <Text style={styles.title}>{crawlCard[index].title}</Text>
+          <Text style={styles.title}>{crawlcontext[0][index].title}</Text>
           <Text style={styles.distance}>{distance}</Text>
-          {crawlCard[index].bars.map((name, key) => {
+          {crawlcontext[0][index].bars.map((name, key) => {
             return (
               <TouchableOpacity
                 key={key}
@@ -362,21 +135,21 @@ export default function Details({ navigation, route }) {
                       color={
                         key === 0
                           ? Colors.colors.primary
-                          : key === crawlCard[index].bars.length - 1
+                          : key === crawlcontext[0][index].bars.length - 1
                           ? Colors.colors.primary
                           : "	rgb(128,128,128)"
                       }
                       name={
                         key === 0
                           ? "md-pin"
-                          : key === crawlCard[index].bars.length - 1
+                          : key === crawlcontext[0][index].bars.length - 1
                           ? "ios-beer"
                           : "ios-arrow-dropdown-circle"
                       }
                       size={
                         key === 0
                           ? 35
-                          : key === crawlCard[index].bars.length - 1
+                          : key === crawlcontext[0][index].bars.length - 1
                           ? 35
                           : 18
                       }
@@ -398,17 +171,23 @@ export default function Details({ navigation, route }) {
 
           <LinearGradient
             colors={["transparent", "rgba(0,0,0,0.3)"]}
-            style={styles.subscribe}
+            style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
           >
             <TouchableHighlight
               style={styles.press}
               onPress={() => {
-                console.log("subscribed");
+                if (subscribed) {
+                  setSubscribed(false);
+                } else {
+                  setSubscribed(true);
+                }
               }}
               activeOpacity={0.4}
               underlayColor={"rgba(255,255,255,0.2)"}
             >
-              <Text style={styles.subscribeText}>Subscribe</Text>
+              <Text style={styles.subscribeText}>
+                {subscribed ? "Subscribed" : "Subscribe"}
+              </Text>
             </TouchableHighlight>
           </LinearGradient>
         </View>
@@ -431,10 +210,10 @@ export default function Details({ navigation, route }) {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>
-                    {crawlCard[index].bars[specials.index].name}
+                    {crawlcontext[0][index].bars[specials.index].name}
                   </Text>
                   <View style={styles.modalSpecials}>
-                    {crawlCard[index].bars[specials.index].specials.map(
+                    {crawlcontext[0][index].bars[specials.index].specials.map(
                       (special, index) => {
                         return (
                           <View key={index} style={{ alignItems: "center" }}>
@@ -463,8 +242,8 @@ export default function Details({ navigation, route }) {
                               </Text>
                             </View>
                             {index <
-                              crawlCard[index].bars[specials.index].specials
-                                .length -
+                              crawlcontext[0][index].bars[specials.index]
+                                .specials.length -
                                 1 && <Ionicons name="md-git-commit"></Ionicons>}
                           </View>
                         );
