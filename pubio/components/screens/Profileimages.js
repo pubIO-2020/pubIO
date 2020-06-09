@@ -7,13 +7,37 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { CrawlContext } from "../Context";
 
+import firebase from "../../Firebase";
+
 export default function Profileimages({ navigation }) {
   const [profileimg, setProfileimg] = useState({
     img: "",
     url: "",
   });
 
+  const db = firebase.firestore();
+  const userRef = db.collection("users").doc("users");
+
   const crawlcontext = useContext(CrawlContext);
+
+  //   function to set new user profile image in state & in db
+  function setUserProfile() {
+    let newUserData = [];
+    // push each user object into the new array
+    crawlcontext[4].forEach((user) => {
+      newUserData.push(user);
+    });
+
+    // filter through new user array to find current username
+    newUserData.filter((user, id) => {
+      if (user.username === crawlcontext[2].username) {
+        //   set user profile image to new selected avatar
+        newUserData[id].profile = profileimg.img;
+      }
+    });
+    userRef.set(Object.assign({}, newUserData));
+  }
+
   // users currently will have to unsubscribe and subscribe on the crawl cards to see ther avatars change on the crawl cards
   return (
     <View>
@@ -40,7 +64,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "batman.jpg",
-                url: require("../../assets/profileimages/" + "batman.jpg"),
+                url: require("../../assets/profileimages/batman.jpg"),
               })
             }
           >
@@ -55,7 +79,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "goku.jpg",
-                url: require("../../assets/profileimages/" + "goku.jpg"),
+                url: require("../../assets/profileimages/goku.jpg"),
               })
             }
           >
@@ -70,7 +94,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "arial.jpg",
-                url: require("../../assets/profileimages/" + "arial.jpg"),
+                url: require("../../assets/profileimages/arial.jpg"),
               })
             }
           >
@@ -88,7 +112,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "darthvader.jpg",
-                url: require("../../assets/profileimages/" + "darthvader.jpg"),
+                url: require("../../assets/profileimages/darthvader.jpg"),
               })
             }
           >
@@ -103,7 +127,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "soldier76.jpg",
-                url: require("../../assets/profileimages/" + "soldier76.jpg"),
+                url: require("../../assets/profileimages/soldier76.jpg"),
               })
             }
           >
@@ -118,7 +142,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "monk.png",
-                url: require("../../assets/profileimages/" + "monk.png"),
+                url: require("../../assets/profileimages/monk.png"),
               })
             }
           >
@@ -136,7 +160,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "wonderwoman.jpg",
-                url: require("../../assets/profileimages/" + "wonderwoman.jpg"),
+                url: require("../../assets/profileimages/wonderwoman.jpg"),
               })
             }
           >
@@ -151,7 +175,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "bart.png",
-                url: require("../../assets/profileimages/" + "bart.png"),
+                url: require("../../assets/profileimages/bart.png"),
               })
             }
           >
@@ -166,7 +190,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "futurama.jpg",
-                url: require("../../assets/profileimages/" + "futurama.jpg"),
+                url: require("../../assets/profileimages/futurama.jpg"),
               })
             }
           >
@@ -183,7 +207,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "leela.png",
-                url: require("../../assets/profileimages/" + "leela.png"),
+                url: require("../../assets/profileimages/leela.png"),
               })
             }
           >
@@ -198,7 +222,7 @@ export default function Profileimages({ navigation }) {
               setProfileimg({
                 ...profileimg,
                 img: "yoda.jpg",
-                url: require("../../assets/profileimages/" + "yoda.jpg"),
+                url: require("../../assets/profileimages/yoda.jpg"),
               })
             }
           >
@@ -237,7 +261,7 @@ export default function Profileimages({ navigation }) {
             onPress={() => {
               navigation.navigate("Main");
               crawlcontext[3]({ ...crawlcontext[2], profile: profileimg.img });
-              console.log(crawlcontext[2].profile, "wheee");
+              setUserProfile();
             }}
           >
             Change Avatar
