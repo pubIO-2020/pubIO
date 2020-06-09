@@ -21,7 +21,6 @@ export default function Card(props) {
   const crawlcontext = useContext(CrawlContext);
   const navigation = useNavigation();
 
-  console.log();
   return (
     <View>
       <TouchableOpacity
@@ -35,6 +34,8 @@ export default function Card(props) {
         }}
       >
         {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => {
+          console.log(user);
+          console.log("----------");
           if (index < 5) {
             return (
               <Avatar.Image

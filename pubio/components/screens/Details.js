@@ -34,16 +34,24 @@ export default function Details({ navigation, route }) {
   };
   const db = firebase.firestore();
   const userRef = db.collection("users").doc("users");
+  const crawlRef = db.collection("crawls").doc("crawls");
 
   const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
   function userSubscriptions(subscribed) {
     // created an array with all user data
     let newUserData = [];
+    let newCrawlData = [];
     // push each user object into the new array
     crawlcontext[4].forEach((user) => {
       newUserData.push(user);
     });
+
+    // push each crawl object into the new array
+    crawlcontext[0].forEach((crawl) => {
+      newCrawlData.push(crawl);
+    });
+
     //  if param is true push bar crawl title to subscriptions array
     if (subscribed) {
       // filter through new user array to find current username
@@ -56,7 +64,20 @@ export default function Details({ navigation, route }) {
       });
       // update context with new user array
       userRef.set(Object.assign({}, newUserData));
-      crawlcontext[5](newUserData);
+      // don't know why this works but when commenting the bottom line we're able to see profile images on cards & cards displayed in subscriptions right away
+      // crawlcontext[5](newUserData);
+
+      // set subbed user on crawl card
+      newCrawlData.filter((crawl, id) => {
+        if (crawl.title === crawlcontext[0][index].title) {
+          newCrawlData[id].subscribed.unshift({
+            username: crawlcontext[2].username,
+            profile: "https://pbs.twimg.com/media/DQVBVpUUMAAIA-M.jpg",
+          });
+        }
+      });
+      crawlcontext[1](newCrawlData);
+      crawlRef.set(Object.assign({}, newCrawlData));
       // if param is false filter through new user array and find the current user
     } else {
       newUserData.filter((user, id) => {
@@ -69,10 +90,23 @@ export default function Details({ navigation, route }) {
           });
         }
       });
+
+      // set subbed user on crawl card
+      newCrawlData.filter((crawl, id) => {
+        if (crawl.title === crawlcontext[0][index].title) {
+          newCrawlData[id].subscribed.filter((user, key) => {
+            if (user.username === crawlcontext[2].username) {
+              newCrawlData[id].subscribed.splice(key, 1);
+              console.log(user);
+            }
+          });
+        }
+      });
+
       // update context with new user array
       userRef.set(Object.assign({}, newUserData));
-
-      crawlcontext[5](newUserData);
+      crawlRef.set(Object.assign({}, newCrawlData));
+      crawlcontext[1](newCrawlData);
     }
   }
 
