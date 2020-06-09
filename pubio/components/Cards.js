@@ -34,8 +34,7 @@ export default function Card(props) {
         }}
       >
         {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => {
-          console.log(user);
-          console.log("----------");
+          // display only 5 avatars
           if (index < 5) {
             return (
               <Avatar.Image
@@ -72,6 +71,7 @@ export default function Card(props) {
           }
         })}
         {crawlcontext[0][props.crawlIndex].subscribed.length > 5 && (
+          // if less than 5 avatars display rest of num of users
           <Text
             style={{
               position: "absolute",

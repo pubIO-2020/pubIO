@@ -97,7 +97,6 @@ export default function Details({ navigation, route }) {
           newCrawlData[id].subscribed.filter((user, key) => {
             if (user.username === crawlcontext[2].username) {
               newCrawlData[id].subscribed.splice(key, 1);
-              console.log(user);
             }
           });
         }
