@@ -25,7 +25,7 @@ export default function DrawerContent(props) {
 
   const STORAGE_TOKEN = "@token";
 
-  var image = crawlcontext[2].profile;
+  let image = crawlcontext[2].profile;
 
   const [profileImage, setProfilemage] = useState({
     url: "",
@@ -112,7 +112,7 @@ export default function DrawerContent(props) {
           url: require("../assets/profileimages/beer.png"),
         });
     }
-  }, []);
+  }, [crawlcontext[2]]);
 
   // Set Token Logged out Token in async storage
   const saveToken = async () => {

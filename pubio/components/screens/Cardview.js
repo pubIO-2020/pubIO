@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Header from "../Header";
 import CardScrollView from "../CardScrollView";
-import Colors from '../Colors'
+import Colors from "../Colors";
 
 export default function Cardview({ navigation, route }) {
   return (
     <View>
       <Header />
       <View>
-        <LinearGradient colors={['rgba(0,0,0,0.2)', 'transparent']} style={styles.viewstyles}>
+        <LinearGradient
+          colors={["rgba(0,0,0,0.2)", "transparent"]}
+          style={styles.viewstyles}
+        >
           {/* Card View nav button */}
           <TouchableOpacity
             onPress={function () {
@@ -28,7 +31,8 @@ export default function Cardview({ navigation, route }) {
               />
               <Text
                 style={{
-                  color: route.name === "Cardview" ? "white" : Colors.colors.gray,
+                  color:
+                    route.name === "Cardview" ? "white" : Colors.colors.gray,
                   marginLeft: 4,
                   fontSize: 13,
                 }}
@@ -53,7 +57,8 @@ export default function Cardview({ navigation, route }) {
               />
               <Text
                 style={{
-                  color: route.name === "Mapview" ? "white" : Colors.colors.gray,
+                  color:
+                    route.name === "Mapview" ? "white" : Colors.colors.gray,
                   marginLeft: 4,
                   fontSize: 13,
                 }}
@@ -62,10 +67,8 @@ export default function Cardview({ navigation, route }) {
               </Text>
             </View>
           </TouchableOpacity>
-          
         </LinearGradient>
         <CardScrollView />
-        
       </View>
     </View>
   );

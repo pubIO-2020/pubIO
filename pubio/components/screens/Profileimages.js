@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Avatar, Button } from "react-native-paper";
 import Header from "../Header";
 import Colors from "../Colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+import { CrawlContext } from "../Context";
 
 export default function Profileimages({ navigation }) {
   const [profileimg, setProfileimg] = useState({
@@ -11,6 +13,8 @@ export default function Profileimages({ navigation }) {
     url: "",
   });
 
+  const crawlcontext = useContext(CrawlContext);
+  // users currently will have to unsubscribe and subscribe on the crawl cards to see ther avatars change on the crawl cards
   return (
     <View>
       <Header />
@@ -222,33 +226,37 @@ export default function Profileimages({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-      <Button
-        mode="contained"
-        style={{ marginTop: 20, width: "80%", alignSelf: "center" }}
-        color={Colors.colors.primary}
-        onPress={() => {
-          console.log("set picture");
-          navigation.navigate("Main");
-        }}
-      >
-        Change Avatar
-      </Button>
 
       {profileimg.img !== "" && (
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ color: "gray" }}>Selected:</Text>
-          <Avatar.Image
-            style={[styles.avatars, { alignSelf: "center", marginTop: 10 }]}
-            size={100}
-            source={profileimg.url}
-          />
-        </TouchableOpacity>
+        <>
+          <Button
+            mode="contained"
+            style={{ marginTop: 20, width: "80%", alignSelf: "center" }}
+            color={Colors.colors.primary}
+            // change profile image in state
+            onPress={() => {
+              navigation.navigate("Main");
+              crawlcontext[3]({ ...crawlcontext[2], profile: profileimg.img });
+              console.log(crawlcontext[2].profile, "wheee");
+            }}
+          >
+            Change Avatar
+          </Button>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ color: "gray" }}>Selected:</Text>
+            <Avatar.Image
+              style={[styles.avatars, { alignSelf: "center", marginTop: 10 }]}
+              size={100}
+              source={profileimg.url}
+            />
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
