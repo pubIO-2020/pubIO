@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -23,49 +23,225 @@ export default function Card(props) {
 
   return (
     <View>
-      <TouchableOpacity
-        style={{
-          position: "absolute",
-          zIndex: 999,
-          top: 50,
-          left: 28,
-          overFlow: "hidden",
-          justifyContent: "center",
-        }}
-      >
+      <TouchableOpacity style={styles.avipos}>
         {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => {
           // display only 5 avatars
           if (index < 5) {
-            return (
-              <Avatar.Image
-                key={index}
-                style={{
-                  borderWidth: 0.7,
-                  borderRadius: 50,
-                  height: 45,
-                  width: 45,
-                  position: "absolute",
-                  zIndex: 999 - index,
-                  left: index * 20,
-                  borderColor: "lightgray",
-                  opacity: index > 0 ? 0.8 : 1,
-                  overFlow: "hidden",
-                  backgroundColor: "lightgray",
-                  shadowOffset: {
-                    width: 0,
-                    height: 4,
-                  },
-                  shadowColor: "black",
-                  shadowOpacity: 0.7,
-                  shadowRadius: 3.84,
-                  elevation: 8,
-                }}
-                source={{
-                  uri: user.profile,
-                }}
-                size={45}
-              />
-            );
+            switch (user.profile) {
+              case "monk.png":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/monk.png")}
+                    size={45}
+                  />
+                );
+                break;
+              case "bart.png":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/bart.png")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "batman.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/batman.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "darthvader.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/darthvader.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "futurama.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/futurama.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "goku.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/goku.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "greenlantern.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/greenlantern.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "leela.png":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/leela.png")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "soldier76.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/soldier76.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "wonderwoman.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/wonderwoman.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              case "yoda.jpg":
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/yoda.jpg")}
+                    size={45}
+                  />
+                );
+
+                break;
+              default:
+                return (
+                  <Avatar.Image
+                    key={index}
+                    style={[
+                      styles.avatar,
+                      {
+                        zIndex: 999 - index,
+                        left: index * 20,
+                        opacity: index > 0 ? 0.8 : 1,
+                      },
+                    ]}
+                    source={require("../assets/profileimages/beer.png")}
+                    size={45}
+                  />
+                );
+            }
           } else {
             return null;
           }
@@ -225,5 +401,33 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 8,
     borderRadius: 10,
+  },
+  avatar: {
+    borderWidth: 0.7,
+    borderRadius: 50,
+    height: 45,
+    width: 45,
+    position: "absolute",
+
+    borderColor: "lightgray",
+
+    overflow: "hidden",
+    backgroundColor: "lightgray",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowColor: "black",
+    shadowOpacity: 0.7,
+    shadowRadius: 3.84,
+    elevation: 8,
+  },
+
+  avipos: {
+    position: "absolute",
+    zIndex: 999,
+    top: 50,
+    left: 28,
+    justifyContent: "center",
   },
 });
