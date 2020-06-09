@@ -34,43 +34,47 @@ export default function Card(props) {
           justifyContent: "center",
         }}
       >
-        {crawlcontext[0][props.crawlIndex].subscribed.map((test, index) => {
-          return (
-            <Avatar.Image
-              key={index}
-              style={{
-                borderWidth: 0.7,
-                borderRadius: 50,
-                height: 45,
-                width: 45,
-                position: "absolute",
-                zIndex: 999 - index,
-                left: index * 20,
-                borderColor: "lightgray",
-                opacity: index > 0 ? 0.8 : 1,
-                overFlow: "hidden",
-                backgroundColor: "lightgray",
-                shadowOffset: {
-                  width: 0,
-                  height: 4,
-                },
-                shadowColor: "black",
-                shadowOpacity: 0.7,
-                shadowRadius: 3.84,
-                elevation: 8,
-              }}
-              source={{
-                uri: test.profile,
-              }}
-              size={45}
-            />
-          );
+        {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => {
+          if (index < 5) {
+            return (
+              <Avatar.Image
+                key={index}
+                style={{
+                  borderWidth: 0.7,
+                  borderRadius: 50,
+                  height: 45,
+                  width: 45,
+                  position: "absolute",
+                  zIndex: 999 - index,
+                  left: index * 20,
+                  borderColor: "lightgray",
+                  opacity: index > 0 ? 0.8 : 1,
+                  overFlow: "hidden",
+                  backgroundColor: "lightgray",
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowColor: "black",
+                  shadowOpacity: 0.7,
+                  shadowRadius: 3.84,
+                  elevation: 8,
+                }}
+                source={{
+                  uri: user.profile,
+                }}
+                size={45}
+              />
+            );
+          } else {
+            return null;
+          }
         })}
-        {crawlcontext[0][props.crawlIndex].subscribed.length >= 5 && (
+        {crawlcontext[0][props.crawlIndex].subscribed.length > 5 && (
           <Text
             style={{
               position: "absolute",
-              left: 125,
+              left: 127,
               color: "white",
               textShadowColor: "rgb(0, 0, 0)",
               textShadowOffset: { width: -0.4, height: 0.5 },
