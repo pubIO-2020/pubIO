@@ -6,6 +6,9 @@ import {
   ActivityIndicator,
   Keyboard,
   AsyncStorage,
+  Image,
+  Platform,
+  KeyboardAvoidingView
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button, TextInput } from "react-native-paper";
@@ -161,80 +164,71 @@ export default function Loginview({ navigation, route }) {
   }
   if (!activity) {
     return (
-      <LinearGradient
-        colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
-        style={styles.container}
+      <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+      keyboardVerticalOffset={Platform.OS == "ios" ? 400 : 0}
       >
-        <View style={{ marginTop: 50, width: "85%" }}>
-          <Text
-            style={{
-              alignSelf: "center",
-              fontWeight: "bold",
-              fontSize: 28,
-              textShadowColor: "rgba(169, 169, 169, 0.75)",
-              textShadowOffset: { width: -1, height: 1 },
-              textShadowRadius: 3,
-              color: Colors.colors.primary,
-            }}
-          >
-            pubIO
-            <Ionicons name="md-beer" size={28} color={Colors.colors.yellow} />
-          </Text>
+        <View style={{ marginTop: 120, width: "100%", justifyContent: "center", alignItems: "center" }}>
+          <Image style={{resizeMode: 'center', width: "80%", tintColor: Colors.colors.primary, height: 350, marginBottom: -20}} source={require('../../assets/pubioVertB.png')}/>
+          <View style={{width: '85%', marginTop: 0}}>
 
-          {dontmatch && (
-            <Text style={{ color: "red", alignSelf: "center", marginTop: 10 }}>
-              Username or Password does not match
-            </Text>
-          )}
-          {/* username input */}
-          <TextInput
-            label="Username"
-            mode="outlined"
-            style={{ marginTop: 10 }}
-            theme={{ colors: { primary: Colors.colors.dark } }}
-            value={credentials.username}
-            onChangeText={(un) => {
-              setDontmatch(false);
-              setCredentials({ ...credentials, username: un });
-            }}
-          />
-          {/* username password */}
-          <TextInput
-            label="Password"
-            mode="outlined"
-            secureTextEntry={true}
-            style={{ marginTop: 3 }}
-            theme={{ colors: { primary: Colors.colors.dark } }}
-            value={credentials.password}
-            onChangeText={(pass) => {
-              setDontmatch(false);
-              setCredentials({ ...credentials, password: pass });
-            }}
-          />
-          {/* Signin */}
-          <Button
-            mode="contained"
-            color={Colors.colors.primary}
-            onPress={checkLogin}
-            style={{ marginTop: 12, justifyContent: "center" }}
-          >
-            Signin
-          </Button>
-          {/* Signup */}
-          <Button
-            color={Colors.colors.primary}
-            onPress={() => {
-              // clear validation text and any inputted text
-              setDontmatch(false);
-              setCredentials({ ...credentials, password: "", username: "" });
-              navigation.navigate("Registerview");
-            }}
-            style={{ marginTop: 5, justifyContent: "center" }}
-          >
-            Signup
-          </Button>
+            {dontmatch && (
+              <Text style={{ color: "red", alignSelf: "center", marginTop: 10 }}>
+                Username or Password does not match
+              </Text>
+            )}
+            {/* username input */}
+            <TextInput
+              label="Username"
+              mode="outlined"
+              style={{ marginTop: 10, minHeight:20  }}
+              theme={{ colors: { primary: Colors.colors.dark } }}
+              value={credentials.username}
+              onChangeText={(un) => {
+                setDontmatch(false);
+                setCredentials({ ...credentials, username: un });
+              }}
+            />
+            {/* username password */}
+            <TextInput
+              label="Password"
+              mode="outlined"
+              secureTextEntry={true}
+              style={{ marginTop: 3, minHeight:20  }}
+              theme={{ colors: { primary: Colors.colors.dark } }}
+              value={credentials.password}
+              onChangeText={(pass) => {
+                setDontmatch(false);
+                setCredentials({ ...credentials, password: pass });
+              }}
+            />
+            {/* Signin */}
+            <Button
+              mode="contained"
+              color={Colors.colors.primary}
+              onPress={checkLogin}
+              style={{ marginTop: 12, justifyContent: "center", minHeight:20 }}
+            >
+              Signin
+            </Button>
+            {/* Signup */}
+            <Button
+              color={Colors.colors.primary}
+              onPress={() => {
+                // clear validation text and any inputted text
+                setDontmatch(false);
+                setCredentials({ ...credentials, password: "", username: "" });
+                navigation.navigate("Registerview");
+              }}
+              style={{ marginTop: 5, justifyContent: "center", minHeight:20 }}
+            >
+              Signup
+            </Button>
+            {Platform.OS === "android" && <View style={{height: 400}}></View> }
+          </View>
         </View>
-      </LinearGradient>
+      </KeyboardAvoidingView>
     );
   } else {
     return (
@@ -250,6 +244,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 80,
+    marginTop: Platform.OS === "android" ? 80 : 0,
+    paddingBottom: 100
   },
 });
