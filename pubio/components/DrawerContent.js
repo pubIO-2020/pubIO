@@ -11,6 +11,7 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "./Colors";
+import { Avatar } from "react-native-paper";
 
 import { CrawlContext } from "./Context";
 
@@ -36,11 +37,13 @@ export default function DrawerContent(props) {
   return (
     <LinearGradient colors={["transparent", "rgba(0,0,0,0.1)"]}>
       <View style={styles.settingsView}>
-        <Image
-          style={styles.profileImage}
-          source={require("../assets/alcohol.png")}
-          resizeMode="cover"
-        />
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("Profileimages");
+          }}
+        >
+          <Avatar.Image source={require("../assets/alcohol.png")} />
+        </TouchableOpacity>
         <Text style={styles.profileName}>{crawlcontext[2]["username"]}</Text>
         <View
           style={{

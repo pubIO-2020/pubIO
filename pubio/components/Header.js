@@ -6,26 +6,29 @@ import {
   SafeAreaView,
   Platform,
   TouchableOpacity,
-  Image
+  Image,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from 'expo-linear-gradient';
-import Colors from './Colors'
+import { LinearGradient } from "expo-linear-gradient";
+import Colors from "./Colors";
 
 export default function Header(props) {
   const navigation = useNavigation();
   return (
-    <LinearGradient colors={['transparent', 'rgba(0,0,0,0.3)']} style={styles.headerStyle}>
-    <SafeAreaView style={{height: Platform.OS === 'android' ? 84 : 105}}>
-      
-    <Image style={{flex: 1}} source={require('../assets/pubioHoriW.png')} resizeMode="contain" />
-
-      
-      
-    </SafeAreaView>
-    {/* Display settings icon if on User page*/}
-    {props.routeuser === "Userview" && (
+    <LinearGradient
+      colors={["transparent", "rgba(0,0,0,0.3)"]}
+      style={styles.headerStyle}
+    >
+      <SafeAreaView style={{ height: Platform.OS === "android" ? 84 : 105 }}>
+        <Image
+          style={{ flex: 1 }}
+          source={require("../assets/pubioHoriW.png")}
+          resizeMode="contain"
+        />
+      </SafeAreaView>
+      {/* Display settings icon if on User page*/}
+      {props.routeuser === "Userview" && (
         <TouchableOpacity
           style={styles.settingsicon}
           // open settings navigation drawer
