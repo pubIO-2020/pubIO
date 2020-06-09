@@ -32,6 +32,8 @@ export default function Details({ navigation, route }) {
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
+  const db = firebase.firestore();
+  const userRef = db.collection("users").doc("users");
 
   const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
@@ -53,6 +55,7 @@ export default function Details({ navigation, route }) {
         }
       });
       // update context with new user array
+      userRef.set(Object.assign({}, newUserData));
       crawlcontext[5](newUserData);
       // if param is false filter through new user array and find the current user
     } else {
@@ -67,6 +70,8 @@ export default function Details({ navigation, route }) {
         }
       });
       // update context with new user array
+      userRef.set(Object.assign({}, newUserData));
+
       crawlcontext[5](newUserData);
     }
   }
