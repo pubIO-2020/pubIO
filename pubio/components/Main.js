@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -19,11 +19,13 @@ export default function Main() {
             let iconName;
 
             if (route.name === "Home") {
-              iconName = focused ? "md-beer" : "md-beer";
+              return (
+                <Image style={{height: 40, tintColor: color, marginBottom: -6}} source={require('../assets/pubioBeerB.png')} resizeMode="contain"/>
+              )
             } else if (route.name === "User") {
-              iconName = focused ? "md-person" : "md-person";
+              return <Ionicons name={'md-person'} size={size} color={color} />;
             }
-            return <Ionicons name={iconName} size={size} color={color} />;
+            // return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
         tabBarOptions={{

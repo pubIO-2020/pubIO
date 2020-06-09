@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Platform,
   TouchableOpacity,
+  Image
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -16,9 +17,9 @@ export default function Header(props) {
   const navigation = useNavigation();
   return (
     <LinearGradient colors={['transparent', 'rgba(0,0,0,0.3)']} style={styles.headerStyle}>
-    <SafeAreaView>
+    <SafeAreaView style={{height: Platform.OS === 'android' ? 84 : 105}}>
       
-      <Text style={styles.text}>pubIO</Text>
+    <Image style={{flex: 1}} source={require('../assets/pubioHoriW.png')} resizeMode="contain" />
 
       
       
@@ -54,11 +55,8 @@ export default function Header(props) {
 }
 
 const styles = StyleSheet.create({
-  safeheaderStyle: {
-    paddingTop: Platform.OS === "android" ? 50 : 0,
-  },
   headerStyle: {
-    paddingTop: Platform.OS === "android" ? 50 : 0,
+    paddingTop: Platform.OS === "android" ? 30 : 0,
     alignItems: "center",
     height: 100,
     backgroundColor: Colors.colors.primary,
