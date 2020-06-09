@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -12,12 +12,77 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Avatar } from "react-native-paper";
 import Colors from "./Colors";
 
+import { CrawlContext } from "./Context";
+
 export default function Card(props) {
+  const crawlcontext = useContext(CrawlContext);
   const navigation = useNavigation();
+
+  console.log();
   return (
     <View>
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          zIndex: 999,
+          top: 50,
+          left: 28,
+          overFlow: "hidden",
+          justifyContent: "center",
+        }}
+      >
+        {crawlcontext[0][props.crawlIndex].subscribed.map((test, index) => {
+          return (
+            <Avatar.Image
+              key={index}
+              style={{
+                borderWidth: 0.7,
+                borderRadius: 50,
+                height: 45,
+                width: 45,
+                position: "absolute",
+                zIndex: 999 - index,
+                left: index * 20,
+                borderColor: "lightgray",
+                opacity: index > 0 ? 0.8 : 1,
+                overFlow: "hidden",
+                backgroundColor: "lightgray",
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowColor: "black",
+                shadowOpacity: 0.7,
+                shadowRadius: 3.84,
+                elevation: 8,
+              }}
+              source={{
+                uri: test.profile,
+              }}
+              size={45}
+            />
+          );
+        })}
+        {crawlcontext[0][props.crawlIndex].subscribed.length >= 5 && (
+          <Text
+            style={{
+              position: "absolute",
+              left: 125,
+              color: "white",
+              textShadowColor: "rgb(0, 0, 0)",
+              textShadowOffset: { width: -0.4, height: 0.5 },
+              textShadowRadius: 2,
+              fontWeight: "bold",
+            }}
+          >
+            +{crawlcontext[0][props.crawlIndex].subscribed.length - 5}others
+          </Text>
+        )}
+      </TouchableOpacity>
+
       <TouchableOpacity
         activeOpacity={0.6}
         onPress={() => {

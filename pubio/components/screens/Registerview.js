@@ -28,6 +28,7 @@ export default function Registerview({ navigation }) {
     email: "",
     fullname: "",
     reenterpass: "",
+    profile: "",
     settings: { DARKMODE: false },
     subscription: [],
   });
