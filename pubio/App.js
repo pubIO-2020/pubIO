@@ -7,6 +7,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Main from "./components/Main";
 import Loginview from "./components/screens/Loginview";
+import Registerview from "./components/screens/Registerview";
 
 import { CrawlContext } from "./components/Context";
 
@@ -31,16 +32,26 @@ function Mainview() {
 export default function App() {
   const [crawlcard, setCrawlCard] = useState();
   const [currentuser, setCurrentuser] = useState();
+  // user data from firestore
+  const [users, setUsers] = useState();
 
   return (
     <CrawlContext.Provider
-      value={[crawlcard, setCrawlCard, currentuser, setCurrentuser]}
+      value={[
+        crawlcard,
+        setCrawlCard,
+        currentuser,
+        setCurrentuser,
+        users,
+        setUsers,
+      ]}
     >
       <NavigationContainer independent={true}>
         <Stack.Navigator
           screenOptions={{ headerShown: false, animationEnabled: false }}
         >
           <Stack.Screen name="Loginview" component={Loginview} />
+          <Stack.Screen name="Registerview" component={Registerview} />
           <Stack.Screen name="Mainview" component={Mainview} />
         </Stack.Navigator>
       </NavigationContainer>

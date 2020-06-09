@@ -21,9 +21,6 @@ export default function Loginview({ navigation, route }) {
   const USERNAME_TOKEN = "@username";
   const PASSWORD_TOKEN = "@password";
 
-  // user data from firestore
-  const [users, setUsers] = useState();
-
   // username and password from inputs
   const [credentials, setCredentials] = useState({
     username: "",
@@ -58,7 +55,7 @@ export default function Loginview({ navigation, route }) {
             userArray.push(doc.data()[x]);
           }
           // setUsers state to new userArray array
-          setUsers(userArray);
+          crawlcontext[5](userArray);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -89,7 +86,7 @@ export default function Loginview({ navigation, route }) {
       .catch(function (error) {
         console.log("Error getting document:", error);
       });
-  }, [users]);
+  }, [crawlcontext[4]]);
 
   // Set token in async storage
   const saveToken = async () => {
@@ -120,9 +117,9 @@ export default function Loginview({ navigation, route }) {
     }
 
     // if user token is true and users state is filled from database confirm if async storage credentials match and navigate to home view
-    if (ut !== "false" && users !== undefined) {
+    if (ut !== "false" && crawlcontext[4] !== undefined) {
       // check if username & password matches in the token
-      users.some((creds) => {
+      crawlcontext[4].some((creds) => {
         if (creds.username === unt && creds.password === pwt) {
           setActivity(false);
           // set current user state in managed state to logged in user
@@ -140,7 +137,7 @@ export default function Loginview({ navigation, route }) {
   // login functinality on signin button click
   function checkLogin() {
     Keyboard.dismiss();
-    users.some((creds) => {
+    crawlcontext[4].some((creds) => {
       if (
         creds.username === credentials.username &&
         creds.password === credentials.password
@@ -227,7 +224,10 @@ export default function Loginview({ navigation, route }) {
           <Button
             color={Colors.colors.primary}
             onPress={() => {
-              console.log("signup");
+              // clear validation text and any inputted text
+              setDontmatch(false);
+              setCredentials({ ...credentials, password: "", username: "" });
+              navigation.navigate("Registerview");
             }}
             style={{ marginTop: 5, justifyContent: "center" }}
           >
