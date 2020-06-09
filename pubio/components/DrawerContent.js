@@ -132,7 +132,7 @@ export default function DrawerContent(props) {
           }}
         >
           {profileImage.url !== "" && (
-            <Avatar.Image source={profileImage.url} />
+            <Avatar.Image source={profileImage.url} style={styles.avatar} />
           )}
         </TouchableOpacity>
         <Text style={styles.profileName}>{crawlcontext[2]["username"]}</Text>
@@ -236,4 +236,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   settingsView: { paddingTop: 35, alignItems: "center", height: "100%" },
+  avatar: {
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowColor: "black",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 8,
+  },
 });
