@@ -32,10 +32,19 @@ function Mainview() {
 export default function App() {
   const [crawlcard, setCrawlCard] = useState();
   const [currentuser, setCurrentuser] = useState();
+  // user data from firestore
+  const [users, setUsers] = useState();
 
   return (
     <CrawlContext.Provider
-      value={[crawlcard, setCrawlCard, currentuser, setCurrentuser]}
+      value={[
+        crawlcard,
+        setCrawlCard,
+        currentuser,
+        setCurrentuser,
+        users,
+        setUsers,
+      ]}
     >
       <NavigationContainer independent={true}>
         <Stack.Navigator

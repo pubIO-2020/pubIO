@@ -11,12 +11,15 @@ import { Button, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+import { CrawlContext } from "../Context";
+
 import Colors from "../Colors";
 import firebase from "../../Firebase";
 
 export default function Registerview({ navigation }) {
   const db = firebase.firestore();
   const userRef = db.collection("users").doc("users");
+  const crawlcontext = useContext(CrawlContext);
 
   // credentials from inputs
   const [credentials, setCredentials] = useState({
@@ -42,20 +45,25 @@ export default function Registerview({ navigation }) {
       colors={["transparent", "rgba(0,0,0,0.03)", "rgba(0,0,0,0.2)"]}
       style={styles.container}
     >
-      <TouchableOpacity
-        style={{ position: "absolute", top: 0, left: 20 }}
-        onPress={() => {
-          navigation.goBack();
-        }}
-      >
-        <View>
+      <View style={{ width: "100%", alignItems: "flex-start" }}>
+        {/* Back button */}
+        <TouchableOpacity
+          style={{
+            paddingLeft: 20,
+            paddingTop: 5,
+          }}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
           <Ionicons
             name="md-arrow-back"
             size={28}
             color={Colors.colors.primary}
           />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+
       <View style={{ marginTop: 10, width: "85%" }}>
         <Text
           style={{
@@ -190,6 +198,7 @@ export default function Registerview({ navigation }) {
                     }
                     // setUsers state to new userArray array
                     userArray.push(credentials);
+                    crawlcontext[5](userArray);
                     userRef.set(Object.assign({}, userArray));
                     navigation.navigate("Loginview");
                   }
