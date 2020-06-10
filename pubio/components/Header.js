@@ -41,7 +41,7 @@ export default function Header(props) {
       )}
 
       {/* Display back button to go back to previous route, if prop is passed from detail route */}
-      {props.detailroute && (
+      {(props.detailroute || props.adminroute) && (
         <TouchableOpacity
           style={styles.backicon}
           onPress={() => {
