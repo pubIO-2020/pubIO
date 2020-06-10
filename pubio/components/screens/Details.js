@@ -29,7 +29,7 @@ export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
   const [subscribed, setSubscribed] = useState(false);
-  const [rating, setRating] = useState({ rating: 0 })
+  const [rating, setRating] = useState({ rating: 0, placesURL: '' })
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
@@ -53,7 +53,7 @@ export default function Details({ navigation, route }) {
         fetch(detailQueryURL)
         .then(response => response.json())
         .then(json => {
-          setRating({rating: json.result.rating});
+          setRating({rating: json.result.rating, placesURL: json.result.url});
         })
       })
   }
@@ -324,7 +324,7 @@ export default function Details({ navigation, route }) {
                     
                   <View style={styles.modalViewText}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <Text style={styles.modalText} onPress={() => Linking.openURL('https://maps.google.com/?cid=8282813368598409745')}>
+                      <Text style={styles.modalText} onPress={() => Linking.openURL(rating.placesURL)}>
                         {crawlcontext[0][index].bars[specials.index].name}
                       </Text>
                       <Ionicons name="ios-link" size={18} style={{paddingBottom:6, paddingLeft: 3}}/>
