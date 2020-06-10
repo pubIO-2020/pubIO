@@ -22,7 +22,7 @@ export default function Main() {
               return (
                 <Image style={{height: 40, tintColor: color, marginBottom: -6}} source={require('../assets/pubioBeerB.png')} resizeMode="contain"/>
               )
-            } else if (route.name === "User") {
+            } else if (route.name === "Subscriptions") {
               return <Ionicons name={'md-person'} size={size} color={color} />;
             }
             // return <Ionicons name={iconName} size={size} color={color} />;
@@ -34,7 +34,7 @@ export default function Main() {
         }}
       >
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="User" component={User} />
+        <Tab.Screen name="Subscriptions" component={User} />
       </Tab.Navigator>
     </NavigationContainer>
   );

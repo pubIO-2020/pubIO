@@ -1,9 +1,10 @@
 import React, { useState, useContext, useRef } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import Card from "./Cards";
-import Carousel from "react-native-snap-carousel";
+import Carousel, { Pagination } from "react-native-snap-carousel";
 
 import { CrawlContext } from "./Context";
+import Colors from './Colors'
 
 function renderItem({ item, index }) {
   return (
@@ -26,7 +27,7 @@ export default function CarouselCards() {
   });
   return (
     <SafeAreaView style={{ flex: 1, paddingTop: 50 }}>
-      <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+      <View style={{ flex: 1, alignItems: "center"}}>
         <Carousel
           layout={"default"}
           ref={carouselRef}
@@ -39,6 +40,23 @@ export default function CarouselCards() {
             setCarousel({ ...carousel, activeIndex: index })
           }
         />
+        <Pagination
+              dotsLength={crawlcontext[0].length}
+              activeDotIndex={carousel.activeIndex}
+              containerStyle={{ backgroundColor: 'transparent' }}
+              dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  marginHorizontal: 8,
+                  backgroundColor: Colors.colors.primary
+              }}
+              inactiveDotStyle={{
+                  // Define styles for inactive dots here
+              }}
+              inactiveDotOpacity={0.4}
+              inactiveDotScale={0.6}
+            />
       </View>
     </SafeAreaView>
   );
