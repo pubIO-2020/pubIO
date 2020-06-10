@@ -8,7 +8,7 @@ import {
   Dimensions,
   Image,
   Modal,
-  Linking
+  Linking,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -22,50 +22,52 @@ import GestureRecognizer, {
   swipeDirections,
 } from "react-native-swipe-gestures";
 import { CrawlContext } from "../Context";
-import { REACT_APP_GOOGLE_API_KEY, REACT_APP_GOOGLE_PLACES_KEY } from "react-native-dotenv";
+import {
+  REACT_APP_GOOGLE_API_KEY,
+  REACT_APP_GOOGLE_PLACES_KEY,
+} from "react-native-dotenv";
 import firebase from "../../Firebase";
 
 export default function Details({ navigation, route }) {
+  const crawlcontext = useContext(CrawlContext);
+
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
   const [subscribed, setSubscribed] = useState(false);
-  const [rating, setRating] = useState({ rating: 0, placesURL: '' })
+  const [rating, setRating] = useState({ rating: 0, placesURL: "" });
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
   const db = firebase.firestore();
-  const userRef = db.collection("users").doc("users");
+  const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
   const crawlRef = db.collection("crawls").doc("crawls");
 
-  const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
 
   function getBarRating(apiKey, barName) {
     let detailQueryURL;
     let idQueryURL = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${apiKey}&input=${barName}&inputtype=textquery&locationbias=point:30.267,-97.738`;
     return fetch(idQueryURL)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         let placeID = json.candidates[0].place_id;
         detailQueryURL = `https://maps.googleapis.com/maps/api/place/details/json?key=${apiKey}&place_id=${placeID}`;
       })
       .then(() => {
         fetch(detailQueryURL)
-        .then(response => response.json())
-        .then(json => {
-          setRating({rating: json.result.rating, placesURL: json.result.url});
-        })
-      })
+          .then((response) => response.json())
+          .then((json) => {
+            setRating({
+              rating: json.result.rating,
+              placesURL: json.result.url,
+            });
+          });
+      });
   }
 
   function userSubscriptions(subscribed) {
-    // created an array with all user data
-    let newUserData = [];
+    let newUserData = crawlcontext[2];
     let newCrawlData = [];
-    // push each user object into the new array
-    crawlcontext[4].forEach((user) => {
-      newUserData.push(user);
-    });
 
     // push each crawl object into the new array
     crawlcontext[0].forEach((crawl) => {
@@ -74,18 +76,13 @@ export default function Details({ navigation, route }) {
 
     //  if param is true push bar crawl title to subscriptions array
     if (subscribed) {
-      // filter through new user array to find current username
-      newUserData.filter((user, id) => {
-        if (user.username === crawlcontext[2].username) {
-          newUserData[id].subscription.push({
-            QRDATA: crawlcontext[0][index].title,
-          });
-        }
-      });
-      // update database with new userData & crawl
-      userRef.set(Object.assign({}, newUserData));
-      // don't know why this works but when commenting the bottom line we're able to see profile images on cards & cards displayed in subscriptions right away
-      // crawlcontext[5](newUserData);
+      // concatanate new subscription to new currentuser object
+      newUserData.subscription = newUserData.subscription.concat([
+        { QRDATA: crawlcontext[0][index].title },
+      ]);
+      // update current user in database and state
+      userRef.set(newUserData);
+      crawlcontext[3](newUserData);
 
       // set subbed user on crawl card
       newCrawlData.filter((crawl, id) => {
@@ -101,15 +98,16 @@ export default function Details({ navigation, route }) {
       // if param is false filter through new user array and find the current user
     } else {
       newUserData.filter((user, id) => {
-        if (user.username === crawlcontext[2].username) {
-          newUserData[id].subscription.filter((crawl, key) => {
-            // filer through the current user's subscriptions then find the current bar crawl and remove it
-            if (crawl.QRDATA === crawlcontext[0][index].title) {
-              newUserData[id].subscription.splice(key, 1);
-            }
-          });
-        }
+        newUserData[id].subscription.filter((crawl, key) => {
+          // filer through the current user's subscriptions then find the current bar crawl and remove it
+          if (crawl.QRDATA === crawlcontext[0][index].title) {
+            newUserData[id].subscription.splice(key, 1);
+          }
+        });
       });
+      // update new user data in firebase and in state
+      userRef.set(newUserData);
+      crawlcontext[3](newUserData);
 
       // set subbed user on crawl card
       newCrawlData.filter((crawl, id) => {
@@ -121,9 +119,7 @@ export default function Details({ navigation, route }) {
           });
         }
       });
-
-      // update database & state with new crawl data and user data
-      userRef.set(Object.assign({}, newUserData));
+      // update database & state with new crawl data
       crawlRef.set(Object.assign({}, newCrawlData));
       crawlcontext[1](newCrawlData);
     }
@@ -221,7 +217,10 @@ export default function Details({ navigation, route }) {
                 key={key}
                 onPress={() => {
                   setSpecials({ ...specials, visible: true, index: key });
-                  getBarRating(REACT_APP_GOOGLE_PLACES_KEY, crawlcontext[0][index].bars[key].name);
+                  getBarRating(
+                    REACT_APP_GOOGLE_PLACES_KEY,
+                    crawlcontext[0][index].bars[key].name
+                  );
                   console.log("------");
                 }}
               >
@@ -307,37 +306,55 @@ export default function Details({ navigation, route }) {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <View style={[styles.modalImg, 
-                    {shadowOffset: {
-                      width: 0,
-                      height: 4,
-                    },
-                    shadowColor: "black",
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 8,}]}>
-                  <Image 
-                    source={{uri: crawlcontext[0][index].bars[specials.index].imageURL}} 
-                    style={styles.modalImg}
-                  />
+                  <View
+                    style={[
+                      styles.modalImg,
+                      {
+                        shadowOffset: {
+                          width: 0,
+                          height: 4,
+                        },
+                        shadowColor: "black",
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 8,
+                      },
+                    ]}
+                  >
+                    <Image
+                      source={{
+                        uri:
+                          crawlcontext[0][index].bars[specials.index].imageURL,
+                      }}
+                      style={styles.modalImg}
+                    />
                   </View>
-                    
+
                   <View style={styles.modalViewText}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <Text style={styles.modalText} onPress={() => Linking.openURL(rating.placesURL)}>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Text
+                        style={styles.modalText}
+                        onPress={() => Linking.openURL(rating.placesURL)}
+                      >
                         {crawlcontext[0][index].bars[specials.index].name}
                       </Text>
-                      <Ionicons name="ios-link" size={18} style={{paddingBottom:6, paddingLeft: 3}}/>
+                      <Ionicons
+                        name="ios-link"
+                        size={18}
+                        style={{ paddingBottom: 6, paddingLeft: 3 }}
+                      />
                     </View>
-                    <View style={{flexDirection: 'row'}}>
-                      <StarRating 
-                        disabled={true} 
-                        rating={rating.rating} 
-                        maxStars={5} 
-                        starSize={20} 
+                    <View style={{ flexDirection: "row" }}>
+                      <StarRating
+                        disabled={true}
+                        rating={rating.rating}
+                        maxStars={5}
+                        starSize={20}
                         fullStarColor={Colors.colors.primary}
-                        />
-                        <Text> {rating.rating}</Text>
+                      />
+                      <Text> {rating.rating}</Text>
                     </View>
                     <View style={styles.modalSpecials}>
                       {crawlcontext[0][index].bars[specials.index].specials.map(
@@ -350,7 +367,9 @@ export default function Details({ navigation, route }) {
                                   alignItems: "center",
                                 }}
                               >
-                                <View style={{ width: 30, alignItems: "center" }}>
+                                <View
+                                  style={{ width: 30, alignItems: "center" }}
+                                >
                                   <Ionicons
                                     name={
                                       special.type === "wine"
@@ -368,8 +387,14 @@ export default function Details({ navigation, route }) {
                                   {special.price} {special.info}
                                 </Text>
                               </View>
-                              {console.log(crawlcontext[0][index].bars[specials.index].specials.length - 1)}
-                              {id < (crawlcontext[0][index].bars[specials.index].specials.length - 1) && <Ionicons name="md-git-commit"/>}
+                              {console.log(
+                                crawlcontext[0][index].bars[specials.index]
+                                  .specials.length - 1
+                              )}
+                              {id <
+                                crawlcontext[0][index].bars[specials.index]
+                                  .specials.length -
+                                  1 && <Ionicons name="md-git-commit" />}
                             </View>
                           );
                         }
@@ -384,7 +409,7 @@ export default function Details({ navigation, route }) {
                       position: "absolute",
                       right: 10,
                       top: -15,
-                      elevation: 9
+                      elevation: 9,
                     }}
                     onPress={() => {
                       setSpecials({ ...specials, visible: false });
@@ -531,9 +556,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalImg: {
-    height: 190, 
-    width: '100%', 
-    borderTopLeftRadius: 20, 
+    height: 190,
+    width: "100%",
+    borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   openButton: {
@@ -557,6 +582,6 @@ const styles = StyleSheet.create({
   },
   modalSpecials: {
     fontSize: 22,
-    marginTop: 8
+    marginTop: 8,
   },
 });
