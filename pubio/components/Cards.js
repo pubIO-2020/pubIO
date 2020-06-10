@@ -37,6 +37,21 @@ function AvatarImg(props) {
 export default function Card(props) {
   const crawlcontext = useContext(CrawlContext);
   const navigation = useNavigation();
+  const profilePic = {
+    "monk.png": require("../assets/profileimages/monk.png"),
+    "bart.png": require("../assets/profileimages/bart.png"),
+    "leela.png": require("../assets/profileimages/leela.png"),
+    "yoda.jpg": require("../assets/profileimages/yoda.jpg"),
+    "wonderwoman.jpg": require("../assets/profileimages/wonderwoman.jpg"),
+    "greenlantern.jpg": require("../assets/profileimages/greenlantern.jpg"),
+    "goku.jpg": require("../assets/profileimages/goku.jpg"),
+    "futurama.jpg": require("../assets/profileimages/futurama.jpg"),
+    "darthvader.jpg": require("../assets/profileimages/darthvader.jpg"),
+    "batman.jpg": require("../assets/profileimages/batman.jpg"),
+    "beer.png": require("../assets/profileimages/beer.png"),
+    "arial.jpg": require("../assets/profileimages/arial.jpg"),
+    "soldier76.jpg": require("../assets/profileimages/soldier76.jpg"),
+  };
 
   return (
     <View>
@@ -45,106 +60,13 @@ export default function Card(props) {
           // display only 5 avatars
 
           if (index < 5) {
-            switch (user.profile) {
-              case "monk.png":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/monk.png")}
-                  />
-                );
-                break;
-              case "bart.png":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/bart.png")}
-                  />
-                );
-                break;
-              case "leela.png":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/leela.png")}
-                  />
-                );
-                break;
-              case "yoda.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/yoda.jpg")}
-                  />
-                );
-                break;
-              case "wonderwoman.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/wonderwoman.jpg")}
-                  />
-                );
-                break;
-              case "greenlantern.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/greenlantern.jpg")}
-                  />
-                );
-                break;
-              case "goku.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/goku.jpg")}
-                  />
-                );
-                break;
-              case "futurama.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/futurama.jpg")}
-                  />
-                );
-                break;
-              case "darthvader.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/darthvader.jpg")}
-                  />
-                );
-                break;
-              case "batman.jpg":
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/batman.jpg")}
-                  />
-                );
-                break;
-              default:
-                return (
-                  <AvatarImg
-                    index={index}
-                    key={index}
-                    profile={require("../assets/profileimages/beer.png")}
-                  />
-                );
-            }
+            return (
+              <AvatarImg
+                index={index}
+                key={index}
+                profile={profilePic[user.profile]}
+              />
+            );
           } else {
             return null;
           }
@@ -152,7 +74,7 @@ export default function Card(props) {
         {crawlcontext[0][props.crawlIndex].subscribed.length > 5 && (
           // if less than 5 avatars display rest of num of users
           <Text style={styles.others}>
-            +{crawlcontext[0][props.crawlIndex].subscribed.length - 5}others
+            +{crawlcontext[0][props.crawlIndex].subscribed.length - 5} {crawlcontext[0][props.crawlIndex].subscribed.length - 5 > 1 ? 'others' : 'other'}
           </Text>
         )}
       </TouchableOpacity>
@@ -296,11 +218,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   avatar: {
-    borderWidth: 0.7,
     borderRadius: 50,
     position: "absolute",
     borderColor: "lightgray",
-    overflow: "hidden",
     backgroundColor: "lightgray",
     shadowOffset: {
       width: 0,
