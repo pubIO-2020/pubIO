@@ -59,7 +59,7 @@ export default function Header(props) {
 
 const styles = StyleSheet.create({
   headerStyle: {
-    paddingTop: Platform.OS === "android" ? 30 : 0,
+    paddingTop: Platform.OS === "android" ? 27 : 0,
     alignItems: "center",
     height: 100,
     backgroundColor: Colors.colors.primary,
