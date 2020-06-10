@@ -10,14 +10,26 @@ export default function CardScrollView(props) {
   const crawlcontext = useContext(CrawlContext);
 
   if (props.routename === "Userview") {
-    if(crawlcontext[2].subscription.length === 0){
-      return(
-        <View style={{alignItems: "center", paddingTop: 20}}>
-          <Text style={{ color: 'rgb(150, 150, 150)', fontSize: 18 }}>No subscriptions yet!</Text>
-          <Text style={{ color: 'rgb(150, 150, 150)' }}>Subscribe to a crawl on the Home page!</Text>
-          <Image source={require("../assets/pubioBeerW.png")} resizeMode="center" style={{marginTop: -220, tintColor: 'rgb(235, 235, 235)'}} overla/>
+    if (crawlcontext[2].subscription.length === 0) {
+      return (
+        <View style={{ alignItems: "center", paddingTop: 20 }}>
+          <Text style={{ color: "rgb(150, 150, 150)", fontSize: 18 }}>
+            No subscriptions yet!
+          </Text>
+          <Text style={{ color: "rgb(150, 150, 150)" }}>
+            Subscribe to a crawl on the Home page!
+          </Text>
+          <Image
+            source={require("../assets/pubioBeerW.png")}
+            resizeMode="center"
+            style={{
+              marginTop: 100,
+              tintColor: "rgb(235, 235, 235)",
+              height: 300,
+            }}
+          />
         </View>
-      )
+      );
     } else {
       return (
         <ScrollView
@@ -50,11 +62,12 @@ export default function CardScrollView(props) {
               />
             );
           })}
-        <View
-          style={{ height: props.routename === "Userview" ? 220 : 290 }}
-        ></View>
-      </ScrollView>
-    )}
+          <View
+            style={{ height: props.routename === "Userview" ? 220 : 290 }}
+          ></View>
+        </ScrollView>
+      );
+    }
   } else {
     return (
       <ScrollView
