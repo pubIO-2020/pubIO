@@ -7,6 +7,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerContent from "./components/DrawerContent";
 import Main from "./components/Main";
 import Loginview from "./components/screens/Loginview";
+import Adminview from "./components/screens/Adminview";
+import Profileimages from "./components/screens/Profileimages";
 import Registerview from "./components/screens/Registerview";
 
 import { CrawlContext } from "./components/Context";
@@ -24,6 +26,8 @@ function Mainview() {
         drawerPosition="right"
       >
         <Drawer.Screen name="Main" component={Main} />
+        <Drawer.Screen name="Adminview" component={Adminview} />
+        <Drawer.Screen name="Profileimages" component={Profileimages} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

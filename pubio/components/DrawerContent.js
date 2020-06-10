@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "./Colors";
+import { Avatar } from "react-native-paper";
 
 import { CrawlContext } from "./Context";
 
@@ -24,6 +25,95 @@ export default function DrawerContent(props) {
 
   const STORAGE_TOKEN = "@token";
 
+  let image = crawlcontext[2].profile;
+
+  const [profileImage, setProfilemage] = useState({
+    url: "",
+  });
+
+  // set current profile image on mount
+  useEffect(() => {
+    switch (image) {
+      case "monk.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/monk.png"),
+        });
+        break;
+      case "bart.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/bart.png"),
+        });
+        break;
+      case "batman.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/batman.jpg"),
+        });
+        break;
+      case "darthvader.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/darthvader.jpg"),
+        });
+        break;
+      case "futurama.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/futurama.jpg"),
+        });
+        break;
+      case "goku.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/goku.jpg"),
+        });
+        break;
+      case "greenlantern.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/greenlantern.jpg"),
+        });
+        break;
+      case "leela.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/leela.png"),
+        });
+        break;
+      case "monk.png":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/monk.png"),
+        });
+        break;
+      case "soldier76.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/soldier76.jpg"),
+        });
+        break;
+      case "wonderwoman.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/wonderwoman.jpg"),
+        });
+        break;
+      case "yoda.jpg":
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/yoda.jpg"),
+        });
+        break;
+      default:
+        setProfilemage({
+          ...profileImage,
+          url: require("../assets/profileimages/beer.png"),
+        });
+    }
+  }, [crawlcontext[2]]);
+
   // Set Token Logged out Token in async storage
   const saveToken = async () => {
     try {
@@ -36,11 +126,15 @@ export default function DrawerContent(props) {
   return (
     <LinearGradient colors={["transparent", "rgba(0,0,0,0.1)"]}>
       <View style={styles.settingsView}>
-        <Image
-          style={styles.profileImage}
-          source={require("../assets/alcohol.png")}
-          resizeMode="cover"
-        />
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("Profileimages");
+          }}
+        >
+          {profileImage.url !== "" && (
+            <Avatar.Image source={profileImage.url} style={styles.avatar} />
+          )}
+        </TouchableOpacity>
         <Text style={styles.profileName}>{crawlcontext[2]["username"]}</Text>
         <View
           style={{
@@ -142,4 +236,14 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   settingsView: { paddingTop: 35, alignItems: "center", height: "100%" },
+  avatar: {
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowColor: "black",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 8,
+  },
 });
