@@ -39,95 +39,6 @@ export default function Details({ navigation, route }) {
   const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
 
-  var image = crawlcontext[2].profile;
-
-  const [profileImage, setProfilemage] = useState({
-    url: "",
-  });
-
-  // set current profile image on mount
-  useEffect(() => {
-    switch (image) {
-      case "monk.png":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/monk.png"),
-        });
-        break;
-      case "bart.png":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/bart.png"),
-        });
-        break;
-      case "batman.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/batman.jpg"),
-        });
-        break;
-      case "darthvader.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/darthvader.jpg"),
-        });
-        break;
-      case "futurama.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/futurama.jpg"),
-        });
-        break;
-      case "goku.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/goku.jpg"),
-        });
-        break;
-      case "greenlantern.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/greenlantern.jpg"),
-        });
-        break;
-      case "leela.png":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/leela.png"),
-        });
-        break;
-      case "monk.png":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/monk.png"),
-        });
-        break;
-      case "soldier76.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/soldier76.jpg"),
-        });
-        break;
-      case "wonderwoman.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/wonderwoman.jpg"),
-        });
-        break;
-      case "yoda.jpg":
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/yoda.jpg"),
-        });
-        break;
-      default:
-        setProfilemage({
-          ...profileImage,
-          url: require("../../assets/profileimages/beer.png"),
-        });
-    }
-  }, []);
-
   function userSubscriptions(subscribed) {
     // created an array with all user data
     let newUserData = [];
@@ -152,7 +63,7 @@ export default function Details({ navigation, route }) {
           });
         }
       });
-      // update context with new user array
+      // update database with new userData & crawl
       userRef.set(Object.assign({}, newUserData));
       // don't know why this works but when commenting the bottom line we're able to see profile images on cards & cards displayed in subscriptions right away
       // crawlcontext[5](newUserData);
@@ -192,7 +103,7 @@ export default function Details({ navigation, route }) {
         }
       });
 
-      // update context with new user array
+      // update database & state with new crawl data and user data
       userRef.set(Object.assign({}, newUserData));
       crawlRef.set(Object.assign({}, newCrawlData));
       crawlcontext[1](newCrawlData);
