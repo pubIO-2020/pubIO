@@ -186,6 +186,7 @@ export default function Registerview({ navigation }) {
               validation.email &&
               validation.fullname &&
               validation.password &&
+              validation.username &&
               credentials.password === credentials.reenterpass
             ) {
               // push new user credentials into firebase

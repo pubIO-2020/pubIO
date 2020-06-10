@@ -219,7 +219,6 @@ export default function Details({ navigation, route }) {
                     REACT_APP_GOOGLE_PLACES_KEY,
                     crawlcontext[0][index].bars[key].name
                   );
-                  console.log("------");
                 }}
               >
                 <View style={styles.bar}>
@@ -385,10 +384,6 @@ export default function Details({ navigation, route }) {
                                   {special.price} {special.info}
                                 </Text>
                               </View>
-                              {console.log(
-                                crawlcontext[0][index].bars[specials.index]
-                                  .specials.length - 1
-                              )}
                               {id <
                                 crawlcontext[0][index].bars[specials.index]
                                   .specials.length -
