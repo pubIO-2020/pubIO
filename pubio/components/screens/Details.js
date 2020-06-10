@@ -3,32 +3,33 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   TouchableOpacity,
   TouchableHighlight,
   Dimensions,
-  ImageBackground,
   Image,
   Modal,
+  Linking
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { LinearGradient } from "expo-linear-gradient";
+import StarRating from "react-native-star-rating";
 import Header from "../Header";
 import Colors from "../Colors";
 import GestureRecognizer, {
   swipeDirections,
 } from "react-native-swipe-gestures";
 import { CrawlContext } from "../Context";
-import { REACT_APP_GOOGLE_API_KEY } from "react-native-dotenv";
+import { REACT_APP_GOOGLE_API_KEY, REACT_APP_GOOGLE_PLACES_KEY } from "react-native-dotenv";
 import firebase from "../../Firebase";
 
 export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
   const [subscribed, setSubscribed] = useState(false);
+  const [rating, setRating] = useState({ rating: 0 })
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
@@ -38,6 +39,24 @@ export default function Details({ navigation, route }) {
 
   const crawlcontext = useContext(CrawlContext);
   const { index } = route.params;
+
+  function getBarRating(apiKey, barName) {
+    let detailQueryURL;
+    let idQueryURL = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${apiKey}&input=${barName}&inputtype=textquery&locationbias=point:30.267,-97.738`;
+    return fetch(idQueryURL)
+      .then(response => response.json())
+      .then(json => {
+        let placeID = json.candidates[0].place_id;
+        detailQueryURL = `https://maps.googleapis.com/maps/api/place/details/json?key=${apiKey}&place_id=${placeID}`;
+      })
+      .then(() => {
+        fetch(detailQueryURL)
+        .then(response => response.json())
+        .then(json => {
+          setRating({rating: json.result.rating});
+        })
+      })
+  }
 
   function userSubscriptions(subscribed) {
     // created an array with all user data
@@ -202,6 +221,8 @@ export default function Details({ navigation, route }) {
                 key={key}
                 onPress={() => {
                   setSpecials({ ...specials, visible: true, index: key });
+                  getBarRating(REACT_APP_GOOGLE_PLACES_KEY, crawlcontext[0][index].bars[key].name);
+                  console.log("------");
                 }}
               >
                 <View style={styles.bar}>
@@ -286,46 +307,74 @@ export default function Details({ navigation, route }) {
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                  <Text style={styles.modalText}>
-                    {crawlcontext[0][index].bars[specials.index].name}
-                  </Text>
-                  <View style={styles.modalSpecials}>
-                    {crawlcontext[0][index].bars[specials.index].specials.map(
-                      (special, index) => {
-                        return (
-                          <View key={index} style={{ alignItems: "center" }}>
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                              }}
-                            >
-                              <View style={{ width: 30, alignItems: "center" }}>
-                                <Ionicons
-                                  name={
-                                    special.type === "wine"
-                                      ? "ios-wine"
-                                      : special.type === "beer"
-                                      ? "ios-beer"
-                                      : special.type === "cocktail"
-                                      ? "md-wine"
-                                      : "md-pint"
-                                  }
-                                  size={30}
-                                ></Ionicons>
+                  <View style={[styles.modalImg, 
+                    {shadowOffset: {
+                      width: 0,
+                      height: 4,
+                    },
+                    shadowColor: "black",
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 8,}]}>
+                  <Image 
+                    source={{uri: crawlcontext[0][index].bars[specials.index].imageURL}} 
+                    style={styles.modalImg}
+                  />
+                  </View>
+                    
+                  <View style={styles.modalViewText}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.modalText} onPress={() => Linking.openURL('https://maps.google.com/?cid=8282813368598409745')}>
+                        {crawlcontext[0][index].bars[specials.index].name}
+                      </Text>
+                      <Ionicons name="ios-link" size={18} style={{paddingBottom:6, paddingLeft: 3}}/>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <StarRating 
+                        disabled={true} 
+                        rating={rating.rating} 
+                        maxStars={5} 
+                        starSize={20} 
+                        fullStarColor={Colors.colors.primary}
+                        />
+                        <Text> {rating.rating}</Text>
+                    </View>
+                    <View style={styles.modalSpecials}>
+                      {crawlcontext[0][index].bars[specials.index].specials.map(
+                        (special, id) => {
+                          return (
+                            <View key={id} style={{ alignItems: "center" }}>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <View style={{ width: 30, alignItems: "center" }}>
+                                  <Ionicons
+                                    name={
+                                      special.type === "wine"
+                                        ? "ios-wine"
+                                        : special.type === "beer"
+                                        ? "ios-beer"
+                                        : special.type === "cocktail"
+                                        ? "md-wine"
+                                        : "md-pint"
+                                    }
+                                    size={30}
+                                  ></Ionicons>
+                                </View>
+                                <Text style={{ fontSize: 26 }}>
+                                  {special.price} {special.info}
+                                </Text>
                               </View>
-                              <Text style={{ fontSize: 30 }}>
-                                {special.price} {special.info}
-                              </Text>
+                              {console.log(crawlcontext[0][index].bars[specials.index].specials.length - 1)}
+                              {id < (crawlcontext[0][index].bars[specials.index].specials.length - 1) && <Ionicons name="md-git-commit"/>}
                             </View>
-                            {index <
-                              crawlcontext[0][index].bars[specials.index]
-                                .specials.length -
-                                1 && <Ionicons name="md-git-commit"></Ionicons>}
-                          </View>
-                        );
-                      }
-                    )}
+                          );
+                        }
+                      )}
+                    </View>
                   </View>
 
                   <TouchableHighlight
@@ -335,6 +384,7 @@ export default function Details({ navigation, route }) {
                       position: "absolute",
                       right: 10,
                       top: -15,
+                      elevation: 9
                     }}
                     onPress={() => {
                       setSpecials({ ...specials, visible: false });
@@ -353,13 +403,9 @@ export default function Details({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  mapStyle: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
-  distance: {
-    color: Colors.colors.distance,
-    marginBottom: 3,
+  bar: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   container: {
     position: "absolute",
@@ -379,21 +425,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 8,
   },
-  title: {
-    marginBottom: 2,
-    fontWeight: "700",
-    fontSize: 25,
+  distance: {
+    color: Colors.colors.distance,
+    marginBottom: 3,
   },
-  text: {
-    fontSize: 20,
-    margin: 5,
-    textShadowColor: Colors.colors.gray,
-    textShadowRadius: 4,
-    textShadowOffset: { width: 0, height: 0.5 },
-  },
-  bar: {
-    flexDirection: "row",
-    alignItems: "center",
+  mapStyle: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   subscribe: {
     position: "absolute",
@@ -415,6 +453,18 @@ const styles = StyleSheet.create({
   subscribeText: {
     color: "white",
     fontWeight: "bold",
+  },
+  title: {
+    marginBottom: 2,
+    fontWeight: "700",
+    fontSize: 25,
+  },
+  text: {
+    fontSize: 20,
+    margin: 5,
+    textShadowColor: Colors.colors.gray,
+    textShadowRadius: 4,
+    textShadowOffset: { width: 0, height: 0.5 },
   },
   press: {
     width: "100%",
@@ -461,7 +511,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 0,
     width: "100%",
     height: "70%",
     position: "absolute",
@@ -475,6 +525,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  modalViewText: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+  modalImg: {
+    height: 190, 
+    width: '100%', 
+    borderTopLeftRadius: 20, 
+    borderTopRightRadius: 20,
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -490,12 +550,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 10,
     textAlign: "center",
     fontSize: 23,
     fontWeight: "bold",
   },
   modalSpecials: {
     fontSize: 22,
+    marginTop: 8
   },
 });

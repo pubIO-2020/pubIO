@@ -146,7 +146,6 @@ export default function Mapview({ navigation, route }) {
         </LinearGradient>
         {/* Display Map */}
         <MapView
-          ref={(map) => (this.map = map)}
           mapPadding={{ top: 0, right: 0, bottom: 430, left: 0 }}
           initialRegion={{
             latitude: 30.2303 - 0.0123,
@@ -165,15 +164,6 @@ export default function Mapview({ navigation, route }) {
                 }}
                 title={crawl.title}
                 key={index}
-                onSelect={() => {
-                  this.map.animateToRegion(
-                    {
-                      latitude: crawl.coords.lat,
-                      longitude: crawl.coords.lon,
-                    },
-                    200
-                  );
-                }}
               >
                 <Ionicons color={Colors.colors.primary} name="ios-beer" size={38} />
               </Marker>

@@ -210,7 +210,7 @@ export default function Loginview({ navigation, route }) {
               onPress={checkLogin}
               style={{ marginTop: 12, justifyContent: "center", minHeight:20 }}
             >
-              Signin
+              Sign In
             </Button>
             {/* Signup */}
             <Button
@@ -223,7 +223,7 @@ export default function Loginview({ navigation, route }) {
               }}
               style={{ marginTop: 5, justifyContent: "center", minHeight:20 }}
             >
-              Signup
+              Sign Up
             </Button>
             {Platform.OS === "android" && <View style={{height: 400}}></View> }
           </View>
