@@ -82,15 +82,15 @@ export default function Profileimages({ navigation }) {
             onPress={() =>
               setProfileimg({
                 ...profileimg,
-                img: "arial.jpg",
-                url: require("../../assets/profileimages/arial.jpg"),
+                img: "beer.png",
+                url: require("../../assets/profileimages/beer.png"),
               })
             }
           >
             <Avatar.Image
               style={styles.avatars}
               size={100}
-              source={require("../../assets/profileimages/arial.jpg")}
+              source={require("../../assets/profileimages/beer.png")}
             />
           </TouchableOpacity>
         </View>
