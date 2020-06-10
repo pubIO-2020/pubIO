@@ -97,13 +97,11 @@ export default function Details({ navigation, route }) {
       crawlRef.set(Object.assign({}, newCrawlData));
       // if param is false filter through new user array and find the current user
     } else {
-      newUserData.filter((user, id) => {
-        newUserData[id].subscription.filter((crawl, key) => {
-          // filer through the current user's subscriptions then find the current bar crawl and remove it
-          if (crawl.QRDATA === crawlcontext[0][index].title) {
-            newUserData[id].subscription.splice(key, 1);
-          }
-        });
+      newUserData.subscription.filter((crawl, key) => {
+        // filer through the current user's subscriptions then find the current bar crawl and remove it
+        if (crawl.QRDATA === crawlcontext[0][index].title) {
+          newUserData.subscription.splice(key, 1);
+        }
       });
       // update new user data in firebase and in state
       userRef.set(newUserData);
