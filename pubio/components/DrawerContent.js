@@ -156,17 +156,24 @@ export default function DrawerContent(props) {
           </View>
         </View>
         <View style={styles.adminLogoutContainer}>
-          <TouchableOpacity style={{ alignSelf: "center" }}>
-            <Text
-              style={{
-                fontWeight: "bold",
-                color: Colors.colors.primary,
-                margin: 10,
+          {crawlcontext[2].admin && (
+            <TouchableOpacity
+              style={{ alignSelf: "center" }}
+              onPress={() => {
+                props.navigation.navigate("Adminview");
               }}
             >
-              Switch to admin
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  color: Colors.colors.primary,
+                  margin: 10,
+                }}
+              >
+                Switch to admin
+              </Text>
+            </TouchableOpacity>
+          )}
 
           <TouchableOpacity
             onPress={() => {
