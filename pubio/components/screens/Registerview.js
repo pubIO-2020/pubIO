@@ -205,7 +205,9 @@ export default function Registerview({ navigation }) {
                 });
 
               // navigate to login view
-              navigation.navigate("Loginview");
+              navigation.navigate("Loginview", {
+                username: credentials.username,
+              });
             }
           }}
         >

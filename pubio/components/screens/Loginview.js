@@ -10,13 +10,13 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../Colors";
 import firebase from "../../Firebase";
 
 import { CrawlContext } from "../Context";
+import { set } from "react-native-reanimated";
 
 export default function Loginview({ navigation, route }) {
   // async storage tokens
@@ -28,6 +28,10 @@ export default function Loginview({ navigation, route }) {
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
+  });
+
+  const [displaysuccess, setDisplaysuccess] = useState({
+    usernamesuccess: "",
   });
 
   // state for if username or password is invalid
@@ -52,7 +56,6 @@ export default function Loginview({ navigation, route }) {
       .then(function (querySnapshot) {
         let userArray = [];
         querySnapshot.forEach(function (doc) {
-          console.log(doc.data());
           userArray.push(doc.data());
         });
         crawlcontext[5](userArray);
@@ -64,6 +67,15 @@ export default function Loginview({ navigation, route }) {
 
   // set crawl data in managed context state & read token
   useEffect(() => {
+    if (route.params !== undefined) {
+      const { username } = route.params;
+      setDisplaysuccess({ ...displaysuccess, usernamesuccess: username });
+    }
+
+    setTimeout(() => {
+      setDisplaysuccess({ ...displaysuccess, usernamesuccess: "" });
+    }, 3000);
+
     crawlRef
       .get()
       .then(function (doc) {
@@ -162,6 +174,14 @@ export default function Loginview({ navigation, route }) {
         style={styles.container}
         keyboardVerticalOffset={Platform.OS == "ios" ? 400 : 0}
       >
+        {displaysuccess.usernamesuccess !== "" && (
+          <View style={styles.success}>
+            <Text style={{ color: "green" }}>
+              {displaysuccess.usernamesuccess} successfully registered
+            </Text>
+          </View>
+        )}
+
         <View
           style={{
             marginTop: 120,
@@ -180,6 +200,7 @@ export default function Loginview({ navigation, route }) {
             }}
             source={require("../../assets/pubioVertB.png")}
           />
+
           <View style={{ width: "85%", marginTop: 0 }}>
             {dontmatch && (
               <Text
@@ -256,5 +277,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: Platform.OS === "android" ? 80 : 0,
     paddingBottom: 100,
+  },
+  success: {
+    position: "absolute",
+    top: 50,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: "#f7f7f7",
+    borderRadius: 10,
+    backgroundColor: "#d4edda",
+    width: "90%",
+    alignItems: "center",
+    zIndex: 1500,
+    opacity: 0.7,
   },
 });
