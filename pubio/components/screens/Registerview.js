@@ -24,6 +24,7 @@ export default function Registerview({ navigation }) {
   // credentials from inputs
   const [credentials, setCredentials] = useState({
     username: "",
+    admin: false,
     password: "",
     email: "",
     fullname: "",
