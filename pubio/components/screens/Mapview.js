@@ -111,7 +111,7 @@ export default function Mapview({ navigation, route }) {
 const styles = StyleSheet.create({
   carousel: {
     position: "absolute",
-    bottom: 250,
+    bottom: 240,
     alignSelf: "center",
   },
   viewstyles: {

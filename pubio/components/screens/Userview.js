@@ -35,6 +35,7 @@ export default function Userview({ route }) {
                   enableLinearGradient={true}
                   linearGradient={[Colors.colors.primary, Colors.colors.dark]}
                 />
+                <Text style={{ fontSize: 15, marginTop: 10 }}>Show to your bartender for a discount!</Text>
               </View>
             </Modal>
           </Portal>
