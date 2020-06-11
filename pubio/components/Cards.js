@@ -73,11 +73,11 @@ export default function Card(props) {
             return null;
           }
         })}
-        {crawlcontext[0][props.crawlIndex].subscribed.length > 5 && (
+        {crawlcontext[6][props.title].subs.length > 5 && (
           // if less than 5 avatars display rest of num of users
           <Text style={styles.others}>
-            +{crawlcontext[0][props.crawlIndex].subscribed.length - 5}{" "}
-            {crawlcontext[0][props.crawlIndex].subscribed.length - 5 > 1
+            +{crawlcontext[6][props.title].subs.length - 5}{" "}
+            {crawlcontext[6][props.title].subs.length - 5 > 1
               ? "others"
               : "other"}
           </Text>

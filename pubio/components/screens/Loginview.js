@@ -65,18 +65,18 @@ export default function Loginview({ navigation, route }) {
         console.log("Error getting documents: ", error);
       });
 
-    subRef
-      .get()
-      .then(function (querySnapshot) {
-        let subObj = {};
-        querySnapshot.forEach(function (doc) {
-          subObj[doc.id] = doc.data();
-        });
-        crawlcontext[7](subObj);
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
+    // subRef
+    //   .get()
+    //   .then(function (querySnapshot) {
+    //     let subObj = {};
+    //     querySnapshot.forEach(function (doc) {
+    //       subObj[doc.id] = doc.data();
+    //     });
+    //     crawlcontext[7](subObj);
+    //   })
+    //   .catch(function (error) {
+    //     console.log("Error getting documents: ", error);
+    //   });
   }, []);
 
   // set crawl data in managed context state & read token
