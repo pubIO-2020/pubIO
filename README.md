@@ -33,7 +33,7 @@ An app that:
 
 ## Flow Chart
 
-<img src ="assets/images/flowChart.jpg" height="500px" alt= "Flow Chart">
+<a href="https://ibb.co/yngX1WV"><img src="https://i.ibb.co/nsQbvzR/Pub-IOSwim.png" alt="Pub-IOSwim" border="0"></a>
 
 ## Project Board:
 
