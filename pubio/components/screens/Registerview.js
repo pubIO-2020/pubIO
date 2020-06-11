@@ -90,6 +90,7 @@ export default function Registerview({ navigation }) {
         <TextInput
           label="Fullname"
           mode="outlined"
+          selectionColor="rgba(0, 0, 0, 0.2)"
           style={{ marginTop: 10 }}
           theme={{ colors: { primary: Colors.colors.dark } }}
           value={credentials.fullname}
@@ -108,6 +109,7 @@ export default function Registerview({ navigation }) {
         <TextInput
           label="Username"
           mode="outlined"
+          selectionColor="rgba(0, 0, 0, 0.2)"
           style={{ marginTop: 3 }}
           theme={{ colors: { primary: Colors.colors.dark } }}
           value={credentials.username}
@@ -126,6 +128,7 @@ export default function Registerview({ navigation }) {
         <TextInput
           label="Email"
           mode="outlined"
+          selectionColor="rgba(0, 0, 0, 0.2)"
           style={{ marginTop: 3 }}
           theme={{ colors: { primary: Colors.colors.dark } }}
           value={credentials.email}
@@ -144,6 +147,7 @@ export default function Registerview({ navigation }) {
         <TextInput
           label="Password"
           mode="outlined"
+          selectionColor="rgba(0, 0, 0, 0.2)"
           secureTextEntry={true}
           style={{ marginTop: 3 }}
           theme={{ colors: { primary: Colors.colors.dark } }}
@@ -166,6 +170,7 @@ export default function Registerview({ navigation }) {
         <TextInput
           label="Re-Enter Password"
           mode="outlined"
+          selectionColor="rgba(0, 0, 0, 0.2)"
           secureTextEntry={true}
           style={{ marginTop: 3 }}
           theme={{ colors: { primary: Colors.colors.dark } }}

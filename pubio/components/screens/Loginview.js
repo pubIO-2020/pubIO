@@ -226,6 +226,7 @@ export default function Loginview({ navigation, route }) {
             <TextInput
               label="Password"
               mode="outlined"
+              selectionColor="rgba(0, 0, 0, 0.2)"
               secureTextEntry={true}
               style={{ marginTop: 3, minHeight: 20 }}
               theme={{ colors: { primary: Colors.colors.dark } }}
