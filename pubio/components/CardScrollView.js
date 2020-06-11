@@ -1,13 +1,34 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  Image,
+  RefreshControl,
+} from "react-native";
 
 import Card from "./Cards";
 import Colors from "./Colors";
 
 import { CrawlContext } from "./Context";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 export default function CardScrollView(props) {
   const crawlcontext = useContext(CrawlContext);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   if (props.routename === "Userview") {
     if (crawlcontext[2].subscription.length === 0) {
@@ -37,6 +58,9 @@ export default function CardScrollView(props) {
             flexGrow: 1,
             backgroundColor: Colors.colors.offWhite,
           }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           {crawlcontext[2].subscription.map((user, index) => {
             let crawlObject;
@@ -75,6 +99,9 @@ export default function CardScrollView(props) {
           flexGrow: 1,
           backgroundColor: Colors.colors.offWhite,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {crawlcontext[0].map((crawl, index) => {
           return (
