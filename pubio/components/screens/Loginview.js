@@ -8,15 +8,15 @@ import {
   AsyncStorage,
   Image,
   Platform,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { Button, TextInput } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../Colors";
 import firebase from "../../Firebase";
 
 import { CrawlContext } from "../Context";
+import { set } from "react-native-reanimated";
 
 export default function Loginview({ navigation, route }) {
   // async storage tokens
@@ -30,6 +30,10 @@ export default function Loginview({ navigation, route }) {
     password: "",
   });
 
+  const [displaysuccess, setDisplaysuccess] = useState({
+    usernamesuccess: "",
+  });
+
   // state for if username or password is invalid
   const [dontmatch, setDontmatch] = useState(false);
 
@@ -40,7 +44,7 @@ export default function Loginview({ navigation, route }) {
   const db = firebase.firestore();
 
   // firestore db refs
-  const usersRef = db.collection("users").doc("users");
+  const usersRef = db.collection("usersTest");
   const crawlRef = db.collection("crawls").doc("crawls");
 
   const crawlcontext = useContext(CrawlContext);
@@ -49,28 +53,29 @@ export default function Loginview({ navigation, route }) {
   useEffect(() => {
     usersRef
       .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          let userArray = [];
-          // loop through objects in firebase data
-          for (let x in doc.data()) {
-            // push data objects to user array
-            userArray.push(doc.data()[x]);
-          }
-          // setUsers state to new userArray array
-          crawlcontext[5](userArray);
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
+      .then(function (querySnapshot) {
+        let userArray = [];
+        querySnapshot.forEach(function (doc) {
+          userArray.push(doc.data());
+        });
+        crawlcontext[5](userArray);
       })
       .catch(function (error) {
-        console.log("Error getting document:", error);
+        console.log("Error getting documents: ", error);
       });
   }, []);
 
   // set crawl data in managed context state & read token
   useEffect(() => {
+    if (route.params !== undefined) {
+      const { username } = route.params;
+      setDisplaysuccess({ ...displaysuccess, usernamesuccess: username });
+    }
+
+    setTimeout(() => {
+      setDisplaysuccess({ ...displaysuccess, usernamesuccess: "" });
+    }, 3000);
+
     crawlRef
       .get()
       .then(function (doc) {
@@ -165,16 +170,42 @@ export default function Loginview({ navigation, route }) {
   if (!activity) {
     return (
       <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
-      style={styles.container}
-      keyboardVerticalOffset={Platform.OS == "ios" ? 400 : 0}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS == "ios" ? 400 : 0}
       >
-        <View style={{ marginTop: 120, width: "100%", justifyContent: "center", alignItems: "center" }}>
-          <Image style={{resizeMode: 'center', width: "80%", tintColor: Colors.colors.primary, height: 350, marginBottom: -20}} source={require('../../assets/pubioVertB.png')}/>
-          <View style={{width: '85%', marginTop: 0}}>
+        {displaysuccess.usernamesuccess !== "" && (
+          <View style={styles.success}>
+            <Text style={{ color: "green" }}>
+              {displaysuccess.usernamesuccess} successfully registered
+            </Text>
+          </View>
+        )}
 
+        <View
+          style={{
+            marginTop: 120,
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            style={{
+              resizeMode: "center",
+              width: "80%",
+              tintColor: Colors.colors.primary,
+              height: 350,
+              marginBottom: -20,
+            }}
+            source={require("../../assets/pubioVertB.png")}
+          />
+
+          <View style={{ width: "85%", marginTop: 0 }}>
             {dontmatch && (
-              <Text style={{ color: "red", alignSelf: "center", marginTop: 10 }}>
+              <Text
+                style={{ color: "red", alignSelf: "center", marginTop: 10 }}
+              >
                 Username or Password does not match
               </Text>
             )}
@@ -182,7 +213,7 @@ export default function Loginview({ navigation, route }) {
             <TextInput
               label="Username"
               mode="outlined"
-              style={{ marginTop: 10, minHeight:20  }}
+              style={{ marginTop: 10, minHeight: 20 }}
               theme={{ colors: { primary: Colors.colors.dark } }}
               value={credentials.username}
               onChangeText={(un) => {
@@ -195,7 +226,7 @@ export default function Loginview({ navigation, route }) {
               label="Password"
               mode="outlined"
               secureTextEntry={true}
-              style={{ marginTop: 3, minHeight:20  }}
+              style={{ marginTop: 3, minHeight: 20 }}
               theme={{ colors: { primary: Colors.colors.dark } }}
               value={credentials.password}
               onChangeText={(pass) => {
@@ -208,7 +239,7 @@ export default function Loginview({ navigation, route }) {
               mode="contained"
               color={Colors.colors.primary}
               onPress={checkLogin}
-              style={{ marginTop: 12, justifyContent: "center", minHeight:20 }}
+              style={{ marginTop: 12, justifyContent: "center", minHeight: 20 }}
             >
               Sign In
             </Button>
@@ -221,11 +252,11 @@ export default function Loginview({ navigation, route }) {
                 setCredentials({ ...credentials, password: "", username: "" });
                 navigation.navigate("Registerview");
               }}
-              style={{ marginTop: 5, justifyContent: "center", minHeight:20 }}
+              style={{ marginTop: 5, justifyContent: "center", minHeight: 20 }}
             >
               Sign Up
             </Button>
-            {Platform.OS === "android" && <View style={{height: 400}}></View> }
+            {Platform.OS === "android" && <View style={{ height: 400 }}></View>}
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -245,6 +276,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     marginTop: Platform.OS === "android" ? 80 : 0,
-    paddingBottom: 100
+    paddingBottom: 100,
+  },
+  success: {
+    position: "absolute",
+    top: 50,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: "#f7f7f7",
+    borderRadius: 10,
+    backgroundColor: "#d4edda",
+    width: "90%",
+    alignItems: "center",
+    zIndex: 1500,
+    opacity: 0.7,
   },
 });

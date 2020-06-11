@@ -18,12 +18,13 @@ import firebase from "../../Firebase";
 
 export default function Registerview({ navigation }) {
   const db = firebase.firestore();
-  const userRef = db.collection("users").doc("users");
+  const userRef = db.collection("usersTest");
   const crawlcontext = useContext(CrawlContext);
 
   // credentials from inputs
   const [credentials, setCredentials] = useState({
     username: "",
+    admin: false,
     password: "",
     email: "",
     fullname: "",
@@ -35,6 +36,7 @@ export default function Registerview({ navigation }) {
 
   const [validation, setValidation] = useState({
     email: false,
+    username: false,
     fullname: false,
     password: false,
     reenterpass: false,
@@ -180,37 +182,35 @@ export default function Registerview({ navigation }) {
           onPress={() => {
             //   get users in database and add new user
             setValidation({ ...validation, registered: true });
-            userRef
-              .get()
-              .then(function (doc) {
-                if (doc.exists) {
-                  // if email is not empty, full name is not empty, password not is empty, & passwords equal eachother
-                  if (
-                    validation.email &&
-                    validation.fullname &&
-                    validation.password &&
-                    credentials.password === credentials.reenterpass
-                  ) {
-                    let userArray = [];
-                    // loop through objects in firebase data
-                    for (let x in doc.data()) {
-                      // push data objects to user array
-                      userArray.push(doc.data()[x]);
-                    }
-                    // setUsers state to new userArray array
-                    userArray.push(credentials);
-                    crawlcontext[5](userArray);
-                    userRef.set(Object.assign({}, userArray));
-                    navigation.navigate("Loginview");
-                  }
-                } else {
-                  // doc.data() will be undefined in this cases
-                  console.log("No such document!");
-                }
-              })
-              .catch(function (error) {
-                console.log("Error getting document:", error);
+            if (
+              validation.email &&
+              validation.fullname &&
+              validation.password &&
+              validation.username &&
+              credentials.password === credentials.reenterpass
+            ) {
+              // push new user credentials into firebase
+              userRef.doc(credentials.username).set(credentials);
+
+              // loop through all users in database and set them in user context state
+              userRef
+                .get()
+                .then(function (querySnapshot) {
+                  let userArray = [];
+                  querySnapshot.forEach(function (doc) {
+                    userArray.push(doc.data());
+                  });
+                  crawlcontext[5](userArray);
+                })
+                .catch(function (error) {
+                  console.log("Error getting documents: ", error);
+                });
+
+              // navigate to login view
+              navigation.navigate("Loginview", {
+                username: credentials.username,
               });
+            }
           }}
         >
           Register

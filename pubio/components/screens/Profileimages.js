@@ -10,32 +10,21 @@ import { CrawlContext } from "../Context";
 import firebase from "../../Firebase";
 
 export default function Profileimages({ navigation }) {
+  const crawlcontext = useContext(CrawlContext);
+
   const [profileimg, setProfileimg] = useState({
     img: "",
     url: "",
   });
 
   const db = firebase.firestore();
-  const userRef = db.collection("users").doc("users");
-
-  const crawlcontext = useContext(CrawlContext);
+  const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
 
   //   function to set new user profile image in state & in db
   function setUserProfile() {
-    let newUserData = [];
-    // push each user object into the new array
-    crawlcontext[4].forEach((user) => {
-      newUserData.push(user);
-    });
-
-    // filter through new user array to find current username
-    newUserData.filter((user, id) => {
-      if (user.username === crawlcontext[2].username) {
-        //   set user profile image to new selected avatar
-        newUserData[id].profile = profileimg.img;
-      }
-    });
-    userRef.set(Object.assign({}, newUserData));
+    let user = crawlcontext[2];
+    user.profile = profileimg.img;
+    userRef.set(user);
   }
 
   // users currently will have to unsubscribe and subscribe on the crawl cards to see ther avatars change on the crawl cards
@@ -93,15 +82,15 @@ export default function Profileimages({ navigation }) {
             onPress={() =>
               setProfileimg({
                 ...profileimg,
-                img: "arial.jpg",
-                url: require("../../assets/profileimages/arial.jpg"),
+                img: "beer.png",
+                url: require("../../assets/profileimages/beer.png"),
               })
             }
           >
             <Avatar.Image
               style={styles.avatars}
               size={100}
-              source={require("../../assets/profileimages/arial.jpg")}
+              source={require("../../assets/profileimages/beer.png")}
             />
           </TouchableOpacity>
         </View>
