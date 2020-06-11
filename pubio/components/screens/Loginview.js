@@ -213,6 +213,7 @@ export default function Loginview({ navigation, route }) {
             <TextInput
               label="Username"
               mode="outlined"
+              selectionColor="rgba(0, 0, 0, 0.2)"
               style={{ marginTop: 10, minHeight: 20 }}
               theme={{ colors: { primary: Colors.colors.dark } }}
               value={credentials.username}
