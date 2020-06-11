@@ -206,84 +206,83 @@ export default function Details({ navigation, route }) {
             }}
           />
         </MapView>
-        <View style={styles.container}>
-          <Text style={styles.title}>{crawlcontext[0][index].title}</Text>
-          <Text style={styles.distance}>{distance}</Text>
-          {crawlcontext[0][index].bars.map((name, key) => {
-            return (
-              <TouchableOpacity
-                key={key}
-                onPress={() => {
-                  setSpecials({ ...specials, visible: true, index: key });
-                  getBarRating(
-                    REACT_APP_GOOGLE_PLACES_KEY,
-                    crawlcontext[0][index].bars[key].name
-                  );
-                }}
-              >
-                <View style={styles.bar}>
-                  <View style={{ width: 30, alignItems: "center" }}>
-                    <Ionicons
-                      color={
-                        key === 0
-                          ? Colors.colors.primary
-                          : key === crawlcontext[0][index].bars.length - 1
-                          ? Colors.colors.primary
-                          : "	rgb(128,128,128)"
-                      }
-                      name={
-                        key === 0
-                          ? "md-pin"
-                          : key === crawlcontext[0][index].bars.length - 1
-                          ? "ios-beer"
-                          : "ios-arrow-dropdown-circle"
-                      }
-                      size={
-                        key === 0
-                          ? 35
-                          : key === crawlcontext[0][index].bars.length - 1
-                          ? 35
-                          : 18
-                      }
-                    />
-                  </View>
+        <View style={styles.container}> 
+          <View style={styles.containerInside}>
+            <Text style={styles.title}>{crawlcontext[0][index].title}</Text>
+            <Text style={styles.distance}>{distance}</Text>
+            {crawlcontext[0][index].bars.map((name, key) => {
+              return (
+                <TouchableOpacity
+                  key={key}
+                  onPress={() => {
+                    setSpecials({ ...specials, visible: true, index: key });
+                    getBarRating(REACT_APP_GOOGLE_PLACES_KEY, crawlcontext[0][index].bars[key].name);
+                    console.log("------");
+                  }}
+                >
+                  <View style={styles.bar}>
+                    <View style={{ width: 30, alignItems: "center" }}>
+                      <Ionicons
+                        color={
+                          key === 0
+                            ? Colors.colors.primary
+                            : key === crawlcontext[0][index].bars.length - 1
+                            ? Colors.colors.primary
+                            : "	rgb(128,128,128)"
+                        }
+                        name={
+                          key === 0
+                            ? "md-pin"
+                            : key === crawlcontext[0][index].bars.length - 1
+                            ? "ios-beer"
+                            : "ios-arrow-dropdown-circle"
+                        }
+                        size={
+                          key === 0
+                            ? 35
+                            : key === crawlcontext[0][index].bars.length - 1
+                            ? 35
+                            : 18
+                        }
+                      />
+                    </View>
 
-                  <Text style={styles.text}>{name.name}</Text>
-                  <View>
-                    <Ionicons
-                      style={styles.arrow}
-                      name={"ios-arrow-forward"}
-                      size={20}
-                    />
+                    <Text style={styles.text}>{name.name}</Text>
+                    <View>
+                      <Ionicons
+                        style={styles.arrow}
+                        name={"ios-arrow-forward"}
+                        size={20}
+                      />
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-
+                </TouchableOpacity>
+              );
+            })}
+          </View>
           <LinearGradient
-            colors={["transparent", "rgba(0,0,0,0.3)"]}
-            style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
-          >
-            <TouchableHighlight
-              style={styles.press}
-              onPress={() => {
-                if (subscribed) {
-                  setSubscribed(false);
-                  userSubscriptions(false);
-                } else {
-                  setSubscribed(true);
-                  userSubscriptions(true);
-                }
-              }}
-              activeOpacity={0.4}
-              underlayColor={"rgba(255,255,255,0.2)"}
+              colors={["transparent", "rgba(0,0,0,0.3)"]}
+              style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
             >
-              <Text style={styles.subscribeText}>
-                {subscribed ? "Subscribed" : "Subscribe"}
-              </Text>
-            </TouchableHighlight>
-          </LinearGradient>
+              <TouchableHighlight
+                style={styles.press}
+                onPress={() => {
+                  if (subscribed) {
+                    setSubscribed(false);
+                    userSubscriptions(false);
+                  } else {
+                    setSubscribed(true);
+                    userSubscriptions(true);
+                  }
+                }}
+                activeOpacity={0.4}
+                underlayColor={"rgba(255,255,255,0.2)"}
+              >
+                <Text style={styles.subscribeText}>
+                  {subscribed ? "Subscribed" : "Subscribe"}
+                </Text>
+              </TouchableHighlight>
+            </LinearGradient>
         </View>
 
         {specials.visible && (
@@ -427,9 +426,16 @@ const styles = StyleSheet.create({
   },
   container: {
     position: "absolute",
-    bottom: 235,
+    bottom: 215,
     alignSelf: "center",
-    height: 260,
+    height: 282,
+    width: "100%",
+    opacity: 0.95,
+  },
+  containerInside: {
+    justifyContent: "flex-start",
+    alignSelf: "center",
+    height: "90%",
     width: "100%",
     backgroundColor: Colors.colors.cardbackground,
     opacity: 0.95,
@@ -453,7 +459,7 @@ const styles = StyleSheet.create({
   },
   subscribe: {
     position: "absolute",
-    bottom: -40,
+    bottom: 0,
     alignSelf: "center",
     backgroundColor: Colors.colors.primary,
     width: 100,
