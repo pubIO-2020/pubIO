@@ -56,8 +56,6 @@ export default function Card(props) {
   return (
     <View>
       <TouchableOpacity style={styles.avipos}>
-        {/* {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => { */}
-
         {crawlcontext[6][props.title].subs.map((user, index) => {
           // display only 5 avatars
           if (index < 5) {

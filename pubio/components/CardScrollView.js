@@ -22,9 +22,11 @@ function wait(timeout) {
 }
 
 // update data in context from firebase
-function updateData(context) {
+function updateData(crawlcontext, subcontext) {
   const db = firebase.firestore();
   const crawlRef = db.collection("crawls").doc("crawls");
+  const subRef = db.collection("subscribed");
+
   crawlRef
     .get()
     .then(function (doc) {
@@ -34,14 +36,26 @@ function updateData(context) {
         for (let crawl in doc.data()) {
           crawlArray.push(doc.data()[crawl]);
         }
-        context(crawlArray);
-        console.log("update all data");
+        crawlcontext(crawlArray);
       } else {
         console.log("No such document!");
       }
     })
     .catch(function (error) {
       console.log("Error getting document:", error);
+    });
+
+  subRef
+    .get()
+    .then(function (querySnapshot) {
+      let subObj = {};
+      querySnapshot.forEach(function (doc) {
+        subObj[doc.id] = doc.data();
+      });
+      subcontext(subObj);
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
     });
 }
 
@@ -52,7 +66,7 @@ export default function CardScrollView(props) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    updateData(crawlcontext[1]);
+    updateData(crawlcontext[1], crawlcontext[6]);
     // console.log(crawlcontext[6]);
     console.log(crawlcontext[6]);
     wait(2000).then(() => setRefreshing(false));
