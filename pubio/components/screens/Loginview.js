@@ -46,6 +46,7 @@ export default function Loginview({ navigation, route }) {
   // firestore db refs
   const usersRef = db.collection("usersTest");
   const crawlRef = db.collection("crawls").doc("crawls");
+  const subRef = db.collection("subscribed");
 
   const crawlcontext = useContext(CrawlContext);
 
@@ -59,6 +60,19 @@ export default function Loginview({ navigation, route }) {
           userArray.push(doc.data());
         });
         crawlcontext[5](userArray);
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+
+    subRef
+      .get()
+      .then(function (querySnapshot) {
+        let subObj = {};
+        querySnapshot.forEach(function (doc) {
+          subObj[doc.id] = doc.data();
+        });
+        crawlcontext[7](subObj);
       })
       .catch(function (error) {
         console.log("Error getting documents: ", error);
@@ -93,6 +107,19 @@ export default function Loginview({ navigation, route }) {
       })
       .catch(function (error) {
         console.log("Error getting document:", error);
+      });
+
+    subRef
+      .get()
+      .then(function (querySnapshot) {
+        let subObj = {};
+        querySnapshot.forEach(function (doc) {
+          subObj[doc.id] = doc.data();
+        });
+        crawlcontext[7](subObj);
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
       });
   }, [crawlcontext[4]]);
 

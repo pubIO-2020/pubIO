@@ -38,6 +38,7 @@ export default function App() {
   const [currentuser, setCurrentuser] = useState();
   // user data from firestore
   const [users, setUsers] = useState();
+  const [subs, setSubs] = useState();
 
   return (
     <CrawlContext.Provider
@@ -48,6 +49,8 @@ export default function App() {
         setCurrentuser,
         users,
         setUsers,
+        subs,
+        setSubs,
       ]}
     >
       <NavigationContainer independent={true}>

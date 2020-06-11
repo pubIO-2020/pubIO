@@ -36,6 +36,7 @@ function AvatarImg(props) {
 
 export default function Card(props) {
   const crawlcontext = useContext(CrawlContext);
+
   const navigation = useNavigation();
   const profilePic = {
     "monk.png": require("../assets/profileimages/monk.png"),
@@ -56,9 +57,10 @@ export default function Card(props) {
   return (
     <View>
       <TouchableOpacity style={styles.avipos}>
-        {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => {
-          // display only 5 avatars
+        {/* {crawlcontext[0][props.crawlIndex].subscribed.map((user, index) => { */}
 
+        {crawlcontext[6][props.title].subs.map((user, index) => {
+          // display only 5 avatars
           if (index < 5) {
             return (
               <AvatarImg
@@ -74,7 +76,10 @@ export default function Card(props) {
         {crawlcontext[0][props.crawlIndex].subscribed.length > 5 && (
           // if less than 5 avatars display rest of num of users
           <Text style={styles.others}>
-            +{crawlcontext[0][props.crawlIndex].subscribed.length - 5} {crawlcontext[0][props.crawlIndex].subscribed.length - 5 > 1 ? 'others' : 'other'}
+            +{crawlcontext[0][props.crawlIndex].subscribed.length - 5}{" "}
+            {crawlcontext[0][props.crawlIndex].subscribed.length - 5 > 1
+              ? "others"
+              : "other"}
           </Text>
         )}
       </TouchableOpacity>

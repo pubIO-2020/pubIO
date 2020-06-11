@@ -211,6 +211,19 @@ export default function Registerview({ navigation }) {
                   console.log("Error getting documents: ", error);
                 });
 
+              subRef
+                .get()
+                .then(function (querySnapshot) {
+                  let subObj = {};
+                  querySnapshot.forEach(function (doc) {
+                    subObj[doc.id] = doc.data();
+                  });
+                  crawlcontext[7](subObj);
+                })
+                .catch(function (error) {
+                  console.log("Error getting documents: ", error);
+                });
+
               // navigate to login view
               navigation.navigate("Loginview", {
                 username: credentials.username,

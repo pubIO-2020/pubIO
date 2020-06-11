@@ -53,6 +53,8 @@ export default function CardScrollView(props) {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     updateData(crawlcontext[1]);
+    // console.log(crawlcontext[6]);
+    console.log(crawlcontext[6]);
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
