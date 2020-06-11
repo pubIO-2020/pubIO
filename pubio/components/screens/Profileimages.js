@@ -20,7 +20,7 @@ export default function Profileimages({ navigation }) {
   const db = firebase.firestore();
   const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
 
-  //   function to set new user profile image in state & in db
+  // function to set new user profile image in state & in db
   function setUserProfile() {
     let user = crawlcontext[2];
     user.profile = profileimg.img;

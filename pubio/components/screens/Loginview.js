@@ -121,7 +121,7 @@ export default function Loginview({ navigation, route }) {
       .catch(function (error) {
         console.log("Error getting documents: ", error);
       });
-  }, [crawlcontext[4]]);
+  }, [crawlcontext[4], crawlcontext[6]]);
 
   // Set token in async storage
   const saveToken = async () => {
