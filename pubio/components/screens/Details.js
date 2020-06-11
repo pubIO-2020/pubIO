@@ -44,6 +44,8 @@ export default function Details({ navigation, route }) {
 
   const { index } = route.params;
 
+  const subRef = db.collection("subscribed").doc(crawlcontext[0][index].title);
+
   function getBarRating(apiKey, barName) {
     let detailQueryURL;
     let idQueryURL = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=${apiKey}&input=${barName}&inputtype=textquery&locationbias=point:30.267,-97.738`;
@@ -67,12 +69,7 @@ export default function Details({ navigation, route }) {
 
   function userSubscriptions(subscribed) {
     let newUserData = crawlcontext[2];
-    let newCrawlData = [];
-
-    // push each crawl object into the new array
-    crawlcontext[0].forEach((crawl) => {
-      newCrawlData.push(crawl);
-    });
+    let newCrawlData = crawlcontext[6];
 
     //  if param is true push bar crawl title to subscriptions array
     if (subscribed) {
@@ -84,17 +81,19 @@ export default function Details({ navigation, route }) {
       userRef.set(newUserData);
       crawlcontext[3](newUserData);
 
-      // set subbed user on crawl card
-      newCrawlData.filter((crawl, id) => {
-        if (crawl.title === crawlcontext[0][index].title) {
-          newCrawlData[id].subscribed.unshift({
-            username: crawlcontext[2].username,
-            profile: crawlcontext[2].profile,
-          });
-        }
+      newCrawlData[crawlcontext[0][index].title].subs.unshift({
+        username: crawlcontext[2].username,
+        profile: crawlcontext[2].profile,
       });
-      crawlcontext[1](newCrawlData);
-      crawlRef.set(Object.assign({}, newCrawlData));
+
+      crawlcontext[7](newCrawlData);
+      subRef.update({
+        subs: firebase.firestore.FieldValue.arrayUnion({
+          username: crawlcontext[2].username,
+          profile: crawlcontext[2].profile,
+        }),
+      });
+
       // if param is false filter through new user array and find the current user
     } else {
       newUserData.subscription.filter((crawl, key) => {
@@ -107,19 +106,20 @@ export default function Details({ navigation, route }) {
       userRef.set(newUserData);
       crawlcontext[3](newUserData);
 
-      // set subbed user on crawl card
-      newCrawlData.filter((crawl, id) => {
-        if (crawl.title === crawlcontext[0][index].title) {
-          newCrawlData[id].subscribed.filter((user, key) => {
-            if (user.username === crawlcontext[2].username) {
-              newCrawlData[id].subscribed.splice(key, 1);
-            }
-          });
+      newCrawlData[crawlcontext[0][index].title].subs.filter((user, key) => {
+        if (user.username === crawlcontext[2].username) {
+          newCrawlData[crawlcontext[0][index].title].subs.splice(key, 1);
         }
       });
-      // update database & state with new crawl data
-      crawlRef.set(Object.assign({}, newCrawlData));
-      crawlcontext[1](newCrawlData);
+
+      crawlcontext[7](newCrawlData);
+
+      subRef.update({
+        subs: firebase.firestore.FieldValue.arrayRemove({
+          username: crawlcontext[2].username,
+          profile: crawlcontext[2].profile,
+        }),
+      });
     }
   }
 
@@ -206,7 +206,7 @@ export default function Details({ navigation, route }) {
             }}
           />
         </MapView>
-        <View style={styles.container}> 
+        <View style={styles.container}>
           <View style={styles.containerInside}>
             <Text style={styles.title}>{crawlcontext[0][index].title}</Text>
             <Text style={styles.distance}>{distance}</Text>
@@ -216,7 +216,10 @@ export default function Details({ navigation, route }) {
                   key={key}
                   onPress={() => {
                     setSpecials({ ...specials, visible: true, index: key });
-                    getBarRating(REACT_APP_GOOGLE_PLACES_KEY, crawlcontext[0][index].bars[key].name);
+                    getBarRating(
+                      REACT_APP_GOOGLE_PLACES_KEY,
+                      crawlcontext[0][index].bars[key].name
+                    );
                     console.log("------");
                   }}
                 >
@@ -261,28 +264,28 @@ export default function Details({ navigation, route }) {
             })}
           </View>
           <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.3)"]}
-              style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
+            colors={["transparent", "rgba(0,0,0,0.3)"]}
+            style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
+          >
+            <TouchableHighlight
+              style={styles.press}
+              onPress={() => {
+                if (subscribed) {
+                  setSubscribed(false);
+                  userSubscriptions(false);
+                } else {
+                  setSubscribed(true);
+                  userSubscriptions(true);
+                }
+              }}
+              activeOpacity={0.4}
+              underlayColor={"rgba(255,255,255,0.2)"}
             >
-              <TouchableHighlight
-                style={styles.press}
-                onPress={() => {
-                  if (subscribed) {
-                    setSubscribed(false);
-                    userSubscriptions(false);
-                  } else {
-                    setSubscribed(true);
-                    userSubscriptions(true);
-                  }
-                }}
-                activeOpacity={0.4}
-                underlayColor={"rgba(255,255,255,0.2)"}
-              >
-                <Text style={styles.subscribeText}>
-                  {subscribed ? "Subscribed" : "Subscribe"}
-                </Text>
-              </TouchableHighlight>
-            </LinearGradient>
+              <Text style={styles.subscribeText}>
+                {subscribed ? "Subscribed" : "Subscribe"}
+              </Text>
+            </TouchableHighlight>
+          </LinearGradient>
         </View>
 
         {specials.visible && (
