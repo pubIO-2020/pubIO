@@ -132,19 +132,52 @@ export default function DrawerContent(props) {
           }}
         >
           {profileImage.url !== "" && (
-            <Avatar.Image source={profileImage.url} style={styles.avatar} />
+            <Avatar.Image
+              source={profileImage.url}
+              style={styles.avatar}
+              size={100}
+            />
           )}
+
+          <View
+            style={{
+              position: "absolute",
+              elevation: 20,
+              // alignItems: "center",
+              bottom: -10,
+              right: 0,
+              zIndex: 999,
+            }}
+          >
+            <Ionicons
+              name="md-construct"
+              color={Colors.colors.primary}
+              size={30}
+              style={{
+                shadowOffset: {
+                  width: 0,
+                  height: 4,
+                },
+                shadowColor: "black",
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                // elevation: 20,
+              }}
+            />
+          </View>
         </TouchableOpacity>
+
         <Text style={styles.profileName}>{crawlcontext[2]["username"]}</Text>
-        <View
+
+        {/* <View
           style={{
             borderBottomWidth: 1,
             width: "90%",
             marginTop: 3,
             borderColor: "lightgray",
           }}
-        ></View>
-        <View style={styles.settingsContainer}>
+        ></View> */}
+        {/* <View style={styles.settingsContainer}>
           <View style={styles.darkToggle}>
             <Text style={{ marginRight: 5 }}>Dark Mode</Text>
             <Switch
@@ -154,7 +187,7 @@ export default function DrawerContent(props) {
               value={isEnabled}
             />
           </View>
-        </View>
+        </View> */}
         <View style={styles.adminLogoutContainer}>
           {crawlcontext[2].admin && (
             <TouchableOpacity
@@ -211,7 +244,7 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontWeight: "bold",
-    marginTop: 3,
+    marginTop: 10,
   },
 
   darkToggle: {
@@ -252,5 +285,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 8,
+    marginTop: 10,
   },
 });

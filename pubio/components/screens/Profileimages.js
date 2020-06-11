@@ -59,7 +59,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/batman.jpg")}
             />
           </TouchableOpacity>
@@ -74,7 +74,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/goku.jpg")}
             />
           </TouchableOpacity>
@@ -89,7 +89,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/beer.png")}
             />
           </TouchableOpacity>
@@ -107,7 +107,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/darthvader.jpg")}
             />
           </TouchableOpacity>
@@ -122,7 +122,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/soldier76.jpg")}
             />
           </TouchableOpacity>
@@ -137,7 +137,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/monk.png")}
             />
           </TouchableOpacity>
@@ -155,7 +155,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/wonderwoman.jpg")}
             />
           </TouchableOpacity>
@@ -170,7 +170,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/bart.png")}
             />
           </TouchableOpacity>
@@ -185,7 +185,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/futurama.jpg")}
             />
           </TouchableOpacity>
@@ -202,7 +202,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/leela.png")}
             />
           </TouchableOpacity>
@@ -217,7 +217,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/yoda.jpg")}
             />
           </TouchableOpacity>
@@ -233,7 +233,7 @@ export default function Profileimages({ navigation }) {
           >
             <Avatar.Image
               style={styles.avatars}
-              size={100}
+              size={85}
               source={require("../../assets/profileimages/greenlantern.jpg")}
             />
           </TouchableOpacity>
@@ -265,7 +265,7 @@ export default function Profileimages({ navigation }) {
             <Text style={{ color: "gray" }}>Selected:</Text>
             <Avatar.Image
               style={[styles.avatars, { alignSelf: "center", marginTop: 10 }]}
-              size={100}
+              size={85}
               source={profileimg.url}
             />
           </TouchableOpacity>
