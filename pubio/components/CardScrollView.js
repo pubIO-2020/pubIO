@@ -13,10 +13,36 @@ import Colors from "./Colors";
 
 import { CrawlContext } from "./Context";
 
+import firebase from "../Firebase";
+
 function wait(timeout) {
   return new Promise((resolve) => {
     setTimeout(resolve, timeout);
   });
+}
+
+// update data in context from firebase
+function updateData(context) {
+  const db = firebase.firestore();
+  const crawlRef = db.collection("crawls").doc("crawls");
+  crawlRef
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        crawlArray = [];
+
+        for (let crawl in doc.data()) {
+          crawlArray.push(doc.data()[crawl]);
+        }
+        context(crawlArray);
+        console.log("update all data");
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
+    });
 }
 
 export default function CardScrollView(props) {
@@ -26,7 +52,7 @@ export default function CardScrollView(props) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
+    updateData(crawlcontext[1]);
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
