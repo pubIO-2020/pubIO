@@ -17,8 +17,8 @@ An app that:
 ## MVP:
 
 - User interface for customers to select a bundle deals and recieve a barcode for deal redemption
-- UI for customers to view the progress of the bar crawl, their barcode, current drink specials, and locations
-- UI for organization admins/bar managers to add & customize drink specials
+- UI for customers to view the route of the bar crawl, their barcode, current drink specials, and locations with various location data
+- UI for organization admins/bar managers to scan customers barcodes and get a confirmation that the barcode is valid
 
 ## Tech Stack:
 - React Native
@@ -27,9 +27,9 @@ An app that:
 
 ## API List:
 
-- Google Places & Routes
-- GoQR QR Code Generator
-- Uber (nice to have)
+- Google Places
+- Google Directions
+- Firebase
 
 ## Flow Chart
 
