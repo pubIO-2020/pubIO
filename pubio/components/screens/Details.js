@@ -81,17 +81,20 @@ export default function Details({ navigation, route }) {
       userRef.set(newUserData);
       crawlcontext[3](newUserData);
 
+      // update local user object with new sub
       newCrawlData[crawlcontext[0][index].title].subs.unshift({
         username: crawlcontext[2].username,
         profile: crawlcontext[2].profile,
       });
 
+      // update subscription database with new sub
       subRef.update({
         subs: firebase.firestore.FieldValue.arrayUnion({
           username: crawlcontext[2].username,
           profile: crawlcontext[2].profile,
         }),
       });
+      // update subscription state with new sub
       crawlcontext[7](newCrawlData);
 
       // if param is false filter through new user array and find the current user
@@ -106,19 +109,20 @@ export default function Details({ navigation, route }) {
       userRef.set(newUserData);
       crawlcontext[3](newUserData);
 
-      // remove new data from local sub object
+      // remove current bar crawl from local sub object
       newCrawlData[crawlcontext[0][index].title].subs.filter((user, key) => {
         if (user.username === crawlcontext[2].username) {
           newCrawlData[crawlcontext[0][index].title].subs.splice(key, 1);
         }
       });
-      // update subscribitons with remove sub
+      // update subscription database with remove sub
       subRef.update({
         subs: firebase.firestore.FieldValue.arrayRemove({
           username: crawlcontext[2].username,
           profile: crawlcontext[2].profile,
         }),
       });
+      // update subcription state with removed sub
       crawlcontext[7](newCrawlData);
     }
   }

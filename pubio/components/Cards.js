@@ -36,7 +36,6 @@ function AvatarImg(props) {
 
 export default function Card(props) {
   const crawlcontext = useContext(CrawlContext);
-
   const navigation = useNavigation();
   const profilePic = {
     "monk.png": require("../assets/profileimages/monk.png"),
