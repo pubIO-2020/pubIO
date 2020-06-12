@@ -41,7 +41,6 @@ export default function Details({ navigation, route }) {
   };
   const db = firebase.firestore();
   const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
-  // const crawlRef = db.collection("crawls").doc("crawls");
 
   const { index } = route.params;
 
@@ -123,8 +122,6 @@ export default function Details({ navigation, route }) {
       ]);
       // update current user in database and state
       userRef.set(newUserData);
-      // crawlcontext[3](newUserData);
-
       // update local user object with new sub
       newCrawlData[crawlcontext[0][index].title].subs.unshift({
         username: crawlcontext[2].username,
@@ -138,9 +135,6 @@ export default function Details({ navigation, route }) {
           profile: crawlcontext[2].profile,
         }),
       });
-      // update subscription state with new sub
-      // crawlcontext[7](newCrawlData);
-
       // if param is false filter through new user array and find the current user
     } else {
       newUserData.subscription.filter((crawl, key) => {
@@ -166,8 +160,6 @@ export default function Details({ navigation, route }) {
           profile: crawlcontext[2].profile,
         }),
       });
-      // update subcription state with removed sub
-      // crawlcontext[7](newCrawlData);
     }
   }
 
@@ -268,7 +260,6 @@ export default function Details({ navigation, route }) {
                       REACT_APP_GOOGLE_PLACES_KEY,
                       crawlcontext[0][index].bars[key].name
                     );
-                    console.log("------");
                   }}
                 >
                   <View style={styles.bar}>
