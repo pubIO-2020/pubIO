@@ -40,7 +40,7 @@ export default function Details({ navigation, route }) {
   };
   const db = firebase.firestore();
   const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
-  const crawlRef = db.collection("crawls").doc("crawls");
+  // const crawlRef = db.collection("crawls").doc("crawls");
 
   const { index } = route.params;
 

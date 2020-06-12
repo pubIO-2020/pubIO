@@ -45,14 +45,20 @@ function updateData(crawlcontext, subcontext) {
       console.log("Error getting document:", error);
     });
 
+  var subObj = {};
+  var subContextObj = {};
   subRef
     .get()
     .then(function (querySnapshot) {
-      let subObj = {};
       querySnapshot.forEach(function (doc) {
         subObj[doc.id] = doc.data();
       });
-      subcontext(subObj);
+    })
+    .then(() => {
+      for (let crawl in subObj) {
+        subContextObj[crawl] = { subs: subObj[crawl].subs.reverse() };
+      }
+      subcontext(subContextObj);
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);
@@ -66,7 +72,7 @@ export default function CardScrollView(props) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    updateData(crawlcontext[1], crawlcontext[6]);
+    updateData(crawlcontext[1], crawlcontext[7]);
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
