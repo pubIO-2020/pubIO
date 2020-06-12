@@ -7,7 +7,6 @@ import {
   Image,
   RefreshControl,
 } from "react-native";
-
 import Card from "./Cards";
 import Colors from "./Colors";
 
@@ -31,7 +30,7 @@ function updateData(crawlcontext, subcontext) {
     .get()
     .then(function (doc) {
       if (doc.exists) {
-        crawlArray = [];
+        let crawlArray = [];
 
         for (let crawl in doc.data()) {
           crawlArray.push(doc.data()[crawl]);
@@ -67,7 +66,9 @@ function updateData(crawlcontext, subcontext) {
 
 export default function CardScrollView(props) {
   const crawlcontext = useContext(CrawlContext);
+  const db = firebase.firestore();
 
+  const subRef = db.collection("subscribed");
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {

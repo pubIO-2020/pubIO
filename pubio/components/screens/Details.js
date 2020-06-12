@@ -34,6 +34,7 @@ export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
   const [subscribed, setSubscribed] = useState(false);
+
   const [rating, setRating] = useState({ rating: 0, placesURL: "" });
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
@@ -67,9 +68,52 @@ export default function Details({ navigation, route }) {
       });
   }
 
+  // on subscription update state from database
+  useEffect(() => {
+    const db = firebase.firestore();
+    const crawlRef = db.collection("crawls").doc("crawls");
+    const subRef = db.collection("subscribed");
+    crawlRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          let crawlArray = [];
+
+          for (let crawl in doc.data()) {
+            crawlArray.push(doc.data()[crawl]);
+          }
+          crawlcontext[1](crawlArray);
+        } else {
+          console.log("No such document!");
+        }
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+
+    var subObj = {};
+    var subContextObj = {};
+    subRef
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          subObj[doc.id] = doc.data();
+        });
+      })
+      .then(() => {
+        for (let crawl in subObj) {
+          subContextObj[crawl] = { subs: subObj[crawl].subs.reverse() };
+        }
+        crawlcontext[7](subContextObj);
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  }, [subscribed]);
+
   function userSubscriptions(subscribed) {
-    let newUserData = crawlcontext[2];
-    let newCrawlData = crawlcontext[6];
+    var newUserData = crawlcontext[2];
+    var newCrawlData = crawlcontext[6];
 
     //  if param is true push bar crawl title to subscriptions array
     if (subscribed) {
@@ -79,7 +123,7 @@ export default function Details({ navigation, route }) {
       ]);
       // update current user in database and state
       userRef.set(newUserData);
-      crawlcontext[3](newUserData);
+      // crawlcontext[3](newUserData);
 
       // update local user object with new sub
       newCrawlData[crawlcontext[0][index].title].subs.unshift({
@@ -95,7 +139,7 @@ export default function Details({ navigation, route }) {
         }),
       });
       // update subscription state with new sub
-      crawlcontext[7](newCrawlData);
+      // crawlcontext[7](newCrawlData);
 
       // if param is false filter through new user array and find the current user
     } else {
@@ -107,7 +151,7 @@ export default function Details({ navigation, route }) {
       });
       // update new user data in firebase and in state
       userRef.set(newUserData);
-      crawlcontext[3](newUserData);
+      // crawlcontext[3](newUserData);
 
       // remove current bar crawl from local sub object
       newCrawlData[crawlcontext[0][index].title].subs.filter((user, key) => {
@@ -123,7 +167,7 @@ export default function Details({ navigation, route }) {
         }),
       });
       // update subcription state with removed sub
-      crawlcontext[7](newCrawlData);
+      // crawlcontext[7](newCrawlData);
     }
   }
 
