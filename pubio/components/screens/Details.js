@@ -112,7 +112,6 @@ export default function Details({ navigation, route }) {
 
   function userSubscriptions(subscribed) {
     var newUserData = crawlcontext[2];
-    var newCrawlData = crawlcontext[6];
 
     //  if param is true push bar crawl title to subscriptions array
     if (subscribed) {
