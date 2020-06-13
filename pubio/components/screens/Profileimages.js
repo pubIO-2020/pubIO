@@ -23,28 +23,6 @@ export default function Profileimages({ navigation }) {
   const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
   const subRef = db.collection("subscribed");
 
-  // update profile avatar in state once avatar is changed | imageupdate state is changed
-  useEffect(() => {
-    var subObj = {};
-    var subContextObj = {};
-    subRef
-      .get()
-      .then(function (querySnapshot) {
-        querySnapshot.forEach(function (doc) {
-          subObj[doc.id] = doc.data();
-        });
-      })
-      .then(() => {
-        for (let crawl in subObj) {
-          subContextObj[crawl] = { subs: subObj[crawl].subs.reverse() };
-        }
-        crawlcontext[7](subContextObj);
-      })
-      .catch(function (error) {
-        console.log("Error getting documents: ", error);
-      });
-  }, [imageupdate]);
-
   // function to set new user profile image in state & in db
   function setUserProfile() {
     let user = crawlcontext[2];
