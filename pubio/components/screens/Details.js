@@ -34,15 +34,17 @@ export default function Details({ navigation, route }) {
   const [distance, setDistance] = useState("");
   const [specials, setSpecials] = useState({ visible: false, index: 0 });
   const [subscribed, setSubscribed] = useState(false);
+
   const [rating, setRating] = useState({ rating: 0, placesURL: "" });
   const downAction = () => {
     setSpecials({ ...specials, visible: false });
   };
   const db = firebase.firestore();
   const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
-  const crawlRef = db.collection("crawls").doc("crawls");
 
   const { index } = route.params;
+
+  const subRef = db.collection("subscribed").doc(crawlcontext[0][index].title);
 
   function getBarRating(apiKey, barName) {
     let detailQueryURL;
@@ -65,14 +67,51 @@ export default function Details({ navigation, route }) {
       });
   }
 
-  function userSubscriptions(subscribed) {
-    let newUserData = crawlcontext[2];
-    let newCrawlData = [];
+  // on subscription update state from database
+  useEffect(() => {
+    const db = firebase.firestore();
+    const crawlRef = db.collection("crawls").doc("crawls");
+    const subRef = db.collection("subscribed");
+    crawlRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          let crawlArray = [];
 
-    // push each crawl object into the new array
-    crawlcontext[0].forEach((crawl) => {
-      newCrawlData.push(crawl);
-    });
+          for (let crawl in doc.data()) {
+            crawlArray.push(doc.data()[crawl]);
+          }
+          crawlcontext[1](crawlArray);
+        } else {
+          console.log("No such document!");
+        }
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+
+    var subObj = {};
+    var subContextObj = {};
+    subRef
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          subObj[doc.id] = doc.data();
+        });
+      })
+      .then(() => {
+        for (let crawl in subObj) {
+          subContextObj[crawl] = { subs: subObj[crawl].subs.reverse() };
+        }
+        crawlcontext[7](subContextObj);
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  }, [subscribed]);
+
+  function userSubscriptions(subscribed) {
+    var newUserData = crawlcontext[2];
 
     //  if param is true push bar crawl title to subscriptions array
     if (subscribed) {
@@ -80,21 +119,16 @@ export default function Details({ navigation, route }) {
       newUserData.subscription = newUserData.subscription.concat([
         { QRDATA: crawlcontext[0][index].title },
       ]);
-      // update current user in database and state
+      // update current user in database
       userRef.set(newUserData);
-      crawlcontext[3](newUserData);
 
-      // set subbed user on crawl card
-      newCrawlData.filter((crawl, id) => {
-        if (crawl.title === crawlcontext[0][index].title) {
-          newCrawlData[id].subscribed.unshift({
-            username: crawlcontext[2].username,
-            profile: crawlcontext[2].profile,
-          });
-        }
+      // update subscription database with new sub
+      subRef.update({
+        subs: firebase.firestore.FieldValue.arrayUnion({
+          username: crawlcontext[2].username,
+          profile: crawlcontext[2].profile,
+        }),
       });
-      crawlcontext[1](newCrawlData);
-      crawlRef.set(Object.assign({}, newCrawlData));
       // if param is false filter through new user array and find the current user
     } else {
       newUserData.subscription.filter((crawl, key) => {
@@ -103,23 +137,16 @@ export default function Details({ navigation, route }) {
           newUserData.subscription.splice(key, 1);
         }
       });
-      // update new user data in firebase and in state
+      // update new user data in firebase
       userRef.set(newUserData);
-      crawlcontext[3](newUserData);
 
-      // set subbed user on crawl card
-      newCrawlData.filter((crawl, id) => {
-        if (crawl.title === crawlcontext[0][index].title) {
-          newCrawlData[id].subscribed.filter((user, key) => {
-            if (user.username === crawlcontext[2].username) {
-              newCrawlData[id].subscribed.splice(key, 1);
-            }
-          });
-        }
+      // update subscription database with removed sub
+      subRef.update({
+        subs: firebase.firestore.FieldValue.arrayRemove({
+          username: crawlcontext[2].username,
+          profile: crawlcontext[2].profile,
+        }),
       });
-      // update database & state with new crawl data
-      crawlRef.set(Object.assign({}, newCrawlData));
-      crawlcontext[1](newCrawlData);
     }
   }
 
@@ -206,7 +233,7 @@ export default function Details({ navigation, route }) {
             }}
           />
         </MapView>
-        <View style={styles.container}> 
+        <View style={styles.container}>
           <View style={styles.containerInside}>
             <Text style={styles.title}>{crawlcontext[0][index].title}</Text>
             <Text style={styles.distance}>{distance}</Text>
@@ -216,8 +243,10 @@ export default function Details({ navigation, route }) {
                   key={key}
                   onPress={() => {
                     setSpecials({ ...specials, visible: true, index: key });
-                    getBarRating(REACT_APP_GOOGLE_PLACES_KEY, crawlcontext[0][index].bars[key].name);
-                    console.log("------");
+                    getBarRating(
+                      REACT_APP_GOOGLE_PLACES_KEY,
+                      crawlcontext[0][index].bars[key].name
+                    );
                   }}
                 >
                   <View style={styles.bar}>
@@ -261,28 +290,28 @@ export default function Details({ navigation, route }) {
             })}
           </View>
           <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.3)"]}
-              style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
+            colors={["transparent", "rgba(0,0,0,0.3)"]}
+            style={[styles.subscribe, subscribed && { opacity: 0.7 }]}
+          >
+            <TouchableHighlight
+              style={styles.press}
+              onPress={() => {
+                if (subscribed) {
+                  setSubscribed(false);
+                  userSubscriptions(false);
+                } else {
+                  setSubscribed(true);
+                  userSubscriptions(true);
+                }
+              }}
+              activeOpacity={0.4}
+              underlayColor={"rgba(255,255,255,0.2)"}
             >
-              <TouchableHighlight
-                style={styles.press}
-                onPress={() => {
-                  if (subscribed) {
-                    setSubscribed(false);
-                    userSubscriptions(false);
-                  } else {
-                    setSubscribed(true);
-                    userSubscriptions(true);
-                  }
-                }}
-                activeOpacity={0.4}
-                underlayColor={"rgba(255,255,255,0.2)"}
-              >
-                <Text style={styles.subscribeText}>
-                  {subscribed ? "Subscribed" : "Subscribe"}
-                </Text>
-              </TouchableHighlight>
-            </LinearGradient>
+              <Text style={styles.subscribeText}>
+                {subscribed ? "Subscribed" : "Subscribe"}
+              </Text>
+            </TouchableHighlight>
+          </LinearGradient>
         </View>
 
         {specials.visible && (

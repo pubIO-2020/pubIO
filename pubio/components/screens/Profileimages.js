@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Avatar, Button } from "react-native-paper";
 import Header from "../Header";
@@ -17,14 +17,47 @@ export default function Profileimages({ navigation }) {
     url: "",
   });
 
+  const [imageupdate, setImageUpdate] = useState(0);
+
   const db = firebase.firestore();
   const userRef = db.collection("usersTest").doc(crawlcontext[2].username);
+  const subRef = db.collection("subscribed");
 
-  //   function to set new user profile image in state & in db
+  // function to set new user profile image in state & in db
   function setUserProfile() {
     let user = crawlcontext[2];
     user.profile = profileimg.img;
     userRef.set(user);
+
+    subRef
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          doc.data().subs.forEach((sub) => {
+            if (sub.username === crawlcontext[2].username) {
+              db.collection("subscribed")
+                .doc(doc.id)
+                .update({
+                  subs: firebase.firestore.FieldValue.arrayRemove(sub),
+                });
+
+              db.collection("subscribed")
+                .doc(doc.id)
+                .update({
+                  subs: firebase.firestore.FieldValue.arrayUnion({
+                    username: crawlcontext[2].username,
+                    profile: profileimg.img,
+                  }),
+                });
+
+              setImageUpdate(imageupdate + 1);
+            }
+          });
+        });
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
   }
 
   // users currently will have to unsubscribe and subscribe on the crawl cards to see ther avatars change on the crawl cards

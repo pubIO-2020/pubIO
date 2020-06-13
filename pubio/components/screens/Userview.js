@@ -9,7 +9,7 @@ import Colors from "../Colors";
 
 export default function Userview({ route }) {
   const [qrcode, setQrcode] = useState({ visible: false, qrdata: "" });
-  const navigation = useNavigation();
+
   return (
     <View>
       <Header routeuser={route.name} />
@@ -35,7 +35,9 @@ export default function Userview({ route }) {
                   enableLinearGradient={true}
                   linearGradient={[Colors.colors.primary, Colors.colors.dark]}
                 />
-                <Text style={{ fontSize: 15, marginTop: 10 }}>Show to your bartender for a discount!</Text>
+                <Text style={{ fontSize: 15, marginTop: 10 }}>
+                  Show to your bartender for a discount!
+                </Text>
               </View>
             </Modal>
           </Portal>

@@ -46,6 +46,7 @@ export default function Loginview({ navigation, route }) {
   // firestore db refs
   const usersRef = db.collection("usersTest");
   const crawlRef = db.collection("crawls").doc("crawls");
+  const subRef = db.collection("subscribed");
 
   const crawlcontext = useContext(CrawlContext);
 
@@ -93,6 +94,25 @@ export default function Loginview({ navigation, route }) {
       })
       .catch(function (error) {
         console.log("Error getting document:", error);
+      });
+
+    var subObj = {};
+    var subContextObj = {};
+    subRef
+      .get()
+      .then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          subObj[doc.id] = doc.data();
+        });
+      })
+      .then(() => {
+        for (let crawl in subObj) {
+          subContextObj[crawl] = { subs: subObj[crawl].subs.reverse() };
+        }
+        crawlcontext[7](subContextObj);
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
       });
   }, [crawlcontext[4]]);
 
@@ -226,6 +246,7 @@ export default function Loginview({ navigation, route }) {
             <TextInput
               label="Password"
               mode="outlined"
+              selectionColor="rgba(0, 0, 0, 0.2)"
               secureTextEntry={true}
               style={{ marginTop: 3, minHeight: 20 }}
               theme={{ colors: { primary: Colors.colors.dark } }}

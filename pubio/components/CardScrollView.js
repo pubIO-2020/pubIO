@@ -1,13 +1,81 @@
 import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
-
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  Image,
+  RefreshControl,
+} from "react-native";
 import Card from "./Cards";
 import Colors from "./Colors";
 
 import { CrawlContext } from "./Context";
 
+import firebase from "../Firebase";
+
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
+// update data in context from firebase
+function updateData(crawlcontext, subcontext) {
+  const db = firebase.firestore();
+  const crawlRef = db.collection("crawls").doc("crawls");
+  const subRef = db.collection("subscribed");
+
+  crawlRef
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        let crawlArray = [];
+
+        for (let crawl in doc.data()) {
+          crawlArray.push(doc.data()[crawl]);
+        }
+        crawlcontext(crawlArray);
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .catch(function (error) {
+      console.log("Error getting document:", error);
+    });
+
+  var subObj = {};
+  var subContextObj = {};
+  subRef
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        subObj[doc.id] = doc.data();
+      });
+    })
+    .then(() => {
+      for (let crawl in subObj) {
+        subContextObj[crawl] = { subs: subObj[crawl].subs.reverse() };
+      }
+      subcontext(subContextObj);
+    })
+    .catch(function (error) {
+      console.log("Error getting documents: ", error);
+    });
+}
+
 export default function CardScrollView(props) {
   const crawlcontext = useContext(CrawlContext);
+  const db = firebase.firestore();
+
+  const subRef = db.collection("subscribed");
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    updateData(crawlcontext[1], crawlcontext[7]);
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   if (props.routename === "Userview") {
     if (crawlcontext[2].subscription.length === 0) {
@@ -37,6 +105,9 @@ export default function CardScrollView(props) {
             flexGrow: 1,
             backgroundColor: Colors.colors.offWhite,
           }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           {crawlcontext[2].subscription.map((user, index) => {
             let crawlObject;
@@ -75,6 +146,9 @@ export default function CardScrollView(props) {
           flexGrow: 1,
           backgroundColor: Colors.colors.offWhite,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {crawlcontext[0].map((crawl, index) => {
           return (
