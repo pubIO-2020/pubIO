@@ -120,13 +120,8 @@ export default function Details({ navigation, route }) {
       newUserData.subscription = newUserData.subscription.concat([
         { QRDATA: crawlcontext[0][index].title },
       ]);
-      // update current user in database and state
+      // update current user in database
       userRef.set(newUserData);
-      // update local user object with new sub
-      newCrawlData[crawlcontext[0][index].title].subs.unshift({
-        username: crawlcontext[2].username,
-        profile: crawlcontext[2].profile,
-      });
 
       // update subscription database with new sub
       subRef.update({
@@ -143,17 +138,10 @@ export default function Details({ navigation, route }) {
           newUserData.subscription.splice(key, 1);
         }
       });
-      // update new user data in firebase and in state
+      // update new user data in firebase
       userRef.set(newUserData);
-      // crawlcontext[3](newUserData);
 
-      // remove current bar crawl from local sub object
-      newCrawlData[crawlcontext[0][index].title].subs.filter((user, key) => {
-        if (user.username === crawlcontext[2].username) {
-          newCrawlData[crawlcontext[0][index].title].subs.splice(key, 1);
-        }
-      });
-      // update subscription database with remove sub
+      // update subscription database with removed sub
       subRef.update({
         subs: firebase.firestore.FieldValue.arrayRemove({
           username: crawlcontext[2].username,
