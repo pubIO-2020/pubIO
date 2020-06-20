@@ -7,6 +7,7 @@ import {
   Button,
   Modal,
   TouchableHighlight,
+  ActivityIndicator
 } from "react-native";
 import Header from "../Header";
 import * as Permissions from "expo-permissions";
@@ -25,7 +26,7 @@ export default function Adminview() {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-  }, []);
+  }, [crawlcontext[8]]);
 
   const handleBarCodeScanned = ({ type, data }) => {
     crawlcontext[0].forEach((crawl, index) => {
@@ -33,7 +34,6 @@ export default function Adminview() {
         setValidity(true);
       }
     });
-
     setScanned(true);
     setModalVisible(true);
     setTimeout(() => {
@@ -44,7 +44,7 @@ export default function Adminview() {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <ActivityIndicator style={{ flex: 1}}/>;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
@@ -52,7 +52,7 @@ export default function Adminview() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header adminroute="admin" />
+      <Header adminroute="admin" permission={setHasPermission}/>
       <View
         style={{
           flex: 1,

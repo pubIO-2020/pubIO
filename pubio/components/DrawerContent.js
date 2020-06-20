@@ -193,6 +193,7 @@ export default function DrawerContent(props) {
             <TouchableOpacity
               style={{ alignSelf: "center" }}
               onPress={() => {
+                crawlcontext[9](!crawlcontext[8]);
                 props.navigation.navigate("Adminview");
               }}
             >
