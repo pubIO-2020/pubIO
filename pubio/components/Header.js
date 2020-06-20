@@ -45,6 +45,7 @@ export default function Header(props) {
         <TouchableOpacity
           style={styles.backicon}
           onPress={() => {
+            props.adminroute && props.permission(null);
             navigation.goBack();
           }}
         >

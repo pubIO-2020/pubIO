@@ -36,6 +36,7 @@ function Mainview() {
 export default function App() {
   const [crawlcard, setCrawlCard] = useState();
   const [currentuser, setCurrentuser] = useState();
+  const [cameraAllowed, setCameraAllowed] = useState(false);
   // user data from firestore
   const [users, setUsers] = useState();
   const [subs, setSubs] = useState();
@@ -51,6 +52,8 @@ export default function App() {
         setUsers,
         subs,
         setSubs,
+        cameraAllowed,
+        setCameraAllowed
       ]}
     >
       <NavigationContainer independent={true}>
